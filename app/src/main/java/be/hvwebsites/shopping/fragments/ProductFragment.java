@@ -19,16 +19,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.A4ListActivity;
-import be.hvwebsites.winkelen.R;
-import be.hvwebsites.winkelen.adapters.NothingSelectedSpinnerAdapter;
-import be.hvwebsites.winkelen.adapters.SmallItemListAdapter;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.entities.Product;
-import be.hvwebsites.winkelen.entities.ProductInShop;
-import be.hvwebsites.winkelen.entities.Shop;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.A4ListActivity;
+import be.hvwebsites.shopping.adapters.SmallItemListAdapter;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.ProductInShop;
+import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.R;
 
 public class ProductFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private ShopEntitiesViewModel viewModel;

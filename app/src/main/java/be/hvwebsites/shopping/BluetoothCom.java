@@ -26,13 +26,13 @@ import androidx.lifecycle.ViewModelProvider;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.entities.Product;
-import be.hvwebsites.winkelen.entities.ProductInShop;
-import be.hvwebsites.winkelen.entities.Shop;
-import be.hvwebsites.winkelen.services.BluetoothService;
-import be.hvwebsites.winkelen.services.BtDeviceListActivity;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.ProductInShop;
+import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.services.BluetoothService;
+import be.hvwebsites.shopping.services.BtDeviceListActivity;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class BluetoothCom extends AppCompatActivity {
     private static final String TAG = "Bluetooth";

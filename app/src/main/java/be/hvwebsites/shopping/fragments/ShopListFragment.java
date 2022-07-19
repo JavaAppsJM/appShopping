@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.hvwebsites.winkelen.R;
-import be.hvwebsites.winkelen.adapters.TextItemListAdapter;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.adapters.TextItemListAdapter;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.R;
 
 public class ShopListFragment extends Fragment {
     private ShopEntitiesViewModel viewModel;

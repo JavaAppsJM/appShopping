@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import be.hvwebsites.winkelen.R;
+import be.hvwebsites.shopping.R;
 
 public class CheckBoxItemRecyclerFragment extends Fragment {
 

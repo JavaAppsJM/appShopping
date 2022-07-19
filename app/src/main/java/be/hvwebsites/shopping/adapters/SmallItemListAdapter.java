@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import be.hvwebsites.winkelen.R;
+import be.hvwebsites.shopping.R;
 
 public class SmallItemListAdapter extends RecyclerView.Adapter<SmallItemListAdapter.ListViewHolder> {
     private final LayoutInflater inflater;

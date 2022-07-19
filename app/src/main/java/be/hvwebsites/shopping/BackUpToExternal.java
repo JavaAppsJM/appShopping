@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class BackUpToExternal extends AppCompatActivity {
     private ShopEntitiesViewModel viewModel;

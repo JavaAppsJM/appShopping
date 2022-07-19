@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.ManageItemActivity;
-import be.hvwebsites.winkelen.R;
+import be.hvwebsites.shopping.ManageItemActivity;
+import be.hvwebsites.shopping.R;
 
 public class TextItemListAdapter extends RecyclerView.Adapter<TextItemListAdapter.ListViewHolder> {
     private final LayoutInflater inflater;
