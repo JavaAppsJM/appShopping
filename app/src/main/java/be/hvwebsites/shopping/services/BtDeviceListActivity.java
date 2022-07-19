@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Set;
 
-import be.hvwebsites.winkelen.R;
+import be.hvwebsites.shopping.R;
 
 
 public class BtDeviceListActivity extends AppCompatActivity {

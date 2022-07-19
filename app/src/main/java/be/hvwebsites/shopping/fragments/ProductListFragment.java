@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
-import be.hvwebsites.winkelen.R;
-import be.hvwebsites.winkelen.adapters.CheckboxListAdapter;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.R;
 
 public class ProductListFragment extends Fragment{
     private ShopEntitiesViewModel viewModel;

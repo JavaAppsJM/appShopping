@@ -16,17 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.adapters.ChckbxListAdapter;
-import be.hvwebsites.winkelen.adapters.NothingSelectedSpinnerAdapter;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.entities.Product;
-import be.hvwebsites.winkelen.entities.Shop;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.adapters.ChckbxListAdapter;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class A4ShoppingListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ShopEntitiesViewModel viewModel;

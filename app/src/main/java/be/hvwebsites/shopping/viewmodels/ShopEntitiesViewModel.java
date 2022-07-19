@@ -16,11 +16,11 @@ import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.repositories.FlexiRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.entities.Product;
-import be.hvwebsites.winkelen.entities.ProductInShop;
-import be.hvwebsites.winkelen.entities.Shop;
-import be.hvwebsites.winkelen.entities.ShopEntity;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.ProductInShop;
+import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.entities.ShopEntity;
 
 public class ShopEntitiesViewModel extends AndroidViewModel {
     private FlexiRepository repository;

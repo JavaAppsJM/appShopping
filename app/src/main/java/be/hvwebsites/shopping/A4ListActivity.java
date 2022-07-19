@@ -14,10 +14,10 @@ import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.fragments.ProductListFragment;
-import be.hvwebsites.winkelen.fragments.ShopListFragment;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.fragments.ProductListFragment;
+import be.hvwebsites.shopping.fragments.ShopListFragment;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class A4ListActivity extends AppCompatActivity {
     private ShopEntitiesViewModel viewModel;

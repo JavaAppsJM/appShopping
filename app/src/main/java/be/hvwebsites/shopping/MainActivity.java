@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import be.hvwebsites.libraryandroid4.statics.StaticData;
+import be.hvwebsites.shopping.constants.SpecificData;
 
 public class MainActivity extends AppCompatActivity {
     // Device

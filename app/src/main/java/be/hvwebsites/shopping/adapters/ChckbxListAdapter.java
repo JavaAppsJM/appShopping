@@ -15,7 +15,7 @@ import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.R;
+import be.hvwebsites.shopping.R;
 
 public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.CbListViewHolder> {
     private final LayoutInflater inflater;

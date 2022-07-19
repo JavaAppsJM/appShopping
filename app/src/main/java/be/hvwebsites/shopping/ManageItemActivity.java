@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.winkelen.constants.SpecificData;
-import be.hvwebsites.winkelen.fragments.ProductFragment;
-import be.hvwebsites.winkelen.fragments.ShopFragment;
-import be.hvwebsites.winkelen.viewmodels.ShopEntitiesViewModel;
+import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.fragments.ProductFragment;
+import be.hvwebsites.shopping.fragments.ShopFragment;
+import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class ManageItemActivity extends AppCompatActivity  {
     private ShopEntitiesViewModel viewModel;
