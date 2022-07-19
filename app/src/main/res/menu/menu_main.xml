@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="be.hvwebsites.winkelen.MainActivity">
+
+    <item
+        android:id="@+id/menu_initiate_bt"
+        android:title="Bluetooth communication"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_bu"
+        android:title="Back up to external"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_set_base_switch_external"
+        android:title="Set BASE SWITCH to external"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_set_base_switch_internal"
+        android:title="Set BASE SWITCH to internal"
+        app:showAsAction="never"/>
+
+
+</menu>

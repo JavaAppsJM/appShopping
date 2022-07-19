@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ProductFragment">
+
+    <TextView
+        android:id="@+id/labelNameProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/labelName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editNameNewProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelNameProduct"
+        app:layout_constraintStart_toEndOf="@id/labelNameProduct" />
+
+    <TextView
+        android:id="@+id/labelPreferredShop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_preferred_shop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNameNewProduct" />
+
+
+    <CheckBox
+        android:id="@+id/toBuyCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/labelToBuyCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
+
+    <Spinner
+        android:id="@+id/spinnerPrefShop"
+        android:layout_width="208dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toEndOf="@+id/labelPreferredShop"
+        app:layout_constraintTop_toBottomOf="@+id/editNameNewProduct" />
+
+    <Button
+        android:id="@+id/addButtonProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/labelToevoegen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wantedCheckbox" />
+
+    <CheckBox
+        android:id="@+id/wantedCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/actief"
+        app:layout_constraintStart_toEndOf="@+id/toBuyCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewSelShops"
+        android:layout_width="86dp"
+        android:layout_height="95dp"
+        android:layout_margin="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelWinkels"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/list_text_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewUnSelShops"
+        android:layout_width="86dp"
+        android:layout_height="95dp"
+        android:layout_margin="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelWinkels"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/list_text_item" />
+
+    <TextView
+        android:id="@+id/labelWinkels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/winkels"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addButtonProduct" />
+
+    <Button
+        android:id="@+id/buttonAddShop"
+        android:layout_width="67dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/add_shop_to_product"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerviewUnSelShops"
+        app:layout_constraintStart_toEndOf="@+id/recyclerviewSelShops"
+        app:layout_constraintTop_toBottomOf="@+id/labelWinkels" />
+
+    <Button
+        android:id="@+id/buttonRemShop"
+        android:layout_width="67dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/remove_shop_from_product"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerviewUnSelShops"
+        app:layout_constraintStart_toEndOf="@+id/recyclerviewSelShops"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddShop" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
