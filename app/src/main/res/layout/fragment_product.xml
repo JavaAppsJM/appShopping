@@ -42,18 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editNameNewProduct" />
 
-
-    <CheckBox
-        android:id="@+id/toBuyCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/labelToBuyCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
-
     <Spinner
         android:id="@+id/spinnerPrefShop"
         android:layout_width="208dp"
@@ -76,6 +64,17 @@
         app:layout_constraintTop_toBottomOf="@+id/wantedCheckbox" />
 
     <CheckBox
+        android:id="@+id/toBuyCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/labelToBuyCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
+
+    <CheckBox
         android:id="@+id/wantedCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,6 +83,18 @@
         android:layout_marginTop="16dp"
         android:text="@string/actief"
         app:layout_constraintStart_toEndOf="@+id/toBuyCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
+
+
+    <CheckBox
+        android:id="@+id/cooledCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Koeling"
+        app:layout_constraintStart_toEndOf="@+id/wantedCheckbox"
         app:layout_constraintTop_toBottomOf="@+id/labelPreferredShop" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -8,6 +8,7 @@ public class Product extends ShopEntity{
     public static final int NO_PREFERRED_SHOP = StaticData.ITEM_NOT_FOUND;
     private boolean toBuy;
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
+    private boolean cooled;
     public static final String PRODUCT_LATEST_ID = "product";
 
     public Product() {
@@ -18,6 +19,7 @@ public class Product extends ShopEntity{
         preferredShopId = new IDNumber(NO_PREFERRED_SHOP);
         toBuy = false;
         wanted = true;
+        cooled = false;
     }
 
     public Product(String fileLine){
@@ -25,6 +27,9 @@ public class Product extends ShopEntity{
         // <key><521><product><azerty><prefshop><123><tobuy><0><wanted><1>
         // fileLine splitsen in argumenten
         super();
+        // Cooled default op false zetten, wordt wel overschreven als het in de file zit
+        setCooled(false);
+        // Gegevens uit de fileline halen en in het product steken
         String[] fileLineContent = fileLine.split("<");
         for (int i = 0; i < fileLineContent.length; i++) {
             if (fileLineContent[i].matches("key.*")){
@@ -42,6 +47,9 @@ public class Product extends ShopEntity{
             if (fileLineContent[i].matches("wanted.*")){
                 this.wanted = convertFileContentToBoolean(fileLineContent[i+1].replace(">",""));
             }
+            if (fileLineContent[i].matches("cooled.*")){
+                this.cooled = convertFileContentToBoolean(fileLineContent[i+1].replace(">",""));
+            }
         }
     }
 
@@ -50,14 +58,16 @@ public class Product extends ShopEntity{
         setPreferredShopId(inProduct.getPreferredShopId());
         setToBuy(inProduct.isToBuy());
         setWanted(inProduct.isWanted());
+        setCooled(inProduct.isCooled());
     }
 
     public String convertToFileLine(){
         String fileLine = "<key><" + getEntityId().getIdString()
-                + "><product><" + getEntityName() + ">"
-        + "><prefshop><" + this.preferredShopId.getIdString() + ">"
-        + "><tobuy><" + convertBooleanToString(toBuy) + ">"
-        + "><wanted><" + convertBooleanToString(wanted) + ">";
+                + "><product><" + getEntityName()
+        + "><prefshop><" + this.preferredShopId.getIdString()
+        + "><tobuy><" + convertBooleanToString(toBuy)
+        + "><wanted><" + convertBooleanToString(wanted)
+        + "><cooled><" + convertBooleanToString(cooled) + ">";
         return fileLine;
     }
 
@@ -121,5 +131,13 @@ public class Product extends ShopEntity{
 
     public void setToBuy(boolean toBuy) {
         this.toBuy = toBuy;
+    }
+
+    public boolean isCooled() {
+        return cooled;
+    }
+
+    public void setCooled(boolean cooled) {
+        this.cooled = cooled;
     }
 }

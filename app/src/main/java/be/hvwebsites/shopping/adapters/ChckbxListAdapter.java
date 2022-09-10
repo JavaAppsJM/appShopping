@@ -16,6 +16,7 @@ import java.util.List;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.R;
+import be.hvwebsites.shopping.constants.SpecificData;
 
 public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.CbListViewHolder> {
     private final LayoutInflater inflater;
@@ -54,10 +55,7 @@ public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.Cb
                     // aan en af vinken zit ingebakken in checkbox, daar moet niets voor gebeuren
                     // de eigenschap toBuy moet wel bewaard worden want in de volgende activity
                     // wordt de waarde terug uit de file gehaald !!
-                    // TODO: bewaren van toBuy
-                    // viewmodel hier recuperen, lukt niet !
-                    // Dus hoe moeten we toBuy bewaren ??
-                    // Door in bovenliggende activity/fragment een setOnItemClickListener te creeren
+                    // toBuy wordt bewaard door in bovenliggende activity/fragment een setOnItemClickListener te creeren
                     // op de adapter !!
                     int indexToUpdate = getAdapterPosition();
                     boolean checked = checkBoxView.isChecked();
@@ -100,19 +98,23 @@ public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.Cb
             String currentLine = checkboxList.get(position).getName();
             holder.checkBoxView.setText(currentLine);
             holder.checkBoxView.setChecked(checkboxList.get(position).isChecked());
-            if (checkboxList.get(position).getStyle() == StaticData.PURPLE_500){
-                holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
-                        R.color.purple_500));
-            } else {
-                holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
-                        R.color.black));
+            switch (checkboxList.get(position).getStyle()){
+                case StaticData.PURPLE_500:
+                    holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.purple_500));
+                case SpecificData.STYLE_COOLED_BOLD:
+                    holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.red));
+                    holder.checkBoxView.setTypeface(null, Typeface.BOLD);
+                case SpecificData.STYLE_COOLED:
+                    holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.red));
+                    holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
+                default:
+                    holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.black));
+                    holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
             }
-            if (checkboxList.get(position).getStyle() == StaticData.BOLD_TEXT){
-                holder.checkBoxView.setTypeface(null, Typeface.BOLD);
-            } else {
-                holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
-            }
-
         }else {
             holder.checkBoxView.setText("No data !");
         }

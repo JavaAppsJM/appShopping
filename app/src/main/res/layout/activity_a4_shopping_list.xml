@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.hvwebsites.winkelen.A4ShoppingListActivity">
+    tools:context="be.hvwebsites.shopping.A4ShoppingListActivity">
 
     <TextView
         android:id="@+id/labelShopFilter"
@@ -40,7 +40,8 @@
         android:layout_marginRight="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/labelShopFilter"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewShoppingListProducts"
@@ -59,5 +60,16 @@
         tools:ignore="MissingConstraints"
         tools:layout_conversion_absoluteWidth="315dp"
         tools:listitem="@layout/list_checkbox_item" />
+
+    <Switch
+        android:id="@+id/switchChecked"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:text="Enkel aangeklikte artikels"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelShoppingList"
+        app:layout_constraintStart_toEndOf="@+id/labelShoppingList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

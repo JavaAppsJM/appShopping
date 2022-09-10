@@ -27,7 +27,7 @@ public class ProductListFragment extends Fragment{
     private ShopEntitiesViewModel viewModel;
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
 
-    // TODO:Toegevoegd vanuit android tutorial
+    // Toegevoegd vanuit android tutorial
     public ProductListFragment(){
         super(R.layout.fragment_checkbox_item_recycler);
     }

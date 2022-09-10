@@ -33,4 +33,7 @@ public class SpecificData {
     public static final int PRODUCT_DISPLAY_LARGE = 2;
     public static final int PRODUCT_DISPLAY_SMALL_BOLD = 3;
 
+    public static final String STYLE_COOLED = "cooled";
+    public static final String STYLE_COOLED_BOLD = "cooledbold";
+
 }

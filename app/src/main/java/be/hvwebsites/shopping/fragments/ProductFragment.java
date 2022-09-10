@@ -122,6 +122,8 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             toBuyView.setChecked(productToUpdate.isToBuy());
             CheckBox wantedView = view.findViewById(R.id.wantedCheckbox);
             wantedView.setChecked(productToUpdate.isWanted());
+            CheckBox cooledView = view.findViewById(R.id.cooledCheckBox);
+            cooledView.setChecked(productToUpdate.isCooled());
             // gekoppelde en niet gekoppelde shops in recyclerviews steken
             // Recyclerviews invullen
             recycSelShopsadapter.setReference(SpecificData.LIST_TYPE_1);
@@ -154,11 +156,13 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 // Definitie inputvelden
                 EditText nameView = view.findViewById(R.id.editNameNewProduct);
                 CheckBox toBuyView = view.findViewById(R.id.toBuyCheckBox);
+                CheckBox cooledView = view.findViewById(R.id.cooledCheckBox);
                 Spinner prefShopView = (Spinner) view.findViewById(R.id.spinnerPrefShop);
                 if (action.equals(StaticData.ACTION_NEW)){
                     Product newProduct = new Product(viewModel.getBasedir(), false);
                     newProduct.setEntityName(String.valueOf(nameView.getText()));
                     newProduct.setToBuy(toBuyView.isChecked());
+                    newProduct.setCooled(cooledView.isChecked());
                     // geselecteerde shop uit spinner halen
                     newProduct.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
                     viewModel.getProductList().add(newProduct);

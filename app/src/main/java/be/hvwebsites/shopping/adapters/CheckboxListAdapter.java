@@ -57,9 +57,6 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
                     // aan en af vinken zit ingebakken in checkbox, daar moet niets voor gebeuren
                     // de eigenschap toBuy moet wel bewaard worden want in de volgende activity
                     // wordt de waarde terug uit de file gehaald !!
-                    // TODO: bewaren van toBuy
-                    // viewmodel hier recuperen, lukt niet !
-                    // Dus hoe moeten we toBuy bewaren ??
                     int indexToUpdate = getAdapterPosition();
                     boolean checked = checkBoxView.isChecked();
                     // clicklistener mt properties doorgeven nr activity

@@ -448,8 +448,14 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             }else {
                 productDisplayLine = prodList.get(i).getEntityName();
             }
-            if (inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL_BOLD){
-                cbTextStyle = StaticData.BOLD_TEXT;
+            if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL_BOLD) &&
+            (prodList.get(i).isCooled())){
+                cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
+            }
+            // Check eigenschap cooled, style = red
+            if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL) &&
+                    (prodList.get(i).isCooled())){
+                cbTextStyle = SpecificData.STYLE_COOLED;
             }
             checkboxList.add(new CheckboxHelper(
                     productDisplayLine,
