@@ -44,6 +44,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private Shop shopFilter;
     private ChckbxListAdapter cbListAdapter;
     private ArrayAdapter<String> shopFilterAdapter;
+    private Switch switchV;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,20 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.addAll(viewModel.getShopNameList());
 
         // TODO: Enkel aangeklikte artikels ?
-        Switch switchV = findViewById(R.id.switchChecked);
+        switchV = findViewById(R.id.switchChecked);
+        // Zet switch default af
+        switchV.setChecked(false);
+        // Detecteer verandering
+        switchV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    switchV.setChecked(true);
+                }else {
+                    switchV.setChecked(false);
+                }
+            }
+        });
 
         // Is er al een ShopFilter in de cookie repo ?
         cookieRepository = new CookieRepository(baseDir);
@@ -107,7 +122,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             checkboxList.clear();
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     viewModel.getProductList(),
-                    SpecificData.PRODUCT_DISPLAY_SMALL));
+                    SpecificData.PRODUCT_DISPLAY_SMALL,
+                    switchV.isChecked()));
         }else {
             // er is een shopfilter
             // bepaal shop
@@ -191,7 +207,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 //            checkboxList.addAll(convertProductsInCheckboxes(productsMatchingShopfilter, ""));
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     productsMatchingShopfilter,
-                    SpecificData.PRODUCT_DISPLAY_SMALL_BOLD));
+                    SpecificData.PRODUCT_DISPLAY_SMALL_BOLD,
+                    switchV.isChecked()));
         }
         if (productsMatchingShopfilter.size() > 0 && prodinShopMatchingShopFilter.size() > 0){
             // dubbele producten uitfilteren in prodinShopMatchingShopFilter
@@ -202,7 +219,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 //            checkboxList.addAll(convertProductsInCheckboxes(prodinShopMatchingShopFilter, StaticData.GREY_COLOR));
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     prodinShopMatchingShopFilter,
-                    SpecificData.PRODUCT_DISPLAY_SMALL));
+                    SpecificData.PRODUCT_DISPLAY_SMALL,
+                    switchV.isChecked()));
         }
         if (productsMatchingShopfilter.size() == 0 && prodinShopMatchingShopFilter.size() == 0){
             // TODO: Als er geen produkten voldoen aan de filter, worden geen produkten getoond ?

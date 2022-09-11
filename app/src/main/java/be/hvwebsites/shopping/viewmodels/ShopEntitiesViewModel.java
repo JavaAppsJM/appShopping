@@ -436,31 +436,36 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productInShopList;
     }
 
-    public List<CheckboxHelper> convertProductsToCheckboxs(List<Product> prodList, int inDisplayType){
+    public List<CheckboxHelper> convertProductsToCheckboxs(List<Product> prodList,
+                                                           int inDisplayType,
+                                                           boolean onlyChecked){
         // Converteert een lijst met produkten in een checkboxList obv een displaytype
         // Het displaytype bepaalt of de preferred shop meegetoond wordt (LARGE) of niet (SMALL)
         List<CheckboxHelper> checkboxList = new ArrayList<>();
         String productDisplayLine;
         String cbTextStyle = "";
         for (int i = 0; i < prodList.size(); i++) {
-            if (inDisplayType == SpecificData.PRODUCT_DISPLAY_LARGE){
-                productDisplayLine = getProductLargeDisplay(prodList.get(i));
-            }else {
-                productDisplayLine = prodList.get(i).getEntityName();
+            // Controle only checked
+            if ((prodList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
+                if (inDisplayType == SpecificData.PRODUCT_DISPLAY_LARGE){
+                    productDisplayLine = getProductLargeDisplay(prodList.get(i));
+                }else {
+                    productDisplayLine = prodList.get(i).getEntityName();
+                }
+                if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL_BOLD) &&
+                        (prodList.get(i).isCooled())){
+                    cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
+                }
+                // Check eigenschap cooled, style = red
+                if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL) &&
+                        (prodList.get(i).isCooled())){
+                    cbTextStyle = SpecificData.STYLE_COOLED;
+                }
+                checkboxList.add(new CheckboxHelper(
+                        productDisplayLine,
+                        prodList.get(i).isToBuy(),cbTextStyle,
+                        prodList.get(i).getEntityId()));
             }
-            if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL_BOLD) &&
-            (prodList.get(i).isCooled())){
-                cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
-            }
-            // Check eigenschap cooled, style = red
-            if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL) &&
-                    (prodList.get(i).isCooled())){
-                cbTextStyle = SpecificData.STYLE_COOLED;
-            }
-            checkboxList.add(new CheckboxHelper(
-                    productDisplayLine,
-                    prodList.get(i).isToBuy(),cbTextStyle,
-                    prodList.get(i).getEntityId()));
         }
         return checkboxList;
     }

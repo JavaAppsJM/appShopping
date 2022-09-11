@@ -62,7 +62,8 @@ public class ProductListFragment extends Fragment{
         checkboxList.clear();
         checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                 viewModel.getProductList(),
-                SpecificData.PRODUCT_DISPLAY_LARGE));
+                SpecificData.PRODUCT_DISPLAY_LARGE,
+                false));
 
         // om te kunnen swipen in de recyclerview ; swippen == deleten
         ItemTouchHelper helper = new ItemTouchHelper(
@@ -87,7 +88,8 @@ public class ProductListFragment extends Fragment{
                         checkboxList.clear();
                         checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                                 viewModel.getProductList(),
-                                SpecificData.PRODUCT_DISPLAY_LARGE));
+                                SpecificData.PRODUCT_DISPLAY_LARGE,
+                                false));
                         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
                         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                         cbListAdapter.setCheckboxList(checkboxList);
