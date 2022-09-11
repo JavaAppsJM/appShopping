@@ -170,6 +170,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 }else {
                     productToSave.setEntityName(String.valueOf(nameView.getText()));
                     productToSave.setToBuy(toBuyView.isChecked());
+                    productToSave.setCooled(cooledView.isChecked());
                     productToSave.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
                     viewModel.getProductList().set(indexToUpdate, productToSave);
                 }

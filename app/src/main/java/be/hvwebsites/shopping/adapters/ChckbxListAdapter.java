@@ -102,14 +102,17 @@ public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.Cb
                 case StaticData.PURPLE_500:
                     holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                             R.color.purple_500));
+                    break;
                 case SpecificData.STYLE_COOLED_BOLD:
                     holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                             R.color.red));
                     holder.checkBoxView.setTypeface(null, Typeface.BOLD);
+                    break;
                 case SpecificData.STYLE_COOLED:
                     holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                             R.color.red));
                     holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
+                    break;
                 default:
                     holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                             R.color.black));

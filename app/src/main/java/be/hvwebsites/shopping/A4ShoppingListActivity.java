@@ -92,6 +92,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
         shopFilterAdapter.addAll(viewModel.getShopNameList());
+        shopFilterAdapter.add("Alle artikels");
 
         // TODO: Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
@@ -106,6 +107,9 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 }else {
                     switchV.setChecked(false);
                 }
+                composeCheckboxList();
+                cbListAdapter.setCheckboxList(checkboxList);
+                boolean debug = true;
             }
         });
 
@@ -127,21 +131,26 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         }else {
             // er is een shopfilter
             // bepaal shop
-            shopFilter = viewModel.getShopByShopName(shopFilterString);
+            if (!shopFilterString.equals("Alle artikels")){
+                shopFilter = viewModel.getShopByShopName(shopFilterString);
+            }
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
             checkboxList.clear();
             composeCheckboxList();
             // spinner met selectie gebruiken
             shopFilterSpinner.setAdapter(shopFilterAdapter);
-            // animate parameter met false staan om het onnodig afvuren vd spinner tegen te gaan
-            shopFilterSpinner.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()), false);
+            // animate parameter moet false staan om het onnodig afvuren vd spinner tegen te gaan
+            if (shopFilterString.equals("Alle artikels")){
+                shopFilterSpinner.setSelection(shopFilterSpinner.getLastVisiblePosition(), false);
+            }else {
+                shopFilterSpinner.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()), false);
+            }
         }
         // selection listener activeren, moet gebueren nadat de adapter gekoppeld is aan de spinner !!
         shopFilterSpinner.setOnItemSelectedListener(this);
 
         // Recyclerview definieren
         RecyclerView recyclerView = findViewById(R.id.recyclerviewShoppingListProducts);
-//        final ChckbxListAdapter cbListAdapter = new ChckbxListAdapter(this);
         cbListAdapter = new ChckbxListAdapter(this);
         recyclerView.setAdapter(cbListAdapter);
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this);
@@ -196,15 +205,17 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // stel de checkboxlist samen obv de shopfilter
         // selectief producten ophalen
         // eerst de producten met de shopfilter als prefShop
-        productsMatchingShopfilter = viewModel.getProductsByPrefShop(shopFilter);
-        // dan de producten met de shopfilter als prodinshop combinatie
-        prodinShopMatchingShopFilter = viewModel.getProductsByShop(shopFilter);
-
+        if (shopFilterString.equals("Alle artikels")){
+            prodinShopMatchingShopFilter = viewModel.getProductList();
+        }else {
+            productsMatchingShopfilter = viewModel.getProductsByPrefShop(shopFilter);
+            // dan de producten met de shopfilter als prodinshop combinatie
+            prodinShopMatchingShopFilter = viewModel.getProductsByShop(shopFilter);
+        }
         checkboxList.clear();
 
         // eerst producten met pref shop omzetten nr checkboxen
         if (productsMatchingShopfilter.size() > 0){
-//            checkboxList.addAll(convertProductsInCheckboxes(productsMatchingShopfilter, ""));
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     productsMatchingShopfilter,
                     SpecificData.PRODUCT_DISPLAY_SMALL_BOLD,
@@ -216,7 +227,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         }
         // dan andere producten
         if (prodinShopMatchingShopFilter.size() > 0){
-//            checkboxList.addAll(convertProductsInCheckboxes(prodinShopMatchingShopFilter, StaticData.GREY_COLOR));
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     prodinShopMatchingShopFilter,
                     SpecificData.PRODUCT_DISPLAY_SMALL,
