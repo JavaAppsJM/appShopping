@@ -92,7 +92,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
         shopFilterAdapter.addAll(viewModel.getShopNameList());
-        shopFilterAdapter.add("Alle artikels");
+        shopFilterAdapter.add(SpecificData.NO_FILTER);
 
         // TODO: Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
@@ -131,7 +131,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         }else {
             // er is een shopfilter
             // bepaal shop
-            if (!shopFilterString.equals("Alle artikels")){
+            if (!shopFilterString.equals(SpecificData.NO_FILTER)){
                 shopFilter = viewModel.getShopByShopName(shopFilterString);
             }
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
@@ -140,8 +140,9 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             // spinner met selectie gebruiken
             shopFilterSpinner.setAdapter(shopFilterAdapter);
             // animate parameter moet false staan om het onnodig afvuren vd spinner tegen te gaan
-            if (shopFilterString.equals("Alle artikels")){
-                shopFilterSpinner.setSelection(shopFilterSpinner.getLastVisiblePosition(), false);
+            if (shopFilterString.equals(SpecificData.NO_FILTER)){
+                int positionAA = shopFilterAdapter.getCount()-1;
+                shopFilterSpinner.setSelection(positionAA, false);
             }else {
                 shopFilterSpinner.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()), false);
             }
@@ -186,7 +187,9 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             // Shopfilter bewaren als Cookie
             cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
             // bepaal shop voor herbepalen checkboxlist
-            shopFilter = viewModel.getShopByShopName(shopFilterString);
+            if (!shopFilterString.equals(SpecificData.NO_FILTER)){
+                shopFilter = viewModel.getShopByShopName(shopFilterString);
+            }
             // spinner refreshen hoeft niet
 //            parent.setAdapter(shopFilterAdapter);
 //            parent.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()));
@@ -205,7 +208,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // stel de checkboxlist samen obv de shopfilter
         // selectief producten ophalen
         // eerst de producten met de shopfilter als prefShop
-        if (shopFilterString.equals("Alle artikels")){
+        if (shopFilterString.equals(SpecificData.NO_FILTER)){
             prodinShopMatchingShopFilter = viewModel.getProductList();
         }else {
             productsMatchingShopfilter = viewModel.getProductsByPrefShop(shopFilter);

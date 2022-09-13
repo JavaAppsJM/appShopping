@@ -23,6 +23,7 @@ public class SpecificData {
     public static final String HEAD_LIST_ACTIVITY_T2 = "Lijst met artikels";
 
     public static final String SHOP_FILTER = "shopfilter";
+    public static final String NO_FILTER = "Alle artikels";
 
     // Base constants ; BASE_DEFAULT is used by app
     public static final String BASE_DEFAULT = "base_external";
@@ -35,5 +36,6 @@ public class SpecificData {
 
     public static final String STYLE_COOLED = "cooled";
     public static final String STYLE_COOLED_BOLD = "cooledbold";
+    public static final String STYLE_DEFAULT = "default";
 
 }

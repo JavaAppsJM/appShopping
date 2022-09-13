@@ -201,10 +201,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public List<String> getShopNamesByProduct(Product inProduct){
         // Bepaalt de shops namen die een combinatie hebben met het opgegeven produkten
-        // TODO: Wat indien geen shops gevonden ?
         List<String> shopsForProduct = new ArrayList<>();
         for (int i = 0; i < productInShopList.size(); i++) {
             if (productInShopList.get(i).getProductId().getId() == inProduct.getEntityId().getId()){
+                //TODO: Inbouwen opvangen indien shop id niet bestaat
                 shopsForProduct.add(getShopByID(productInShopList.get(i).getShopId()).getDisplayLine());
             }
         }
@@ -443,8 +443,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Het displaytype bepaalt of de preferred shop meegetoond wordt (LARGE) of niet (SMALL)
         List<CheckboxHelper> checkboxList = new ArrayList<>();
         String productDisplayLine;
-        String cbTextStyle = "";
+        String cbTextStyle = SpecificData.STYLE_DEFAULT;
         for (int i = 0; i < prodList.size(); i++) {
+            cbTextStyle = SpecificData.STYLE_DEFAULT;
             // Controle only checked
             if ((prodList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
                 if (inDisplayType == SpecificData.PRODUCT_DISPLAY_LARGE){
