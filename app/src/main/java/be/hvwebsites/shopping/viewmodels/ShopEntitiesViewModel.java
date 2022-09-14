@@ -204,8 +204,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         List<String> shopsForProduct = new ArrayList<>();
         for (int i = 0; i < productInShopList.size(); i++) {
             if (productInShopList.get(i).getProductId().getId() == inProduct.getEntityId().getId()){
-                //TODO: Inbouwen opvangen indien shop id niet bestaat
-                shopsForProduct.add(getShopByID(productInShopList.get(i).getShopId()).getDisplayLine());
+                // opvangen indien shop id niet bestaat
+                if (getShopByID(productInShopList.get(i).getShopId()) != null){
+                    shopsForProduct.add(getShopByID(productInShopList.get(i).getShopId()).getDisplayLine());
+                }
             }
         }
         return shopsForProduct;
