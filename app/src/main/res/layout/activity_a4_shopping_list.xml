@@ -65,11 +65,10 @@
         android:id="@+id/switchChecked"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:text="Enkel aangeklikte artikels"
         android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/labelShoppingList"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/labelShoppingList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

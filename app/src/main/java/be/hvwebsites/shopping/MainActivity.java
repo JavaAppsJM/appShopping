@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
                             "Internal files geactiveerd !",
                             Toast.LENGTH_LONG).show();
                 } else {
+                    basisSwitch = SpecificData.BASE_INTERNAL;
+                    basisSwitchView.setText(basisSwitch);
                     Toast.makeText(MainActivity.this,
                             "Toestel werkt altijd met internal files !",
                             Toast.LENGTH_LONG).show();

@@ -140,4 +140,34 @@ public class Product extends ShopEntity{
     public void setCooled(boolean cooled) {
         this.cooled = cooled;
     }
+
+    public String getCooledAsString(){
+        return convertBooleanToString(cooled);
+    }
+
+    public String getProductAttributesForBtMsg(){
+        String bTMsg = "";
+        bTMsg = bTMsg.concat(getEntityId().getIdString());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getEntityName());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getPreferredShopId().getIdString());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getToBuyAsString());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getWantedAsString());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getCooledAsString());
+        bTMsg = bTMsg.concat(">");
+        return bTMsg;
+    }
+
+    public void setBtContent(String bt2, String bt3, String bt4, String bt5, String bt6, String bt7){
+        setEntityId(new IDNumber(bt2.replace(">", "")));
+        setEntityName(bt3.replace(">",""));
+        setPreferredShopId(new IDNumber(bt4.replace(">", "")));
+        setToBuy(convertFileContentToBoolean(bt5.replace(">","")));
+        setWanted(convertFileContentToBoolean(bt6.replace(">","")));
+        setCooled(convertFileContentToBoolean(bt7.replace(">","")));
+    }
 }
