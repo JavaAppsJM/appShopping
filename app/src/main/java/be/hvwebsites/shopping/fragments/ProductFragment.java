@@ -177,7 +177,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 viewModel.storeProducts();
                 Intent replyIntent = new Intent(getContext(), A4ListActivity.class);
                 replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
-                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, viewModel.getBaseSwitch());
+                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, viewModel.getBaseSwitch());
                 startActivity(replyIntent);
             }
         });

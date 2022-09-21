@@ -22,7 +22,6 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
     // TODO: Kan deze niet vervangen worden door ChckbxListAdapter
     private final LayoutInflater inflater;
     private Context mContext;
-
     private List<CheckboxHelper> checkboxList;
     private String reference;
     private String baseSwitch;
@@ -109,7 +108,7 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
                     Intent intent = new Intent(mContext, ManageItemActivity.class);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, baseSwitch);
+                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
                     mContext.startActivity(intent);
                     return true;

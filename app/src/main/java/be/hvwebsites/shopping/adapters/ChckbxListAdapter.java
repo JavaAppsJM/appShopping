@@ -21,7 +21,6 @@ import be.hvwebsites.shopping.constants.SpecificData;
 public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.CbListViewHolder> {
     private final LayoutInflater inflater;
     private Context mContext;
-
     private List<CheckboxHelper> checkboxList;
     private String reference;
     private ClickListener clickListener;
@@ -61,7 +60,6 @@ public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.Cb
                     boolean checked = checkBoxView.isChecked();
                     // clicklistener mt properties doorgeven nr activity
                     clickListener.onItemClicked(indexToUpdate, v, checked);
-
                     int johny =0;
                 }
             });

@@ -49,7 +49,7 @@ public class TextItemListAdapter extends RecyclerView.Adapter<TextItemListAdapte
             Intent intent = new Intent(mContext, ManageItemActivity.class);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-            intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, baseSwitch);
+            intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
             mContext.startActivity(intent);
         }

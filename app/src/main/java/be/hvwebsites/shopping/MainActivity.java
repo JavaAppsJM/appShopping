@@ -13,26 +13,35 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import be.hvwebsites.libraryandroid4.repositories.Cookie;
+import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.services.FileBaseService;
 
 public class MainActivity extends AppCompatActivity {
     // Device
     private String deviceModel = Build.MODEL;
     // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external switch
     private String basisSwitch = SpecificData.BASE_DEFAULT;
+    private FileBaseService fileBaseService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Intent definieren
+        // Intent definieren voor basis
         Intent newItemIntent = getIntent();
-        if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_SELECTION)){
-            basisSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_SELECTION);
+        if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
+            basisSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
+        }else {
+            // Bepaal basis indien geen intent
+            fileBaseService = new FileBaseService(deviceModel);
+            basisSwitch = fileBaseService.getFileBase();
         }
 
+        // Vul scherm in
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
         basisSwitchView.setText(basisSwitch);
         Button buttonShops = findViewById(R.id.shops);
@@ -41,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_1);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
                 startActivity(intent);
             }
         });
@@ -51,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
                 startActivity(intent);
 
             }
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ShoppingListActivity.class);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
                 startActivity(intent);
             }
         });
@@ -120,15 +129,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_set_base_switch_internal:
                 // Zet BASE_SWITCH to internal
+                basisSwitch = SpecificData.BASE_INTERNAL;
+                basisSwitchView.setText(basisSwitch);
                 if (!deviceModel.equals("GT-I9100")) {
-                    basisSwitch = SpecificData.BASE_INTERNAL;
-                    basisSwitchView.setText(basisSwitch);
                     Toast.makeText(MainActivity.this,
                             "Internal files geactiveerd !",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    basisSwitch = SpecificData.BASE_INTERNAL;
-                    basisSwitchView.setText(basisSwitch);
                     Toast.makeText(MainActivity.this,
                             "Toestel werkt altijd met internal files !",
                             Toast.LENGTH_LONG).show();

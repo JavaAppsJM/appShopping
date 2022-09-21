@@ -110,7 +110,7 @@ public class BluetoothCom extends AppCompatActivity {
 
         // Intent definieren
         Intent newItemIntent = getIntent();
-        baseSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_SELECTION);
+        baseSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
         if (baseSwitch == null){
             baseSwitch = SpecificData.BASE_DEFAULT;
         }
@@ -123,7 +123,7 @@ public class BluetoothCom extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             // Indien bluetooth initiated mislukt is, ga terug nr mainActivity
             Intent returnintent = new Intent(BluetoothCom.this, MainActivity.class);
-            returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, baseSwitch);
+            returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
             startActivity(returnintent);
         } else {
             Toast.makeText(BluetoothCom.this,
@@ -231,7 +231,7 @@ public class BluetoothCom extends AppCompatActivity {
                 mBtService.stop();
                 mBluetoothAdapter.disable();
                 Intent returnintent = new Intent(BluetoothCom.this, MainActivity.class);
-                returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, baseSwitch);
+                returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                 startActivity(returnintent);
             }
         });

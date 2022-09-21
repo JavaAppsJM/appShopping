@@ -60,7 +60,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Basis directory definitie
         String baseDir = "";
-        String baseSwitch = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_SELECTION);
+        String baseSwitch = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
         if (baseSwitch == null){
             baseSwitch = SpecificData.BASE_DEFAULT;
         }

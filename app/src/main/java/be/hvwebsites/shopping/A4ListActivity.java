@@ -38,9 +38,9 @@ public class A4ListActivity extends AppCompatActivity {
         // Get a viewmodel from the viewmodelproviders
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Basis directory definitie
-        baseSwitch = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_SELECTION);
+        baseSwitch = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
         if (baseSwitch == null){
-            // Als baseSwitch = null, neem dan default
+            // Als baseSwitch = null, dan wordt default genomen
             baseSwitch = SpecificData.BASE_DEFAULT;
         }
         if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
@@ -114,7 +114,7 @@ public class A4ListActivity extends AppCompatActivity {
                         ManageItemActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, listType);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_NEW);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_SELECTION, baseSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                 startActivity(intent);
             }
         });
