@@ -30,6 +30,12 @@ public class SpecificData {
     public static final String BASE_INTERNAL = "base_internal";
     public static final String BASE_EXTERNAL = "base_external";
 
+    // SMS Receiver
+    public static final String SMS_RECEIVER_1 = "0487464825";
+    public static final String SMS_RECEIVER_2 = "0487486725";
+    public static final String SMS_RECEIVER_DEFAULT = SMS_RECEIVER_2;
+
+    // Display styles
     public static final int PRODUCT_DISPLAY_SMALL = 1;
     public static final int PRODUCT_DISPLAY_LARGE = 2;
     public static final int PRODUCT_DISPLAY_SMALL_BOLD = 3;

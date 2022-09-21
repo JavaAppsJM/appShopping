@@ -1,7 +1,11 @@
 package be.hvwebsites.shopping;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -162,15 +167,34 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         cbListAdapter.setCheckboxList(checkboxList);
         setTitle(SpecificData.TITLE_SHOPPING_LIST);
 
+        // check permission
+        ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
+
         // Als er geclicked is op een checkbox, wordt dat hier gecapteerd ?
         cbListAdapter.setOnItemClickListener(new ChckbxListAdapter.ClickListener() {
             @Override
             public void onItemClicked(int position, View v, boolean checked) {
                 // via het itemID vd checkboxhelper het juiste produkt bepalen en de toBuy zetten
-                viewModel.getProductByID(checkboxList.get(position).getItemID()).setToBuy(checked);
+                Product clickedProduct = viewModel.getProductByID(checkboxList.get(position).getItemID());
+                clickedProduct.setToBuy(checked);
+//                viewModel.getProductByID(checkboxList.get(position).getItemID()).setToBuy(checked);
                 viewModel.storeProducts();
                 composeCheckboxList();
                 cbListAdapter.setCheckboxList(checkboxList);
+
+                // Voorbereiden SMS msg
+                String smsMsg = clickedProduct.getDisplayLine();
+                String smsReceiver = SpecificData.SMS_RECEIVER_DEFAULT;
+                //Getting intent and PendingIntent instance
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
+                //Get the SmsManager instance and call the sendTextMessage method to send message
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(smsReceiver, null, smsMsg, pi,null);
+
+                Toast.makeText(getApplicationContext(), "Message Sent!!",
+                        Toast.LENGTH_LONG).show();
+
                 boolean debug = true;
             }
         });
