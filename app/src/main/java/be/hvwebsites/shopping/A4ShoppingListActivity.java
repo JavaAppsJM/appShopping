@@ -99,7 +99,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.addAll(viewModel.getShopNameList());
         shopFilterAdapter.add(SpecificData.NO_FILTER);
 
-        // TODO: Enkel aangeklikte artikels ?
+        // Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
         // Zet switch default af
         switchV.setChecked(false);
@@ -167,7 +167,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         cbListAdapter.setCheckboxList(checkboxList);
         setTitle(SpecificData.TITLE_SHOPPING_LIST);
 
-        // check permission
+        // check SMS permission
         ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
 
         // Als er geclicked is op een checkbox, wordt dat hier gecapteerd ?
@@ -183,7 +183,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 cbListAdapter.setCheckboxList(checkboxList);
 
                 // Voorbereiden SMS msg
-                String smsMsg = clickedProduct.getDisplayLine();
+                String smsMsg = clickedProduct.getSMSLine();
                 String smsReceiver = SpecificData.SMS_RECEIVER_DEFAULT;
                 //Getting intent and PendingIntent instance
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);

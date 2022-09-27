@@ -71,6 +71,14 @@ public class Product extends ShopEntity{
         return fileLine;
     }
 
+    private String convertToBuyForSms(boolean b){
+        if (b){
+            return "toch meebrengen !";
+        }else {
+            return "moet toch niet meegebracht worden !";
+        }
+    }
+
     private String convertBooleanToBuy(boolean b){
         if (b){
             return "Buy";
@@ -107,6 +115,12 @@ public class Product extends ShopEntity{
         String listDisplay = getEntityName()
                 + " " + convertBooleanToBuy(this.toBuy);
         return listDisplay;
+    }
+
+    public String getSMSLine(){
+        String smsLine = "Shopping app sms..., artikel : " + getEntityName()
+                + " " + convertToBuyForSms(this.toBuy);
+        return smsLine;
     }
 
     public String getToBuyAsString(){
