@@ -144,6 +144,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     private void setHighestIDInCookie(String entity, String basedir, int highestId){
         CookieRepository cookieRepository = new CookieRepository(basedir);
+        cookieRepository.registerCookie(entity, String.valueOf(highestId), basedir);
+        // TODO: Voorgaande lijn vervangt onderstaande ; moet nog getest worden
+/*
         if (cookieRepository.bestaatCookie(entity) != CookieRepository.COOKIE_NOT_FOUND){
             // Cookie vervangen met nieuwe hoogste id
             Cookie cookie = new Cookie(entity, String.valueOf(highestId));
@@ -155,7 +158,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             Cookie cookie = new Cookie(entity, String.valueOf(highestId));
             cookieRepository.addCookie(cookie);
         }
-
+*/
     }
 
     public Shop getShopByShopName(String inShopName){
