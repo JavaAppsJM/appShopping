@@ -169,7 +169,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         setTitle(SpecificData.TITLE_SHOPPING_LIST);
 
         // check SMS permission indien SMS geactiveerd
-        if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL) == SpecificData.SMS_COOKIE_VALUE_ON){
+        if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_ON)){
             smsOn = true;
             ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
         }else {

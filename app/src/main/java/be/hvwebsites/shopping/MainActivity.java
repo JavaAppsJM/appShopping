@@ -1,6 +1,8 @@
 package be.hvwebsites.shopping;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ListMenuItemView;
+import androidx.appcompat.view.menu.MenuView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private String deviceModel = Build.MODEL;
     // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external switch
     private String basisSwitch = SpecificData.BASE_DEFAULT;
+    private String filebaseDir = "";
     private FileBaseService fileBaseService;
     private CookieRepository cookieRepository;
 
@@ -42,8 +45,15 @@ public class MainActivity extends AppCompatActivity {
             basisSwitch = fileBaseService.getFileBase();
         }
 
+        // Bepaal filebaseDir
+        if (basisSwitch.equals(SpecificData.BASE_INTERNAL)){
+            filebaseDir = getBaseContext().getFilesDir().getAbsolutePath();
+        }else {
+            filebaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
+        }
+
         // Definieer Cookierepository
-        cookieRepository = new CookieRepository(basisSwitch);
+        cookieRepository = new CookieRepository(filebaseDir);
         // Zet sms default off
         cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
 
@@ -154,14 +164,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 return true;
             case R.id.menu_sms_on_off:
-                TextView menuSMS = findViewById(R.id.menu_sms_on_off);
+                MenuItem menuSMS = findViewById(R.id.menu_sms_on_off);
                 // Zet sms on or off
                 if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_OFF)){
                     cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_ON);
-                    menuSMS.setText("Zet SMS off");
+                    item.setTitle("Zet SMS off");
                 }else {
                     cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
-                    menuSMS.setText("Zet SMS on");
+                    item.setTitle("Zet SMS on");
                 }
                 return true;
             default:
