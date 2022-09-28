@@ -42,6 +42,7 @@ import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 public class A4ShoppingListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ShopEntitiesViewModel viewModel;
     private CookieRepository cookieRepository;
+    private boolean smsOn = false;
     private List<Product> productsMatchingShopfilter = new ArrayList<>();
     private List<Product> prodinShopMatchingShopFilter = new ArrayList<>();
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
@@ -167,8 +168,13 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         cbListAdapter.setCheckboxList(checkboxList);
         setTitle(SpecificData.TITLE_SHOPPING_LIST);
 
-        // check SMS permission
-        ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
+        // check SMS permission indien SMS geactiveerd
+        if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL) == SpecificData.SMS_COOKIE_VALUE_ON){
+            smsOn = true;
+            ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
+        }else {
+            smsOn = false;
+        }
 
         // Als er geclicked is op een checkbox, wordt dat hier gecapteerd ?
         cbListAdapter.setOnItemClickListener(new ChckbxListAdapter.ClickListener() {
@@ -182,18 +188,20 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 composeCheckboxList();
                 cbListAdapter.setCheckboxList(checkboxList);
 
-                // Voorbereiden SMS msg
-                String smsMsg = clickedProduct.getSMSLine();
-                String smsReceiver = SpecificData.SMS_RECEIVER_DEFAULT;
-                //Getting intent and PendingIntent instance
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
-                //Get the SmsManager instance and call the sendTextMessage method to send message
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(smsReceiver, null, smsMsg, pi,null);
+                // Voorbereiden SMS msg indien sms on
+                if (smsOn){
+                    String smsMsg = clickedProduct.getSMSLine();
+                    String smsReceiver = SpecificData.SMS_RECEIVER_DEFAULT;
+                    //Getting intent and PendingIntent instance
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
+                    //Get the SmsManager instance and call the sendTextMessage method to send message
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(smsReceiver, null, smsMsg, pi,null);
 
-                Toast.makeText(getApplicationContext(), "Message Sent!!",
-                        Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Message Sent!!",
+                            Toast.LENGTH_LONG).show();
+                }
 
                 boolean debug = true;
             }

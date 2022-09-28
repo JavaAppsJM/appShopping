@@ -154,12 +154,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 return true;
             case R.id.menu_sms_on_off:
+                TextView menuSMS = findViewById(R.id.menu_sms_on_off);
                 // Zet sms on or off
                 if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_OFF)){
                     cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_ON);
-
+                    menuSMS.setText("Zet SMS off");
                 }else {
                     cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
+                    menuSMS.setText("Zet SMS on");
                 }
                 return true;
             default:
