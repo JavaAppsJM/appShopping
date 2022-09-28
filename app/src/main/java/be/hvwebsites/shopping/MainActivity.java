@@ -23,7 +23,7 @@ import be.hvwebsites.shopping.services.FileBaseService;
 
 public class MainActivity extends AppCompatActivity {
     // Device
-    private String deviceModel = Build.MODEL;
+    private final String deviceModel = Build.MODEL;
     // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external switch
     private String basisSwitch = SpecificData.BASE_DEFAULT;
     private String filebaseDir = "";
@@ -34,16 +34,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // package name
+        String pkgName = getPackageName();
+        fileBaseService = new FileBaseService(deviceModel, pkgName);
 
         // Intent definieren voor basis
         Intent newItemIntent = getIntent();
         if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
             basisSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-        }else {
-            // Bepaal basis indien geen intent
-            fileBaseService = new FileBaseService(deviceModel);
-            basisSwitch = fileBaseService.getFileBase();
+            fileBaseService.setFileBase(basisSwitch);
         }
+        basisSwitch = fileBaseService.getFileBase();
+        //TODO: Nog te testen met onderstaande
+        filebaseDir = fileBaseService.getFileBaseDir();
 
         // Bepaal filebaseDir
         if (basisSwitch.equals(SpecificData.BASE_INTERNAL)){
@@ -60,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         // Vul scherm in
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
         basisSwitchView.setText(basisSwitch);
-        // TODO: Toestand van sms cookie op main scherm laten zien
+        // Toestand van sms cookie op main scherm laten zien
+        TextView smsStatus = findViewById(R.id.smsStatus);
+        smsStatus.setText(cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL));
         Button buttonShops = findViewById(R.id.shops);
         buttonShops.setOnClickListener(new View.OnClickListener() {
             @Override
