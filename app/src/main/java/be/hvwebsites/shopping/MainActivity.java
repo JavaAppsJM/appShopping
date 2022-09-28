@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external switch
     private String basisSwitch = SpecificData.BASE_DEFAULT;
     private FileBaseService fileBaseService;
+    private CookieRepository cookieRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,15 @@ public class MainActivity extends AppCompatActivity {
             basisSwitch = fileBaseService.getFileBase();
         }
 
+        // Definieer Cookierepository
+        cookieRepository = new CookieRepository(basisSwitch);
+        // Zet sms default off
+        cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
+
         // Vul scherm in
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
         basisSwitchView.setText(basisSwitch);
+        // TODO: Toestand van sms cookie op main scherm laten zien
         Button buttonShops = findViewById(R.id.shops);
         buttonShops.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +152,15 @@ public class MainActivity extends AppCompatActivity {
                 // Initiate bluetooth communication
                 Intent mainIntent = new Intent(MainActivity.this, BluetoothCom.class);
                 startActivity(mainIntent);
+                return true;
+            case R.id.menu_sms_on_off:
+                // Zet sms on or off
+                if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_OFF)){
+                    cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_ON);
+
+                }else {
+                    cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
+                }
                 return true;
             default:
                 // Do nothing

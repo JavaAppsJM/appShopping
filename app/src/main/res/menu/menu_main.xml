@@ -25,5 +25,9 @@
         android:title="Set BASE SWITCH to internal"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_sms_on_off"
+        android:title="Set sms on or off"
+        app:showAsAction="never"/>
 
 </menu>

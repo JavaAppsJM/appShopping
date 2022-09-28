@@ -144,7 +144,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     private void setHighestIDInCookie(String entity, String basedir, int highestId){
         CookieRepository cookieRepository = new CookieRepository(basedir);
-        cookieRepository.registerCookie(entity, String.valueOf(highestId), basedir);
+        cookieRepository.registerCookie(entity, String.valueOf(highestId));
         // TODO: Voorgaande lijn vervangt onderstaande ; moet nog getest worden
 /*
         if (cookieRepository.bestaatCookie(entity) != CookieRepository.COOKIE_NOT_FOUND){

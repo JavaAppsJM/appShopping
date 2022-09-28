@@ -34,6 +34,9 @@ public class SpecificData {
     public static final String SMS_RECEIVER_1 = "0487464825";
     public static final String SMS_RECEIVER_2 = "0487486725";
     public static final String SMS_RECEIVER_DEFAULT = SMS_RECEIVER_2;
+    public static final String SMS_COOKIE_LABEL = "sms";
+    public static final String SMS_COOKIE_VALUE_ON = "sms on";
+    public static final String SMS_COOKIE_VALUE_OFF = "sms off";
 
     // Display styles
     public static final int PRODUCT_DISPLAY_SMALL = 1;
