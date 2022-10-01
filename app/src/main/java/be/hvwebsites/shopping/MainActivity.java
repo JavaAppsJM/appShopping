@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_1);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
         });
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
 
             }
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ShoppingListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
         });
