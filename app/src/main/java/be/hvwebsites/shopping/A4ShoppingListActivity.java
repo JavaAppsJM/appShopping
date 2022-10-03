@@ -65,18 +65,22 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Get a viewmodel from the viewmodelproviders
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Basis directory definitie
-        String baseDir = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
+        String fileBaseDir = "";
         String baseSwitch = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-        if (baseSwitch == null){
-            baseSwitch = SpecificData.BASE_DEFAULT;
-        }
-        if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
-            baseDir = getBaseContext().getFilesDir().getAbsolutePath();
+        if (sListIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR)){
+            fileBaseDir = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
         }else {
-            baseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
+            if (baseSwitch == null){
+                baseSwitch = SpecificData.BASE_DEFAULT;
+            }
+            if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
+                fileBaseDir = getBaseContext().getFilesDir().getAbsolutePath();
+            }else {
+                fileBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
+            }
         }
         // Initialize viewmodel mt basis directory (data wordt opgehaald in viewmodel)
-        ReturnInfo viewModelStatus = viewModel.initializeViewModel(baseDir);
+        ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseDir);
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
         } else if (viewModelStatus.getReturnCode() == 100) {
@@ -120,7 +124,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         });
 
         // Is er al een ShopFilter in de cookie repo ?
-        cookieRepository = new CookieRepository(baseDir);
+        cookieRepository = new CookieRepository(fileBaseDir);
         shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
         if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
             // er is nog geen shopfilter

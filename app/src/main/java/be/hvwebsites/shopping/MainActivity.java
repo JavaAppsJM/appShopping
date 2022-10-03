@@ -1,8 +1,7 @@
 package be.hvwebsites.shopping;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ListMenuItemView;
-import androidx.appcompat.view.menu.MenuView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
@@ -24,55 +22,69 @@ import be.hvwebsites.shopping.services.FileBaseService;
 public class MainActivity extends AppCompatActivity {
     // Device
     private final String deviceModel = Build.MODEL;
-    // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external switch
-    private String basisSwitch = SpecificData.BASE_DEFAULT;
+    // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external
+    private String fileBase = StaticData.FILE_BASE_EXTERNAL;
     private String filebaseDir = "";
-    private FileBaseService fileBaseService;
+    private String smsStatus = StaticData.SMS_VALUE_OFF;
     private CookieRepository cookieRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // package name
-        String pkgName = getPackageName();
-        fileBaseService = new FileBaseService(deviceModel, pkgName);
 
-        // Intent definieren voor basis
+        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
+
+        // Intent definieren voor terugkoppeling gegevens
         Intent newItemIntent = getIntent();
+
+        // Restoring File Base en corrigeer file base en filedirectory
+        if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
+            // From intent
+            fileBase = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
+            // Corrigeer file directory met file base
+            fileBaseService.setFileBase(fileBase);
+        }else  if (savedInstanceState != null) {
+            // From Instance state
+            fileBase = savedInstanceState.getString(StaticData.FILE_BASE);
+            // Corrigeer file directory met file base
+            fileBaseService.setFileBase(fileBase);
+        }
+        filebaseDir = fileBaseService.getFileBaseDir();
+/*      // TODO: mag weg
         if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
             basisSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
             fileBaseService.setFileBase(basisSwitch);
         }
         basisSwitch = fileBaseService.getFileBase();
-        //TODO: Nog te testen met onderstaande
         filebaseDir = fileBaseService.getFileBaseDir();
-
-        // Bepaal filebaseDir
-        if (basisSwitch.equals(SpecificData.BASE_INTERNAL)){
-            filebaseDir = getBaseContext().getFilesDir().getAbsolutePath();
-        }else {
-            filebaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
+*/
+        // Restore SMS status
+        if (savedInstanceState != null){
+            smsStatus = savedInstanceState.getString(StaticData.SMS_LABEL);
         }
 
-        // Definieer Cookierepository
-        cookieRepository = new CookieRepository(filebaseDir);
-        // Zet sms default off
-        cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
+/*
+        // TODO: Definieer Cookierepository en gebruik file directory vd fileBaseService ; Is dit nodig ??
+        cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
+        // Bewaar smsStatus in cookie
+        cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, smsStatus);
+*/
 
         // Vul scherm in
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
-        basisSwitchView.setText(basisSwitch);
+        basisSwitchView.setText(fileBase);
         // Toestand van sms cookie op main scherm laten zien
-        TextView smsStatus = findViewById(R.id.smsStatus);
-        smsStatus.setText(cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL));
+        TextView smsStatusV = findViewById(R.id.smsStatus);
+        smsStatusV.setText(smsStatus);
         Button buttonShops = findViewById(R.id.shops);
         buttonShops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_1);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
@@ -83,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
 
@@ -94,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ShoppingListActivity.class);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, basisSwitch);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
@@ -124,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // View om toestand basisswitch te laten zien
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
+        TextView smsMenuV = findViewById(R.id.smsStatus);
 
         // Welke menu optie is er gekozen ?
         switch (item.getItemId()) {
@@ -141,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_set_base_switch_external:
                 // Zet BASE_SWITCH to external
                 if (!deviceModel.equals("GT-I9100")) {
-                    basisSwitch = SpecificData.BASE_EXTERNAL;
-                    basisSwitchView.setText(basisSwitch);
+                    fileBase = SpecificData.BASE_EXTERNAL;
+                    basisSwitchView.setText(fileBase);
                     Toast.makeText(MainActivity.this,
                             "External files geactiveerd !",
                             Toast.LENGTH_LONG).show();
@@ -154,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_set_base_switch_internal:
                 // Zet BASE_SWITCH to internal
-                basisSwitch = SpecificData.BASE_INTERNAL;
-                basisSwitchView.setText(basisSwitch);
+                fileBase = SpecificData.BASE_INTERNAL;
+                basisSwitchView.setText(fileBase);
                 if (!deviceModel.equals("GT-I9100")) {
                     Toast.makeText(MainActivity.this,
                             "Internal files geactiveerd !",
@@ -172,19 +185,29 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 return true;
             case R.id.menu_sms_on_off:
-                MenuItem menuSMS = findViewById(R.id.menu_sms_on_off);
                 // Zet sms on or off
-                if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_OFF)){
-                    cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_ON);
-                    item.setTitle("Zet SMS off");
+                if (smsStatus.equals(StaticData.SMS_VALUE_OFF)){
+                    smsStatus = StaticData.SMS_VALUE_ON;
+                    item.setTitle("Set SMS off");
                 }else {
-                    cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, SpecificData.SMS_COOKIE_VALUE_OFF);
-                    item.setTitle("Zet SMS on");
+                    smsStatus = StaticData.SMS_VALUE_OFF;
+                    item.setTitle("Set SMS on");
                 }
+                smsMenuV.setText(smsStatus);
                 return true;
             default:
                 // Do nothing
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        // Bewaar Instance State (bvb: fileBase, smsStatus, entityType, enz..)
+        savedInstanceState.putString(StaticData.FILE_BASE, fileBase);
+        savedInstanceState.putString(StaticData.SMS_LABEL, smsStatus);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
