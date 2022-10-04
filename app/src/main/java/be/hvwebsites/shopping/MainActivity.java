@@ -45,32 +45,19 @@ public class MainActivity extends AppCompatActivity {
             fileBase = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
             // Corrigeer file directory met file base
             fileBaseService.setFileBase(fileBase);
-        }else  if (savedInstanceState != null) {
-            // From Instance state
-            fileBase = savedInstanceState.getString(StaticData.FILE_BASE);
-            // Corrigeer file directory met file base
-            fileBaseService.setFileBase(fileBase);
         }
         filebaseDir = fileBaseService.getFileBaseDir();
-/*      // TODO: mag weg
-        if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
-            basisSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-            fileBaseService.setFileBase(basisSwitch);
-        }
-        basisSwitch = fileBaseService.getFileBase();
-        filebaseDir = fileBaseService.getFileBaseDir();
-*/
-        // Restore SMS status
-        if (savedInstanceState != null){
-            smsStatus = savedInstanceState.getString(StaticData.SMS_LABEL);
-        }
 
-/*
-        // TODO: Definieer Cookierepository en gebruik file directory vd fileBaseService ; Is dit nodig ??
-        cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
-        // Bewaar smsStatus in cookie
-        cookieRepository.registerCookie(SpecificData.SMS_COOKIE_LABEL, smsStatus);
-*/
+        // Restore SMS status via cookie
+        cookieRepository = new CookieRepository(filebaseDir);
+        if (cookieRepository.bestaatCookie(StaticData.SMS_LABEL) != CookieRepository.COOKIE_NOT_FOUND){
+            smsStatus = cookieRepository.getCookieValueFromLabel(StaticData.SMS_LABEL);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         // Vul scherm in
         TextView basisSwitchView = findViewById(R.id.basisSwitch);
@@ -111,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -118,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem smsMenuItem = menu.getItem(4);
+        if (smsStatus.equals(StaticData.SMS_VALUE_ON)){
+            smsMenuItem.setTitle("Set sms off");
+        }else {
+            smsMenuItem.setTitle("Set sms on");
+        }
 
         /* Voor GT-I9100, base switch opties invisible zetten geeft nullpointerexception op setVisible !
         if (deviceModel.equals("GT-I9100")){
@@ -193,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
                     smsStatus = StaticData.SMS_VALUE_OFF;
                     item.setTitle("Set SMS on");
                 }
+                // Bewaar als cookie
+                cookieRepository.registerCookie(StaticData.SMS_LABEL, smsStatus);
                 smsMenuV.setText(smsStatus);
                 return true;
             default:
@@ -202,12 +199,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+
         // Bewaar Instance State (bvb: fileBase, smsStatus, entityType, enz..)
         savedInstanceState.putString(StaticData.FILE_BASE, fileBase);
         savedInstanceState.putString(StaticData.SMS_LABEL, smsStatus);
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
     }
 }
