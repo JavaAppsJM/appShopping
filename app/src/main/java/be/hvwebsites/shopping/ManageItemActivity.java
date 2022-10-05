@@ -1,6 +1,7 @@
 package be.hvwebsites.shopping;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -12,9 +13,12 @@ import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.fragments.ProductFragment;
 import be.hvwebsites.shopping.fragments.ShopFragment;
+import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class ManageItemActivity extends AppCompatActivity  {
+    // Device
+    private final String deviceModel = Build.MODEL;
     private ShopEntitiesViewModel viewModel;
 
     @Override
@@ -25,11 +29,10 @@ public class ManageItemActivity extends AppCompatActivity  {
         // Intent definieren
         Intent newItemIntent = getIntent();
 
-        // TODO: voorzien om enkel entity in kwestie op te halen
-        //  mr pas op wat met afchecken of product al bestaat ?
-        // Alle data ophalen
-        // Get a viewmodel from the viewmodelproviders
-        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
+        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
+
+/*
         // Basis directory definitie
         String baseDir = "";
         String baseSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
@@ -41,11 +44,18 @@ public class ManageItemActivity extends AppCompatActivity  {
         }else {
             baseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
         }
+*/
+
+        // Voorzien om enkel entity in kwestie op te halen
+        //  mr pas op wat met afchecken of product al bestaat ?
+        // Alle data ophalen
+        // Get a viewmodel from the viewmodelproviders
+        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Initialize viewmodel mt basis directory (data wordt opgehaald in viewmodel)
-        ReturnInfo viewModelStatus = viewModel.initializeViewModel(baseDir);
+        ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseService.getFileBaseDir());
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
-            viewModel.setBaseSwitch(baseSwitch);
+            viewModel.setBaseSwitch(fileBaseService.getFileBase());
         } else if (viewModelStatus.getReturnCode() == 100) {
             Toast.makeText(ManageItemActivity.this,
                     viewModelStatus.getReturnMessage(),

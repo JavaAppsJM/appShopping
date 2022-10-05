@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -37,9 +38,12 @@ import be.hvwebsites.shopping.adapters.ChckbxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class A4ShoppingListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    // Device
+    private final String deviceModel = Build.MODEL;
     private ShopEntitiesViewModel viewModel;
     private CookieRepository cookieRepository;
     private boolean smsOn = false;
@@ -61,9 +65,10 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Intent definieren
         Intent sListIntent = getIntent();
 
-        /** Data ophalen */
-        // Get a viewmodel from the viewmodelproviders
-        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
+        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
+
+/*
         // Basis directory definitie
         String fileBaseDir = "";
         String baseSwitch = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
@@ -79,8 +84,13 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 fileBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
             }
         }
+*/
+
+        /** Data ophalen */
+        // Get a viewmodel from the viewmodelproviders
+        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Initialize viewmodel mt basis directory (data wordt opgehaald in viewmodel)
-        ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseDir);
+        ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseService.getFileBaseDir());
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
         } else if (viewModelStatus.getReturnCode() == 100) {
@@ -124,7 +134,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         });
 
         // Is er al een ShopFilter in de cookie repo ?
-        cookieRepository = new CookieRepository(fileBaseDir);
+        cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
         shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
         if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
             // er is nog geen shopfilter
@@ -173,7 +183,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         setTitle(SpecificData.TITLE_SHOPPING_LIST);
 
         // check SMS permission indien SMS geactiveerd
-        if (cookieRepository.getCookieValueFromLabel(SpecificData.SMS_COOKIE_LABEL).equals(SpecificData.SMS_COOKIE_VALUE_ON)){
+        if (cookieRepository.getCookieValueFromLabel(StaticData.SMS_LABEL).equals(StaticData.SMS_VALUE_ON)){
             smsOn = true;
             ActivityCompat.requestPermissions(this ,new String[] { Manifest.permission.SEND_SMS}, 1);
         }else {
@@ -195,7 +205,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 // Voorbereiden SMS msg indien sms on
                 if (smsOn){
                     String smsMsg = clickedProduct.getSMSLine();
-                    String smsReceiver = SpecificData.SMS_RECEIVER_DEFAULT;
+                    String smsReceiver = StaticData.SMS_RECEIVER_DEFAULT;
                     //Getting intent and PendingIntent instance
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
@@ -206,7 +216,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                     Toast.makeText(getApplicationContext(), "Message Sent!!",
                             Toast.LENGTH_LONG).show();
                 }
-
                 boolean debug = true;
             }
         });

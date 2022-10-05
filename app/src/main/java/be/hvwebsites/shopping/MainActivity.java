@@ -39,13 +39,15 @@ public class MainActivity extends AppCompatActivity {
         // Intent definieren voor terugkoppeling gegevens
         Intent newItemIntent = getIntent();
 
-        // Restoring File Base en corrigeer file base en filedirectory
+/*
+        // Restoring File Base en corrigeer file base en filedirectory -> enabled
         if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
             // From intent
             fileBase = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
             // Corrigeer file directory met file base
             fileBaseService.setFileBase(fileBase);
         }
+*/
         filebaseDir = fileBaseService.getFileBaseDir();
 
         // Restore SMS status via cookie

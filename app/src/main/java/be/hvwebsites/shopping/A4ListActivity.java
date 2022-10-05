@@ -1,6 +1,7 @@
 package be.hvwebsites.shopping;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -21,9 +22,11 @@ import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class A4ListActivity extends AppCompatActivity {
+    // Device
+    private final String deviceModel = Build.MODEL;
     private ShopEntitiesViewModel viewModel;
     private String listType;
-    private String fileBaseDir;
+    private String filebaseDir = "";
     private String baseSwitch;
 
 
@@ -35,10 +38,13 @@ public class A4ListActivity extends AppCompatActivity {
         // Intent definieren
         Intent listIntent = getIntent();
 
-        /** Data ophalen */
-        // Get a viewmodel from the viewmodelproviders
-        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
-        // Basis directory definitie
+        // File directory bepalen
+        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
+        baseSwitch = fileBaseService.getFileBase();
+        filebaseDir = fileBaseService.getFileBaseDir();
+
+/*
         baseSwitch = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
         if (listIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR)){
             fileBaseDir = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
@@ -52,13 +58,17 @@ public class A4ListActivity extends AppCompatActivity {
                 fileBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
             }
         }
+*/
 
         Toast.makeText(A4ListActivity.this,
-                "baseSwitch is " + baseSwitch,
+                "filebase is " + baseSwitch,
                 Toast.LENGTH_SHORT).show();
 
+        /** Data ophalen */
+        // Get a viewmodel from the viewmodelproviders
+        viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Initialize viewmodel mt basis directory (data wordt opgehaald in viewmodel)
-        ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseDir);
+        ReturnInfo viewModelStatus = viewModel.initializeViewModel(filebaseDir);
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
             viewModel.setBaseSwitch(baseSwitch);
@@ -81,7 +91,7 @@ public class A4ListActivity extends AppCompatActivity {
         int highestProd = viewModel.determineHighestProductID();
 
         // Data uit intent halen als die er is
-        CookieRepository cookieRepository = new CookieRepository(fileBaseDir);
+        CookieRepository cookieRepository = new CookieRepository(filebaseDir);
         if (listIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_TYPE)){
             listType = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
             // listtype in cookie steken
