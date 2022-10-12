@@ -38,6 +38,20 @@
         app:layout_constraintTop_toBottomOf="@+id/shops" />
 
     <Button
+        android:id="@+id/meals"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/gerechten_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:backgroundTint="#641E07"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/products" />
+
+    <Button
         android:id="@+id/shopping"
         android:layout_width="300dp"
         android:layout_height="60dp"
@@ -49,7 +63,7 @@
         app:backgroundTint="@android:color/holo_orange_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/products" />
+        app:layout_constraintTop_toBottomOf="@+id/meals" />
 
     <TextView
         android:id="@+id/basisSwitch"
@@ -70,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="Sms Status"
+        android:text="@string/sms_status_label"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/basisSwitch"

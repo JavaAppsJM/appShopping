@@ -33,21 +33,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Creer een filebase service (bevat file base en file base directory) obv device en package name
-        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
-
         // Intent definieren voor terugkoppeling gegevens
         Intent newItemIntent = getIntent();
 
 /*
-        // Restoring File Base en corrigeer file base en filedirectory -> enabled
-        if (newItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE)){
-            // From intent
-            fileBase = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-            // Corrigeer file directory met file base
-            fileBaseService.setFileBase(fileBase);
-        }
+        We gaan de file base of de file directory niet meer bijhouden als cookie omdat voor de cookies
+        de file base moet gekend zijn en niet kan wijzigen !
+        File base en file directory gaan we in elke activity bepalen adhv FileBaseService klasse !
 */
+
+        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
         filebaseDir = fileBaseService.getFileBaseDir();
 
         // Restore SMS status via cookie
@@ -73,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_1);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
         });
@@ -84,8 +78,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
+                startActivity(intent);
+
+            }
+        });
+        Button buttonMeals = findViewById(R.id.meals);
+        buttonProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_3);
                 startActivity(intent);
 
             }
@@ -100,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override

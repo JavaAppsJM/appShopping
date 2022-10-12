@@ -127,7 +127,7 @@ public class A4ListActivity extends AppCompatActivity {
                         ManageItemActivity.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, listType);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_NEW);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+//                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                 startActivity(intent);
             }
         });
@@ -139,6 +139,9 @@ public class A4ListActivity extends AppCompatActivity {
                 break;
             case SpecificData.LIST_TYPE_2:
                 setTitle(SpecificData.TITLE_LIST_ACTIVITY_T2);
+                break;
+            case SpecificData.LIST_TYPE_3:
+                setTitle(SpecificData.TITLE_LIST_ACTIVITY_T3);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + listType);

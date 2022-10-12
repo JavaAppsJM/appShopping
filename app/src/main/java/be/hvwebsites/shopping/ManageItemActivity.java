@@ -32,22 +32,6 @@ public class ManageItemActivity extends AppCompatActivity  {
         // Creer een filebase service (bevat file base en file base directory) obv device en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
 
-/*
-        // Basis directory definitie
-        String baseDir = "";
-        String baseSwitch = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-        if (baseSwitch == null){
-            baseSwitch = SpecificData.BASE_DEFAULT;
-        }
-        if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
-            baseDir = getBaseContext().getFilesDir().getAbsolutePath();
-        }else {
-            baseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
-        }
-*/
-
-        // Voorzien om enkel entity in kwestie op te halen
-        //  mr pas op wat met afchecken of product al bestaat ?
         // Alle data ophalen
         // Get a viewmodel from the viewmodelproviders
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);

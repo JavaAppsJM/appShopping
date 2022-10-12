@@ -60,4 +60,6 @@
     <string name="text_stop_button">End</string>
     <string name="text_accept_button">Accept</string>
     <string name="scanTextButton">Scan</string>
+    <string name="gerechten_label">Gerechten</string>
+    <string name="sms_status_label">Sms Status</string>
 </resources>

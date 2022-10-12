@@ -73,7 +73,7 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
 
     public void setCheckboxList(List<CheckboxHelper> checkboxList) {
         this.checkboxList = checkboxList;
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public String getReference() {
