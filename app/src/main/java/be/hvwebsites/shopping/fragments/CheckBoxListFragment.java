@@ -18,17 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
+import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.R;
 import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
-public class MealListFragment extends Fragment{
+public class CheckBoxListFragment extends Fragment{
+    // Super fragment dat voor alle entities (product en meal, niet voor shop !)
+    // een checkboxlist kan aanmaken
     private ShopEntitiesViewModel viewModel;
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
+    private String entityName;
 
     // Toegevoegd vanuit android tutorial
-    public MealListFragment(){
+    public CheckBoxListFragment(){
         super(R.layout.fragment_checkbox_item_recycler);
     }
 
@@ -57,12 +61,36 @@ public class MealListFragment extends Fragment{
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(cbLineairLayoutManager);
 
+        // Kolom header definieren
         TextView labelColHead1 = view.findViewById(R.id.listColHeadCheckBoxes);
-        labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T3);
+
+        // Checkboxlist clearen
         checkboxList.clear();
-        checkboxList.addAll(viewModel.convertMealsToCheckboxs(
-                viewModel.getMealList(),
-                false));
+
+        // Wat zijn de argumenten die werden meegegeven entityName ?
+        entityName = requireArguments().getString(SpecificData.LIST_TYPE);
+
+        switch (entityName){
+            case SpecificData.LIST_TYPE_1:
+                labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T1);
+                // Als je voor shops ook checkboxlist wenst dan moet er nog een convert
+                //  aangemaakt worden
+                break;
+            case SpecificData.LIST_TYPE_2:
+                labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T2);
+                checkboxList.addAll(viewModel.convertProductsToCheckboxs(
+                        viewModel.getProductList(),
+                        SpecificData.PRODUCT_DISPLAY_LARGE,
+                        false));
+                break;
+            case SpecificData.LIST_TYPE_3:
+                labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T3);
+                checkboxList.addAll(viewModel.convertMealsToCheckboxs(
+                        viewModel.getMealList(),
+                        false));
+                break;
+            default:
+        }
 
         // om te kunnen swipen in de recyclerview ; swippen == deleten
         ItemTouchHelper helper = new ItemTouchHelper(
@@ -79,16 +107,30 @@ public class MealListFragment extends Fragment{
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
-                        Toast.makeText(MealListFragment.super.getContext(),
+                        Toast.makeText(CheckBoxListFragment.super.getContext(),
                                 "Deleting item ... ",
                                 Toast.LENGTH_LONG).show();
-                        viewModel.deleteMeal(position);
                         // Refresh recyclerview
                         checkboxList.clear();
-                        checkboxList.addAll(viewModel.convertMealsToCheckboxs(
-                                viewModel.getMealList(),
-                                false));
-                        cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
+                        switch (entityName){
+                            case SpecificData.LIST_TYPE_2:
+                                viewModel.deleteProduct(position);
+                                checkboxList.addAll(viewModel.convertProductsToCheckboxs(
+                                        viewModel.getProductList(),
+                                        SpecificData.PRODUCT_DISPLAY_LARGE,
+                                        false));
+                                cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
+                                break;
+                            case SpecificData.LIST_TYPE_3:
+                                viewModel.deleteMeal(position);
+                                checkboxList.addAll(viewModel.convertMealsToCheckboxs(
+                                        viewModel.getMealList(),
+                                        false));
+                                cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
+                                break;
+                            default:
+                                break;
+                        }
                         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                         cbListAdapter.setCheckboxList(checkboxList);
                     }
@@ -96,7 +138,6 @@ public class MealListFragment extends Fragment{
         helper.attachToRecyclerView(recyclerView);
 
         // Invullen adapter
-        cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
         cbListAdapter.setCheckboxList(checkboxList);
 
@@ -104,14 +145,34 @@ public class MealListFragment extends Fragment{
         cbListAdapter.setOnItemClickListener(new CheckboxListAdapter.ClickListener() {
             @Override
             public void onItemClicked(int position, View v, boolean checked) {
-                viewModel.getMealList().get(position).setToBuy(checked);
-                viewModel.storeMeals();
-                //TODO: als een meal to buy gezet wordt moeten alle onderliggende artikels ook to buy gezet worden !
+                // Refresh recyclerview
+                checkboxList.clear();
+                switch (entityName){
+                    case SpecificData.LIST_TYPE_2:
+                        viewModel.getProductList().get(position).setToBuy(checked);
+                        viewModel.storeProducts();
+                        checkboxList.addAll(viewModel.convertProductsToCheckboxs(
+                                viewModel.getProductList(),
+                                SpecificData.PRODUCT_DISPLAY_LARGE,
+                                false));
+                        cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
+                        break;
+                    case SpecificData.LIST_TYPE_3:
+                        viewModel.getMealList().get(position).setToBuy(checked);
+                        viewModel.storeMeals();
+                        checkboxList.addAll(viewModel.convertMealsToCheckboxs(
+                                viewModel.getMealList(),
+                                false));
+                        cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
+                        //TODO: als een meal to buy gezet wordt moeten alle onderliggende artikels ook to buy gezet worden !
+                        break;
+                    default:
+                        break;
+                }
                 cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                 cbListAdapter.setCheckboxList(checkboxList);
                 boolean debug = true;
             }
         });
     }
-
 }

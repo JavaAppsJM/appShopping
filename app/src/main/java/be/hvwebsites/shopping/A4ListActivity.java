@@ -16,6 +16,7 @@ import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.fragments.CheckBoxListFragment;
 import be.hvwebsites.shopping.fragments.ProductListFragment;
 import be.hvwebsites.shopping.fragments.ShopListFragment;
 import be.hvwebsites.shopping.services.FileBaseService;
@@ -101,19 +102,28 @@ public class A4ListActivity extends AppCompatActivity {
             listType = cookieRepository.getCookieValueFromLabel(SpecificData.LIST_TYPE);
         }
 
+        // Bundle voorbereiden om mee te geven aan fragment
+        Bundle fragmentBundle = new Bundle();
+        fragmentBundle.putString(SpecificData.LIST_TYPE, listType);
+
         // Creeer fragment vr gepaste recyclerview
         if (savedInstanceState == null ){
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentRecyclerV, CheckBoxListFragment.class, fragmentBundle)
+                    .commit();
+            //TODO: Shoplistfragment nog vervangen dr een generieker !
             switch (listType){
                 case SpecificData.LIST_TYPE_1:
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .add(R.id.fragmentRecyclerV, ShopListFragment.class, null)
+                            .add(R.id.fragmentRecyclerV, ShopListFragment.class, fragmentBundle)
                             .commit();
                     break;
-                case SpecificData.LIST_TYPE_2:
+                default:
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .add(R.id.fragmentRecyclerV, ProductListFragment.class, null)
+                            .add(R.id.fragmentRecyclerV, CheckBoxListFragment.class, fragmentBundle)
                             .commit();
                     break;
             }
