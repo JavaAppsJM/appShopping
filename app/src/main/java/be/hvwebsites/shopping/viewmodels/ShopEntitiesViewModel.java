@@ -17,7 +17,10 @@ import be.hvwebsites.libraryandroid4.repositories.FlexiRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Meal;
+import be.hvwebsites.shopping.entities.MealInMeal;
 import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.ProductInMeal;
 import be.hvwebsites.shopping.entities.ProductInShop;
 import be.hvwebsites.shopping.entities.Shop;
 import be.hvwebsites.shopping.entities.ShopEntity;
@@ -30,6 +33,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     File shopFile;
     File productFile;
     File productInShopFile;
+    File mealFile;
+    File productInMealFile;
+    File mealInMealFile;
+    // File declaraties voor copy int nr ext
     File shopExtFile;
     File productExtFile;
     File productInShopExtFile;
@@ -37,14 +44,23 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public static final String SHOP_FILE = "shop.txt";
     public static final String PRODUCT_FILE = "product.txt";
     public static final String PRODUCTSHOP_FILE = "productshop.txt";
+    public static final String MEAL_FILE = "meal.txt";
+    public static final String PRODUCTMEAL_FILE = "productmeal.txt";
+    public static final String MEALMEAL_FILE = "mealmeal.txt";
     // Lijst om data in te zetten
     private List<Shop> shopList = new ArrayList<>();
     private List<Product> productList = new ArrayList<>();
     private List<ProductInShop> productInShopList = new ArrayList<>();
+    private List<Meal> mealList = new ArrayList<>();
+    private List<ProductInMeal> productInMealList = new ArrayList<>();
+    private List<MealInMeal> mealInMealList = new ArrayList<>();
     // Lijst om bluetooth data in te zetten
     private List<Shop> shopListBt = new ArrayList<>();
     private List<Product> productListBt = new ArrayList<>();
     private List<ProductInShop> productInShopListBt = new ArrayList<>();
+    private List<Meal> mealListBt = new ArrayList<>();
+    private List<ProductInMeal> productInMealListBt = new ArrayList<>();
+    private List<MealInMeal> mealInMealListBt = new ArrayList<>();
     // SpinnerSelection
     private String spinnerSelection = "";
 
@@ -59,6 +75,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         shopFile = new File(basedir, SHOP_FILE);
         productFile = new File(basedir, PRODUCT_FILE);
         productInShopFile = new File(basedir, PRODUCTSHOP_FILE);
+        mealFile = new File(basedir, MEAL_FILE);
+        productInMealFile = new File(basedir, PRODUCTMEAL_FILE);
         // Data ophalen
         // Ophalen Winkels
         repository = new FlexiRepository(shopFile);
@@ -79,12 +97,27 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         productInShopList.addAll(getProdInShopsFromDataList(repository.getDataList()));
         // eenmalig om prodinshop op te kiusen
         // cleanProdInshop();
+
+        // Ophalen gerechten
+        repository = new FlexiRepository(mealFile);
+        mealList.addAll(getMealsFromDataList(repository.getDataList()));
+        if (mealList.size() == 0){
+            returnInfo.setReturnCode(100);
+            returnInfo.setReturnMessage("Er zijn nog geen gerechten !");
+        }
+        // Ophalen produkt in gerecht combinaties
+        repository = new FlexiRepository(productInMealFile);
+        productInMealList.addAll(getProdInMealFromDataList(repository.getDataList()));
+
+        // Ophalen gerecht in gerecht combinaties
+        repository = new FlexiRepository(mealInMealFile);
+        mealInMealList.addAll(getMealInMealFromDataList(repository.getDataList()));
         return returnInfo;
     }
 
     public ReturnInfo saveInBaseDir(String basedir){
         ReturnInfo returnInfo = new ReturnInfo(0);
-        // Filedefinities
+        // Filedefinities vr copy int nr ext
         shopExtFile = new File(basedir, SHOP_FILE);
         productExtFile = new File(basedir, PRODUCT_FILE);
         productInShopExtFile = new File(basedir, PRODUCTSHOP_FILE);
@@ -98,6 +131,13 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         setHighestIDInCookie(Product.PRODUCT_LATEST_ID, basedir, determineHighestProductID());
 
         repository.storeData(productInShopExtFile, convertProdShopListinDataList(productInShopList));
+
+        repository.storeData(mealFile, convertEntityListinDataList(mealList));
+        // Zet hoogste ID in Cookie
+        setHighestIDInCookie(Meal.MEAL_LATEST_ID, basedir, determineHighestMealID());
+
+        repository.storeData(productInMealFile, convertProdMealListinDataList(productInMealList));
+        repository.storeData(mealInMealFile, convertMealMealListinDataList(mealInMealList));
 
         return returnInfo;
     }
@@ -122,6 +162,16 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return highestProductID;
     }
 
+    public int determineHighestMealID(){
+        int highestMealID = 0;
+        for (int i = 0; i < mealList.size(); i++) {
+            if (mealList.get(i).getEntityId().getId() > highestMealID ){
+                highestMealID = mealList.get(i).getEntityId().getId();
+            }
+        }
+        return highestMealID;
+    }
+
     public void forceBtData(String basedir){
         if (shopListBt.size() > 0){
             // Er zijn shops te accepteren
@@ -137,6 +187,21 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             // Er zijn prodinshops te accepteren
             productInShopList.clear();
             productInShopList.addAll(productInShopListBt);
+        }
+        if (mealListBt.size() > 0){
+            // Er zijn gerechten te accepteren
+            mealList.clear();
+            mealList.addAll(mealListBt);
+        }
+        if (productInMealList.size() > 0){
+            // Er zijn prodinmeals te accepteren
+            productInMealList.clear();
+            productInMealList.addAll(productInMealListBt);
+        }
+        if (mealInMealList.size() > 0){
+            // Er zijn mealinmeals te accepteren
+            mealInMealList.clear();
+            mealInMealList.addAll(mealInMealListBt);
         }
         saveInBaseDir(basedir);
         boolean debug = true;
@@ -285,6 +350,20 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
+    public ReturnInfo storeProdsInMeal(){
+        // Bewaart de produktInMealList
+        ReturnInfo returnInfo = new ReturnInfo(0);
+        repository.storeData(productInMealFile, convertProdMealListinDataList(productInMealList));
+        return returnInfo;
+    }
+
+    public ReturnInfo storeMealInMeal(){
+        // Bewaart de mealInMealList
+        ReturnInfo returnInfo = new ReturnInfo(0);
+        repository.storeData(mealInMealFile, convertMealMealListinDataList(mealInMealList));
+        return returnInfo;
+    }
+
     public ReturnInfo storeShops(){
         // Bewaart de shoplist
         // Eerst de shoplist alfabetisch sorteren
@@ -303,6 +382,15 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
+    public ReturnInfo storeMeals(){
+        // Bewaart de meallist
+        // Eerst de list alfabetisch sorteren
+        sortMealList(mealList);
+        ReturnInfo returnInfo = new ReturnInfo(0);
+        repository.storeData(mealFile, convertEntityListinDataList(mealList));
+        return returnInfo;
+    }
+
     public ReturnInfo deleteShop(int position){
         // Verwijdert een shop
         ReturnInfo returnInfo = new ReturnInfo(0);
@@ -318,12 +406,30 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public ReturnInfo deleteProduct(int position){
         // Verwijdert een produkt
         ReturnInfo returnInfo = new ReturnInfo(0);
-        // Alle productinshops moeten voor die shop ook verwijderd worden
+        // Alle productinshops moeten voor dat produkt ook verwijderd worden
         deleteShopsByProduct(productList.get(position));
         storeProdInShop();
+        // Alle productsinmeal moeten voor dat produkt ook verwijderd worden
+        deleteMealByProduct(productList.get(position));
+        storeProdsInMeal();
         // en tenslotte mag het produkt gedelete worden
         productList.remove(position);
         storeProducts();
+        return returnInfo;
+    }
+
+    public ReturnInfo deleteMeal(int position){
+        // Verwijdert een gerecht
+        ReturnInfo returnInfo = new ReturnInfo(0);
+        // Alle productinmeal moeten voor dat gerecht ook verwijderd worden
+        deleteProductsByMeal(mealList.get(position));
+        storeProdsInMeal();
+        // Alle mealinmeal moeten voor dat gerecht ook verwijderd worden
+        deleteMealMeal(mealList.get(position));
+        storeMealInMeal();
+        // en tenslotte mag het gerecht gedelete worden
+        mealList.remove(position);
+        storeMeals();
         return returnInfo;
     }
 
@@ -367,6 +473,68 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    private void deleteMealByProduct(Product inProduct){
+        // Verwijdert de prodinmeal combinaties voor een opgegeven produkt
+        int position = getFirstProductInMealByProduct(inProduct);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInMealList.remove(position);
+            position = getFirstProductInMealByProduct(inProduct);
+        }
+    }
+
+    private int getFirstProductInMealByProduct(Product inProduct){
+        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
+        // opgegeven produkt
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getProductId().getId() == inProduct.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+
+    private void deleteProductsByMeal(ShopEntity inMeal){
+        // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
+        int position = getFirstProductInMealByMeal(inMeal);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInMealList.remove(position);
+            position = getFirstProductInMealByMeal(inMeal);
+        }
+    }
+
+    private int getFirstProductInMealByMeal(ShopEntity inMeal){
+        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
+        // opgegeven gerecht
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getMealId().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+
+    private void deleteMealMeal(Meal inMeal){
+        // Verwijdert de mealinmeal combinaties voor een opgegeven meal
+        int position = getFirstMealInMealByMeal(inMeal);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInMealList.remove(position);
+            position = getFirstMealInMealByMeal(inMeal);
+        }
+    }
+
+    private int getFirstMealInMealByMeal(Meal inMeal){
+        // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
+        // opgegeven meal
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getParentMealId().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }else if (mealInMealList.get(i).getChildMealId().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+
     private void sortShopList(List<Shop> shopList){
         // Sorteert een shoplist op entityname alfabetisch
         Shop tempShop = new Shop();
@@ -396,6 +564,21 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    private void sortMealList(List<Meal> meals){
+        // Sorteert een meallist op entityname alfabetisch
+        Meal tempEntity = new Meal();
+        for (int i = meals.size() ; i > 0; i--) {
+            for (int j = 1; j < i ; j++) {
+                if (meals.get(j).getEntityName().compareToIgnoreCase(
+                        meals.get(j-1).getEntityName()) < 0){
+                    tempEntity.setMeal(meals.get(j));
+                    meals.get(j).setMeal(meals.get(j-1));
+                    meals.get(j-1).setMeal(tempEntity);
+                }
+            }
+        }
+    }
+
     private List<String> convertEntityListinDataList(List<? extends ShopEntity> shopEntityList){
         // Converteert een shopentitylist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
@@ -410,6 +593,24 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
             lineList.add(itemList.get(i).convertProdShopInFileLine());
+        }
+        return lineList;
+    }
+
+    private List<String> convertProdMealListinDataList(List<ProductInMeal> itemList){
+        // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
+        List<String> lineList = new ArrayList<>();
+        for (int i = 0; i < itemList.size(); i++) {
+            lineList.add(itemList.get(i).convertProdMealInFileLine());
+        }
+        return lineList;
+    }
+
+    private List<String> convertMealMealListinDataList(List<MealInMeal> itemList){
+        // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
+        List<String> lineList = new ArrayList<>();
+        for (int i = 0; i < itemList.size(); i++) {
+            lineList.add(itemList.get(i).convertMealMealInFileLine());
         }
         return lineList;
     }
@@ -439,6 +640,33 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             productInShopList.add(new ProductInShop(dataList.get(j)));
         }
         return productInShopList;
+    }
+
+    private List<Meal> getMealsFromDataList(List<String> dataList){
+        // Converteert een datalist met gerechten in een meallist
+        List<Meal> meals = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            meals.add(new Meal(dataList.get(j)));
+        }
+        return meals;
+    }
+
+    private List<ProductInMeal> getProdInMealFromDataList(List<String> dataList){
+        // Converteert een datalist met prodinmeal in een prodinmeallist
+        List<ProductInMeal> productsInMeal = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            productsInMeal.add(new ProductInMeal(dataList.get(j)));
+        }
+        return productsInMeal;
+    }
+
+    private List<MealInMeal> getMealInMealFromDataList(List<String> dataList){
+        // Converteert een datalist met mealinmeal in een mealinmeallist
+        List<MealInMeal> mealInMeals = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            mealInMeals.add(new MealInMeal(dataList.get(j)));
+        }
+        return mealInMeals;
     }
 
     public List<CheckboxHelper> convertProductsToCheckboxs(List<Product> prodList,
@@ -512,6 +740,52 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         storeProdInShop();
     }
 
+    public List<CheckboxHelper> convertMealsToCheckboxs(List<Meal> mealList,
+                                                           boolean onlyChecked){
+        // Converteert een lijst met gerechten in een checkboxList
+        List<CheckboxHelper> checkboxList = new ArrayList<>();
+        for (int i = 0; i < mealList.size(); i++) {
+            // Controle only checked
+            if ((mealList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
+                checkboxList.add(new CheckboxHelper(
+                        mealList.get(i).getDisplayLine(),
+                        mealList.get(i).isToBuy(),SpecificData.STYLE_DEFAULT,
+                        mealList.get(i).getEntityId()));
+            }
+        }
+        return checkboxList;
+    }
+
+    public void clearAllProductInMeal(){
+        // Verwijdert alle prodinmeal combinaties
+        productInMealList.clear();
+        storeProdInShop();
+    }
+
+    public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
+        // Bepaalt de index vd produkt-shop combinatie als die bestaat
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getProductId().getId() == inProductID.getId() &&
+                    productInMealList.get(i).getMealId().getId() == inMealID.getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+
+    public List<Product> getProductsByMeal(Meal inMeal){
+        // Bepaalt de produkten die een combinatie hebben met het opgegeven gerecht
+        List<Product> productsForMeal = new ArrayList<>();
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getMealId().getId() == inMeal.getEntityId().getId()){
+                if(getProductByID(productInMealList.get(i).getProductId()) != null){
+                    productsForMeal.add(getProductByID(productInMealList.get(i).getProductId()));
+                }
+            }
+        }
+        return productsForMeal;
+    }
+
     public void setSpinnerSelection(String spinnerSelection) {
         this.spinnerSelection = spinnerSelection;
     }
@@ -554,5 +828,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public List<ProductInShop> getProductInShopListBt() {
         return productInShopListBt;
+    }
+
+    public List<Meal> getMealList() {
+        return mealList;
+    }
+
+    public List<ProductInMeal> getProductInMealList() {
+        return productInMealList;
+    }
+
+    public List<MealInMeal> getMealInMealList() {
+        return mealInMealList;
     }
 }

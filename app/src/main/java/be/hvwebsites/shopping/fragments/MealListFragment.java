@@ -18,17 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
+import be.hvwebsites.shopping.R;
 import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
-import be.hvwebsites.shopping.R;
 
-public class ProductListFragment extends Fragment{
+public class MealListFragment extends Fragment{
     private ShopEntitiesViewModel viewModel;
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
 
     // Toegevoegd vanuit android tutorial
-    public ProductListFragment(){
+    public MealListFragment(){
         super(R.layout.fragment_checkbox_item_recycler);
     }
 
@@ -58,11 +58,10 @@ public class ProductListFragment extends Fragment{
         recyclerView.setLayoutManager(cbLineairLayoutManager);
 
         TextView labelColHead1 = view.findViewById(R.id.listColHeadCheckBoxes);
-        labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T2);
+        labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T3);
         checkboxList.clear();
-        checkboxList.addAll(viewModel.convertProductsToCheckboxs(
-                viewModel.getProductList(),
-                SpecificData.PRODUCT_DISPLAY_LARGE,
+        checkboxList.addAll(viewModel.convertMealsToCheckboxs(
+                viewModel.getMealList(),
                 false));
 
         // om te kunnen swipen in de recyclerview ; swippen == deleten
@@ -80,17 +79,16 @@ public class ProductListFragment extends Fragment{
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
-                        Toast.makeText(ProductListFragment.super.getContext(),
+                        Toast.makeText(MealListFragment.super.getContext(),
                                 "Deleting item ... ",
                                 Toast.LENGTH_LONG).show();
-                        viewModel.deleteProduct(position);
+                        viewModel.deleteMeal(position);
                         // Refresh recyclerview
                         checkboxList.clear();
-                        checkboxList.addAll(viewModel.convertProductsToCheckboxs(
-                                viewModel.getProductList(),
-                                SpecificData.PRODUCT_DISPLAY_LARGE,
+                        checkboxList.addAll(viewModel.convertMealsToCheckboxs(
+                                viewModel.getMealList(),
                                 false));
-                        cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
+                        cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
                         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                         cbListAdapter.setCheckboxList(checkboxList);
                     }
@@ -98,7 +96,7 @@ public class ProductListFragment extends Fragment{
         helper.attachToRecyclerView(recyclerView);
 
         // Invullen adapter
-        cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
+        cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
         cbListAdapter.setCheckboxList(checkboxList);
 
@@ -106,8 +104,9 @@ public class ProductListFragment extends Fragment{
         cbListAdapter.setOnItemClickListener(new CheckboxListAdapter.ClickListener() {
             @Override
             public void onItemClicked(int position, View v, boolean checked) {
-                viewModel.getProductList().get(position).setToBuy(checked);
-                viewModel.storeProducts();
+                viewModel.getMealList().get(position).setToBuy(checked);
+                viewModel.storeMeals();
+                //TODO: als een meal to buy gezet wordt moeten alle onderliggende artikels ook to buy gezet worden !
                 cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                 cbListAdapter.setCheckboxList(checkboxList);
                 boolean debug = true;

@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewProducts"
+        android:id="@+id/recyclerviewCheckBoxes"
         android:layout_width="315dp"
         android:layout_height="0dp"
         android:layout_margin="12dp"
@@ -15,12 +15,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listColHeadProducts"
+        app:layout_constraintTop_toBottomOf="@+id/listColHeadCheckBoxes"
         tools:ignore="MissingConstraints"
         tools:listitem="@layout/list_checkbox_item" />
 
     <TextView
-        android:id="@+id/listColHeadProducts"
+        android:id="@+id/listColHeadCheckBoxes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
