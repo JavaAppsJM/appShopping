@@ -7,6 +7,7 @@ public class Product extends ShopEntity{
     private IDNumber preferredShopId;
     public static final int NO_PREFERRED_SHOP = StaticData.ITEM_NOT_FOUND;
     private boolean toBuy;
+    private boolean previousToBuy;
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     private boolean cooled;
     public static final String PRODUCT_LATEST_ID = "product";
@@ -123,6 +124,12 @@ public class Product extends ShopEntity{
         return smsLine;
     }
 
+    public void setToBuyRemember(boolean mealToBuy){
+        // vooraleer to buy te wijzigen wordt deze onthouden in previous to buy
+        this.previousToBuy = this.toBuy;
+        this.toBuy = mealToBuy;
+    }
+
     public String getToBuyAsString(){
         return convertBooleanToString(toBuy);
     }
@@ -137,6 +144,14 @@ public class Product extends ShopEntity{
 
     public boolean isToBuy() {
         return toBuy;
+    }
+
+    public boolean isPreviousToBuy() {
+        return previousToBuy;
+    }
+
+    public void setPreviousToBuy(boolean previousToBuy) {
+        this.previousToBuy = previousToBuy;
     }
 
     public void setWanted(boolean wanted) {

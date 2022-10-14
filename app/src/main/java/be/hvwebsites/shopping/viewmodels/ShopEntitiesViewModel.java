@@ -11,6 +11,7 @@ import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
+import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.repositories.FlexiRepository;
@@ -473,7 +474,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    private void deleteMealByProduct(Product inProduct){
+    public void deleteMealByProduct(Product inProduct){
         // Verwijdert de prodinmeal combinaties voor een opgegeven produkt
         int position = getFirstProductInMealByProduct(inProduct);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -493,7 +494,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    private void deleteProductsByMeal(ShopEntity inMeal){
+    public void deleteProductsByMeal(ShopEntity inMeal){
         // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
         int position = getFirstProductInMealByMeal(inMeal);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -513,7 +514,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    private void deleteMealMeal(Meal inMeal){
+    public void deleteMealMeal(Meal inMeal){
         // Verwijdert de mealinmeal combinaties voor een opgegeven meal
         int position = getFirstMealInMealByMeal(inMeal);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -771,6 +772,19 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             }
         }
         return StaticData.ITEM_NOT_FOUND;
+    }
+
+    public List<ListItemHelper> getProductNamesByMeal(Meal inMeal){
+        List<ListItemHelper> productNames = new ArrayList<>();
+        List<Product> productsInMeal = getProductsByMeal(inMeal);
+        for (int i = 0; i < productsInMeal.size(); i++) {
+            ListItemHelper itemHelper = new ListItemHelper(
+                    productsInMeal.get(i).getEntityName(),
+                    "",
+                    productsInMeal.get(i).getEntityId());
+            productNames.add(itemHelper);
+        }
+        return productNames;
     }
 
     public List<Product> getProductsByMeal(Meal inMeal){

@@ -19,6 +19,7 @@ import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.fragments.CheckBoxListFragment;
 import be.hvwebsites.shopping.fragments.ProductListFragment;
 import be.hvwebsites.shopping.fragments.ShopListFragment;
+import be.hvwebsites.shopping.fragments.TextItemListFragment;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
@@ -108,16 +109,11 @@ public class A4ListActivity extends AppCompatActivity {
 
         // Creeer fragment vr gepaste recyclerview
         if (savedInstanceState == null ){
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragmentRecyclerV, CheckBoxListFragment.class, fragmentBundle)
-                    .commit();
-            //TODO: Shoplistfragment nog vervangen dr een generieker !
             switch (listType){
                 case SpecificData.LIST_TYPE_1:
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .add(R.id.fragmentRecyclerV, ShopListFragment.class, fragmentBundle)
+                            .add(R.id.fragmentRecyclerV, TextItemListFragment.class, fragmentBundle)
                             .commit();
                     break;
                 default:

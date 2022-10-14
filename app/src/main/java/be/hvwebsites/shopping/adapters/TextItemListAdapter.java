@@ -44,12 +44,11 @@ public class TextItemListAdapter extends RecyclerView.Adapter<TextItemListAdapte
             // er is geclicked op een item, dit betekent dat er nr detail vd item vr evt update wordt gegaan
             // daarvoor gaan we nr de update activity
             int indexToUpdate = getAdapterPosition();
-            //String currentLine = reusableList.get(indexToUpdate);
 
             Intent intent = new Intent(mContext, ManageItemActivity.class);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-            intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+//            intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
             intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
             mContext.startActivity(intent);
         }

@@ -93,6 +93,23 @@ public class ManageItemActivity extends AppCompatActivity  {
                             .commit();
                 }
                 break;
+            case SpecificData.LIST_TYPE_3:
+                if (action.equals(StaticData.ACTION_NEW)){
+                    setTitle(SpecificData.TITLE_NEW_ACTIVITY_T3);
+                }else {
+                    setTitle(SpecificData.TITLE_UPDATE_ACTIVITY_T3);
+                }
+                // Creeer fragment_meal
+                // TODO: ga naar mealfragment als het klaar is
+/*
+                if (savedInstanceState == null){
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragmentShopEntity, MealFragment.class, fragmentBundle)
+                            .commit();
+                }
+*/
+                break;
         }
     }
 }
