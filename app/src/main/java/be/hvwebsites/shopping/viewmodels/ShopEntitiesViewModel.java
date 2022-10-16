@@ -523,6 +523,14 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    public void deleteChildMealinMeal(Meal inChildMeal){
+
+    }
+
+    public void deleteParentMealinMeal(Meal inChildMeal){
+
+    }
+
     private int getFirstMealInMealByMeal(Meal inMeal){
         // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
         // opgegeven meal
@@ -774,6 +782,42 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    public List<ListItemHelper> getParentMealNamesByMeal(Meal inMeal){
+        List<ListItemHelper> parentMealNames = new ArrayList<>();
+        // Bepaalt de parentgerechten die een combinatie hebben met het opgegeven gerecht
+        List<Meal> childMeals = new ArrayList<>();
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getChildMealId().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getChildMealId()) != null){
+                    ListItemHelper itemHelper = new ListItemHelper(
+                            getMealByID(mealInMealList.get(i).getChildMealId()).getEntityName(),
+                            "",
+                            mealInMealList.get(i).getChildMealId());
+                    parentMealNames.add(itemHelper);
+                }
+            }
+        }
+        return parentMealNames;
+    }
+
+    public List<ListItemHelper> getChildMealNamesByMeal(Meal inMeal){
+        List<ListItemHelper> childMealNames = new ArrayList<>();
+        // Bepaalt de deelgerechten die een combinatie hebben met het opgegeven gerecht
+        List<Meal> childMeals = new ArrayList<>();
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getParentMealId().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getChildMealId()) != null){
+                    ListItemHelper itemHelper = new ListItemHelper(
+                            getMealByID(mealInMealList.get(i).getChildMealId()).getEntityName(),
+                            "",
+                            mealInMealList.get(i).getChildMealId());
+                    childMealNames.add(itemHelper);
+                }
+            }
+        }
+        return childMealNames;
+    }
+
     public List<ListItemHelper> getProductNamesByMeal(Meal inMeal){
         List<ListItemHelper> productNames = new ArrayList<>();
         List<Product> productsInMeal = getProductsByMeal(inMeal);
@@ -798,6 +842,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             }
         }
         return productsForMeal;
+    }
+
+    public Meal getMealByID(IDNumber inMealID){
+        return new Meal();
     }
 
     public void setSpinnerSelection(String spinnerSelection) {

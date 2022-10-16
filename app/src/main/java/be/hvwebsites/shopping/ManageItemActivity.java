@@ -26,9 +26,6 @@ public class ManageItemActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_item);
 
-        // Intent definieren
-        Intent newItemIntent = getIntent();
-
         // Creer een filebase service (bevat file base en file base directory) obv device en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
 
@@ -51,16 +48,19 @@ public class ManageItemActivity extends AppCompatActivity  {
         }
 
         // Data uit intent halen vr het list type, action en evt selectie & index
-        String listType = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
-        String action = newItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_ACTION);
+        Intent manageItemIntent = getIntent();
+        String listType = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
+        String action = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_ACTION);
 
         // Bundle voorbereiden om mee te geven aan fragment
         Bundle fragmentBundle = new Bundle();
         fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_ACTION, action);
+        fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR,
+                fileBaseService.getFileBaseDir());
 
         // indien update
         if (action.equals(StaticData.ACTION_UPDATE)){
-            int index = newItemIntent.getIntExtra(StaticData.EXTRA_INTENT_KEY_INDEX, 0);
+            int index = manageItemIntent.getIntExtra(StaticData.EXTRA_INTENT_KEY_INDEX, 0);
             fragmentBundle.putInt(StaticData.EXTRA_INTENT_KEY_INDEX, index);
         }
 

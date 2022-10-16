@@ -1,9 +1,11 @@
 package be.hvwebsites.shopping;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -21,6 +23,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +48,15 @@ public class MealFragment extends Fragment implements AdapterView.OnItemSelected
     private String listEntityType;
     private String action;
     private int indexToUpdate = 0;
+    private String fileBaseDir;
     // Meal
     private Meal mealToSave = new Meal();
+    // Views voor headers recyclerview
+    private TextView labelProductsView;
+    private TextView labelChildMealsView;
+    private TextView labelParentMealView;
     // Entities voor recyclerview list
+    private String recyclerListEntity;
     private static final String ENTITY_PRODUCT = "product";
     private static final String ENTITY_CHILD_MEAL = "childmeal";
     private static final String ENTITY_PARENT_MEAL = "parentmeal";
@@ -78,13 +88,12 @@ public class MealFragment extends Fragment implements AdapterView.OnItemSelected
         viewModel = new ViewModelProvider(requireActivity()).get(ShopEntitiesViewModel.class);
 
         // Wat zijn de argumenten die werden meegegeven
+        fileBaseDir = requireArguments().getString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
         action = requireArguments().getString(StaticData.EXTRA_INTENT_KEY_ACTION);
         if (action.equals(StaticData.ACTION_UPDATE)){
             indexToUpdate = requireArguments().getInt(StaticData.EXTRA_INTENT_KEY_INDEX);
             // Bepaal geselecteerd gerecht obv meegegeven index
             Meal mealToUpdate = viewModel.getMealList().get(indexToUpdate);
-            // TODO: Is dit nodig ?
-            productToSave.setProduct(productToUpdate);
             // Vul Scherm in met gegevens
             EditText nameView = view.findViewById(R.id.editNameNewMeal);
             nameView.setText(mealToUpdate.getEntityName());
@@ -130,19 +139,156 @@ public class MealFragment extends Fragment implements AdapterView.OnItemSelected
                                 itemList.addAll(viewModel.getProductNamesByMeal(mealToUpdate));
                             } else if (listEntityType.equals(ENTITY_CHILD_MEAL)) {
                                 // TODO: Delete childmeal in mealmeal
-                                viewModel.de(idNumberToBeDeleted);
+                                viewModel.deleteChildMealinMeal(viewModel.getMealByID(idNumberToBeDeleted));
                             } else if (listEntityType.equals(ENTITY_PARENT_MEAL)) {
                                 // TODO: Delete parentmeal in mealmeal
-                                viewModel.deleteLogByID(idNumberToBeDeleted);
+                                viewModel.deleteParentMealinMeal(viewModel.getMealByID(idNumberToBeDeleted));
                             }
                             // Refresh recyclerview
-                            adapter.setEntityType(listEntityType);
-                            adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
-                            adapter.setItemList(itemList);
+                            // TODO: ListItemAdapter nog aanpassen om te werken met listitemhelper !!
+                            //adapter.setEntityType(listEntityType);
+                            //adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
+                            //adapter.setReusableList(itemList);
                         }
                     }
             );
             helper.attachToRecyclerView(recyclerView);
+            // TODO:Sturing Headers en invullen recyclerlist vn Deel 2
+            labelProductsView = view.findViewById(R.id.labelProductsMeal);
+            labelChildMealsView = view.findViewById(R.id.labelSubMeal);
+            // Artikels voorzien mr enkel activeren indien er bestaan
+            try {
+                itemList.addAll(viewModel.getProductNamesByMeal(mealToUpdate));
+                // Er zijn artikels, artikels activeren en laten zien
+                labelProductsView.setTypeface(null, Typeface.BOLD);
+                labelProductsView.setTextColor(ContextCompat.getColor(this.getContext(),
+                        R.color.black));
+                labelProductsView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // format vn ParentMeals
+                        labelParentMealView.setTypeface(null, Typeface.NORMAL);
+                        labelParentMealView.setTextColor(ContextCompat.getColor(v.getContext(),
+                                R.color.grey));
+                        // format vn childMeal
+                        labelChildMealsView.setTypeface(null, Typeface.NORMAL);
+                        labelChildMealsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                                R.color.grey));
+                        // format vn artikels
+                        labelProductsView.setTypeface(null, Typeface.BOLD);
+                        labelProductsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                                R.color.black));
+                        // Opvullen recycler list met artikels vr gerecht in kwestie
+                        itemList.clear();
+                        itemList.addAll(viewModel.getProductNamesByMeal(mealToUpdate));
+                        recyclerListEntity = ENTITY_PRODUCT;
+                        //listEntityType = SpecificData.LIST_TYPE_3;
+                        // TODO: Listitemadapter moet nog aangepast worden !
+                        //adapter.setEntityType(SpecificData.ENTITY_TYPE_RUBRIEK);
+                        //adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
+                        //adapter.setItemList(itemList);
+                    }
+                });
+                // Vullen recyclerlist mt artikels
+                recyclerListEntity = ENTITY_PRODUCT;
+                //listEntityType = SpecificData.LIST_TYPE_3;
+                // TODO: Listitemadapter moet nog aangepast worden !
+                //adapter.setEntityType(listEntityType);
+                //adapter.setItemList(itemList);
+            }catch (NullPointerException ex){
+                // Er zijn geen artikels
+                labelProductsView.setTypeface(null, Typeface.NORMAL);
+                labelProductsView.setTextColor(ContextCompat.getColor(this.getContext(),
+                        R.color.grey));
+                labelChildMealsView.setTypeface(null, Typeface.BOLD);
+                labelChildMealsView.setTextColor(ContextCompat.getColor(this.getContext(),
+                        R.color.black));
+                // Opvullen recycler list met deelgerechten ChildMeals vr meals in kwestie
+                itemList.addAll(viewModel.getChildMealNamesByMeal(mealToUpdate));
+                recyclerListEntity = ENTITY_CHILD_MEAL;
+                //listEntityType = SpecificData.LIST_TYPE_3;
+                // TODO: TextItemList adapter moet nog aangepast worden
+                //adapter.setEntityType(SpecificData.ENTITY_TYPE_OPVOLGINGSITEM);
+                //adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
+                //adapter.setItemList(itemList);
+            }
+
+            labelChildMealsView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // format vn parentmeals
+                    labelParentMealView.setTypeface(null, Typeface.NORMAL);
+                    labelParentMealView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.grey));
+                    // format vn artikels
+                    labelProductsView.setTypeface(null, Typeface.NORMAL);
+                    labelProductsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.grey));
+                    // format vn childmeals
+                    labelChildMealsView.setTypeface(null, Typeface.BOLD);
+                    labelChildMealsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.black));
+                    // Opvullen recycler list met deelgerechten vr gerecht in kwestie
+                    itemList.clear();
+                    itemList.addAll(viewModel.getChildMealNamesByMeal(mealToUpdate));
+                    recyclerListEntity = ENTITY_CHILD_MEAL;
+                    //listEntityType = SpecificData.LIST_TYPE_3;
+                    // TODO: TextItemList adapter moet nog aangepast worden
+                    //adapter.setEntityType(SpecificData.ENTITY_TYPE_OPVOLGINGSITEM);
+                    //adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
+                    //adapter.setItemList(itemList);
+                }
+            });
+
+            labelParentMealView = view.findViewById(R.id.labelParentMeal);
+            labelParentMealView.setTypeface(null, Typeface.NORMAL);
+            labelParentMealView.setTextColor(ContextCompat.getColor(this.getContext(),
+                    R.color.grey));
+            labelParentMealView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // format vn chilsmeals
+                    labelChildMealsView.setTypeface(null, Typeface.NORMAL);
+                    labelChildMealsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.grey));
+                    // format vn artikels
+                    labelProductsView.setTypeface(null, Typeface.NORMAL);
+                    labelProductsView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.grey));
+                    // format vn parentmeals
+                    labelParentMealView.setTypeface(null, Typeface.BOLD);
+                    labelParentMealView.setTextColor(ContextCompat.getColor(v.getContext(),
+                            R.color.black));
+                    // Opvullen recycler list met parentmeals vr meal in kwestie
+                    itemList.clear();
+                    itemList.addAll(viewModel.getParentMealNamesByMeal(mealToUpdate));
+                    recyclerListEntity = ENTITY_PARENT_MEAL;
+                    //listEntityType = SpecificData.LIST_TYPE_3;
+                    // TODO: TextItemList adapter moet nog aangepast worden
+                    //adapter.setEntityType(SpecificData.ENTITY_TYPE_LOG);
+                    //adapter.setCallingActivity(SpecificData.ENTITY_TYPE_RUBRIEK);
+                    //adapter.setItemList(itemList);
+                }
+            });
+            // FloatingActionButton
+            FloatingActionButton fab = view.findViewById(R.id.fab_edit_meal_detail);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO: ofwel wil je een artikel, een deelgerecht toevoegen ofwel een parentmeal
+                    Intent intent = new Intent(getContext(), ManageItemActivity.class);
+                    if (recyclerListEntity.equals(ENTITY_PRODUCT)) {
+                    } else if (recyclerListEntity.equals(ENTITY_PARENT_MEAL)) {
+                        // intent voor editparentmeal
+                    } else if (recyclerListEntity.equals(ENTITY_CHILD_MEAL)) {
+                        // Intent voor editchildmeal
+                    }
+                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_NEW);
+                    //intent.putExtra(SpecificData.ID_RUBRIEK, rubriekToUpdate.getEntityId().getId());
+                    //intent.putExtra(StaticData.EXTRA_INTENT_KEY_RETURN, SpecificData.ENTITY_TYPE_RUBRIEK);
+                    startActivity(intent);
+                }
+            });
 
         }else {
             // Bij new geen wanted en geen details laten zien
@@ -154,104 +300,38 @@ public class MealFragment extends Fragment implements AdapterView.OnItemSelected
             labelSubMeal.setVisibility(View.INVISIBLE);
             TextView labelParentMeal = view.findViewById(R.id.labelParentMeal);
             labelParentMeal.setVisibility(View.INVISIBLE);
-            recycViewSelShops.setVisibility(View.INVISIBLE);
-            recycViewUnSelShops.setVisibility(View.INVISIBLE);
-            Button selButton = view.findViewById(R.id.buttonRemShop);
-            selButton.setVisibility(View.INVISIBLE);
-            Button unselButton = view.findViewById(R.id.buttonAddShop);
-            unselButton.setVisibility(View.INVISIBLE);
-            prefShopSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
-                    prefShopAdapter, R.layout.contact_spinner_row_nothing_selected, getContext()
-            ));
         }
 
         // Als toevoegen/aanpassen ingedrukt wordt...
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Definitie inputvelden
+                // TODO: Definitie inputvelden aanpassen
                 EditText nameView = view.findViewById(R.id.editNameNewProduct);
                 CheckBox toBuyView = view.findViewById(R.id.toBuyCheckBox);
                 CheckBox cooledView = view.findViewById(R.id.cooledCheckBox);
                 Spinner prefShopView = (Spinner) view.findViewById(R.id.spinnerPrefShop);
-                if (action.equals(StaticData.ACTION_NEW)){
-                    Product newProduct = new Product(viewModel.getBasedir(), false);
-                    newProduct.setEntityName(String.valueOf(nameView.getText()));
-                    newProduct.setToBuy(toBuyView.isChecked());
-                    newProduct.setCooled(cooledView.isChecked());
-                    // geselecteerde shop uit spinner halen
-                    newProduct.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
-                    viewModel.getProductList().add(newProduct);
-                    productToSave = newProduct;
-                }else {
-                    productToSave.setEntityName(String.valueOf(nameView.getText()));
-                    productToSave.setToBuy(toBuyView.isChecked());
-                    productToSave.setCooled(cooledView.isChecked());
-                    productToSave.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
-                    viewModel.getProductList().set(indexToUpdate, productToSave);
-                }
-                viewModel.storeProducts();
+                // Reply intent definieren
                 Intent replyIntent = new Intent(getContext(), A4ListActivity.class);
-                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);
-                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, viewModel.getBaseSwitch());
+                if (action.equals(StaticData.ACTION_NEW)){
+                    Meal newMeal = new Meal(fileBaseDir, false);
+                    newMeal.setEntityName(String.valueOf(nameView.getText()));
+                    newMeal.setToBuy(toBuyView.isChecked());
+                    viewModel.getMealList().add(newMeal);
+                    mealToSave = newMeal;
+                }else { // Update
+                    mealToSave.setEntityName(String.valueOf(nameView.getText()));
+                    mealToSave.setToBuy(toBuyView.isChecked());
+                    viewModel.getMealList().set(indexToUpdate, mealToSave);
+                    // Zet index to update in replyIntent want de oproeper heeft die nodig
+                    replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX,
+                            indexToUpdate);
+                }
+                viewModel.storeMeals();
+                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_3);
+                replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, action);
+                //replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, viewModel.getBaseSwitch());
                 startActivity(replyIntent);
-            }
-        });
-
-        // Als je een shop wilt koppelen met product
-        Button selShopbutton = view.findViewById(R.id.buttonAddShop);
-        selShopbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Welke shop is geselecteerd in de unselected groep ?
-                String toCoupleItem = recycUnSelShopsadapter.getSelectedItem();
-                if (toCoupleItem != null){
-                    Shop shopToCouple = viewModel.getShopByShopName(toCoupleItem);
-                    // Shop koppelen met product
-                    // combinatie maken en in entiteit steken
-                    if (viewModel.getProductShopCombinIndex(productToSave.getEntityId(), shopToCouple.getEntityId()) == StaticData.ITEM_NOT_FOUND){
-                        ProductInShop newProdinShop = new ProductInShop(productToSave.getEntityId(), shopToCouple.getEntityId());
-                        viewModel.getProductInShopList().add(newProdinShop);
-                        viewModel.storeProdInShop();
-                    }
-                    // Recyclerviews refreshen
-                    recycSelShopsadapter.setReference(SpecificData.LIST_TYPE_2);
-                    recycSelShopsadapter.setReusableList(viewModel.getShopNamesByProduct(productToSave));
-                    recycUnSelShopsadapter.setReference(SpecificData.LIST_TYPE_2);
-                    recycUnSelShopsadapter.setReusableList(viewModel.getUnselectedShopNamesByProduct(productToSave));
-                    recycUnSelShopsadapter.clearPrevViewBackground();
-                }else {
-                    // TODO: er is geen shop geselecteerd, een boodschap laten zien
-                }
-            }
-        });
-
-        // Als je een shop wilt ontkoppelen van product
-        Button unSelShopbutton = view.findViewById(R.id.buttonRemShop);
-        unSelShopbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Welke shop is geselecteerd in de selected groep ?
-                String toUnCoupleItem = recycSelShopsadapter.getSelectedItem();
-                if (toUnCoupleItem != null){
-                    Shop shopToUnCouple = viewModel.getShopByShopName(toUnCoupleItem);
-                    // Shop ontkoppelen vn product
-                    // Combinatie zoeken
-                    int combination = viewModel.getProductShopCombinIndex(productToSave.getEntityId(), shopToUnCouple.getEntityId());
-                    if (combination != StaticData.ITEM_NOT_FOUND){
-                        // combinatie bestaat, ze wordt gedelete
-                        viewModel.getProductInShopList().remove(combination);
-                        viewModel.storeProdInShop();
-                    }
-                    // Recyclerviews refreshen
-                    recycSelShopsadapter.setReference(SpecificData.LIST_TYPE_2);
-                    recycSelShopsadapter.setReusableList(viewModel.getShopNamesByProduct(productToSave));
-                    recycSelShopsadapter.clearPrevViewBackground();
-                    recycUnSelShopsadapter.setReference(SpecificData.LIST_TYPE_2);
-                    recycUnSelShopsadapter.setReusableList(viewModel.getUnselectedShopNamesByProduct(productToSave));
-                }else {
-                    // TODO: er is geen shop geselecteerd, een boodschap laten zien
-                }
             }
         });
     }
