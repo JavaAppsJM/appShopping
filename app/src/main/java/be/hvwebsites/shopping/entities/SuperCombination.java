@@ -3,49 +3,74 @@ package be.hvwebsites.shopping.entities;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
 public class SuperCombination {
-    // Parent meal en child meal combinations
-    private IDNumber parentMealId;
-    private IDNumber childMealId;
+    // Superklasse die een combinatie van 2 IDnumbers  behandeld
+    private IDNumber firstID;
+    private IDNumber secondID;
+    private String firstName = "";
+    private String secondName = "";
 
-    public SuperCombination(IDNumber productId, IDNumber shopId) {
-        this.childMealId = shopId;
-        this.parentMealId = productId;
+    public SuperCombination(IDNumber inFirstId, IDNumber inSecondId, String inFirstName, String inSecondName) {
+        this.firstID = inFirstId;
+        this.secondID = inSecondId;
+        this.firstName = inFirstName;
+        this.secondName = inSecondName;
     }
 
-    public SuperCombination(String fileLine){
-        // TODO: Superklasse die een combinatie van 2 IDnumbers  behandeld
-        // Maakt een MealInMeal obv een fileline - format:
-        // <meal><521><meal><12>
+    public SuperCombination(String fileLine, String inFirstName, String inSecondName){
+        // Maakt een combinatie obv een fileline - format:
+        // <inFirstName><521><inSecondName><12>
         // fileLine splitsen in argumenten
+        String firstNameTag = inFirstName.concat(".*");
+        String secondNameTag = inSecondName.concat(".*");
         String[] fileLineContent = fileLine.split("<");
         for (int i = 0; i < fileLineContent.length; i++) {
-            if (fileLineContent[i].matches("parentmeal.*")){
-                this.childMealId = new IDNumber(fileLineContent[i+1].replace(">", ""));
+            if (fileLineContent[i].matches(firstNameTag)){
+                this.firstID = new IDNumber(fileLineContent[i+1].replace(">", ""));
+                this.firstName = inFirstName;
             }
-            if (fileLineContent[i].matches("childmeal.*")){
-                this.parentMealId = new IDNumber(fileLineContent[i+1].replace(">", ""));
+            if (fileLineContent[i].matches(secondNameTag)){
+                this.secondID = new IDNumber(fileLineContent[i+1].replace(">", ""));
+                this.secondName = inSecondName;
             }
         }
     }
 
-    public String convertMealMealInFileLine(){
-        return "<parentmeal><" + this.parentMealId.getIdString()
-                + "><childmeal><" + this.childMealId.getIdString() + ">";
+    public String convertCombinInFileLine(){
+        return "<" + this.firstName + "><" +
+                this.firstID.getIdString() + "><" +
+                this.secondName + "><" +
+                this.secondID.getIdString() + ">";
     }
 
-    public IDNumber getChildMealId() {
-        return childMealId;
+    public IDNumber getFirstID() {
+        return firstID;
     }
 
-    public void setChildMealId(IDNumber childMealId) {
-        this.childMealId = childMealId;
+    public void setFirstID(IDNumber firstID) {
+        this.firstID = firstID;
     }
 
-    public IDNumber getParentMealId() {
-        return parentMealId;
+    public IDNumber getSecondID() {
+        return secondID;
     }
 
-    public void setParentMealId(IDNumber parentMealId) {
-        this.parentMealId = parentMealId;
+    public void setSecondID(IDNumber secondID) {
+        this.secondID = secondID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 }

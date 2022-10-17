@@ -143,6 +143,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public int determineHighestShopID(){
         int highestShopID = 0;
         for (int i = 0; i < shopList.size(); i++) {
@@ -153,6 +154,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return highestShopID;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public int determineHighestProductID(){
         int highestProductID = 0;
         for (int i = 0; i < productList.size(); i++) {
@@ -163,6 +165,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return highestProductID;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public int determineHighestMealID(){
         int highestMealID = 0;
         for (int i = 0; i < mealList.size(); i++) {
@@ -249,6 +252,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return null;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public int getShopIndexById(IDNumber shopID){
         // Bepaalt de index vd shop voor een opgegeven IDNumber
         for (int i = 0; i < shopList.size(); i++) {
@@ -259,6 +263,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public List<String> getShopNameList(){
         // bepaalt een lijst met shopnamen obv shoplist
         List<String> displayList = new ArrayList<>();
@@ -487,7 +492,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
         // opgegeven produkt
         for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getProductId().getId() == inProduct.getEntityId().getId()){
+            if (productInMealList.get(i).getSecondID().getId() == inProduct.getEntityId().getId()){
                 return i;
             }
         }
@@ -507,7 +512,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
         // opgegeven gerecht
         for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getMealId().getId() == inMeal.getEntityId().getId()){
+            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
                 return i;
             }
         }
@@ -535,9 +540,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
         // opgegeven meal
         for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getParentMealId().getId() == inMeal.getEntityId().getId()){
+            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
                 return i;
-            }else if (mealInMealList.get(i).getChildMealId().getId() == inMeal.getEntityId().getId()){
+            }else if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
                 return i;
             }
         }
@@ -610,7 +615,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
-            lineList.add(itemList.get(i).convertProdMealInFileLine());
+            lineList.add(itemList.get(i).convertCombinInFileLine());
         }
         return lineList;
     }
@@ -619,7 +624,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
-            lineList.add(itemList.get(i).convertMealMealInFileLine());
+            lineList.add(itemList.get(i).convertCombinInFileLine());
         }
         return lineList;
     }

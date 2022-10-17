@@ -44,4 +44,11 @@ public class SpecificData {
     public static final String STYLE_COOLED_BOLD = "cooledbold";
     public static final String STYLE_DEFAULT = "default";
 
+    // SuperCombinations Names
+    public static final String SC_SHOP = "shop";
+    public static final String SC_PRODUCT = "product";
+    public static final String SC_MEAL = "meal";
+    public static final String SC_PARENTMEAL = "parentmeal";
+    public static final String SC_CHILDMEAL = "childmeal";
+
 }
