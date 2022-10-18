@@ -439,6 +439,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private void deleteProductsByShop(ShopEntity inShop){
         // Verwijdert de prodinshop combinaties voor een opgegeven shop
         int position = getFirstProductInshopByShop(inShop);
@@ -448,6 +449,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private int getFirstProductInshopByShop(ShopEntity inShop){
         // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
         // opgegeven shop
@@ -459,6 +461,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private void deleteShopsByProduct(Product inProduct){
         // Verwijdert de prodinshop combinaties voor een opgegeven produkt
         int position = getFirstProductInshopByProduct(inProduct);
@@ -468,6 +471,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private int getFirstProductInshopByProduct(Product inProduct){
         // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
         // opgegeven produkt
@@ -479,6 +483,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public void deleteMealByProduct(Product inProduct){
         // Verwijdert de prodinmeal combinaties voor een opgegeven produkt
         int position = getFirstProductInMealByProduct(inProduct);
@@ -488,6 +493,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private int getFirstProductInMealByProduct(Product inProduct){
         // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
         // opgegeven produkt
@@ -499,6 +505,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public void deleteProductsByMeal(ShopEntity inMeal){
         // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
         int position = getFirstProductInMealByMeal(inMeal);
@@ -508,6 +515,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private int getFirstProductInMealByMeal(ShopEntity inMeal){
         // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
         // opgegeven gerecht
@@ -519,6 +527,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public void deleteMealMeal(Meal inMeal){
         // Verwijdert de mealinmeal combinaties voor een opgegeven meal
         int position = getFirstMealInMealByMeal(inMeal);
@@ -528,14 +537,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public void deleteChildMealinMeal(Meal inChildMeal){
 
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     public void deleteParentMealinMeal(Meal inChildMeal){
 
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private int getFirstMealInMealByMeal(Meal inMeal){
         // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
         // opgegeven meal
@@ -549,6 +561,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private void sortShopList(List<Shop> shopList){
         // Sorteert een shoplist op entityname alfabetisch
         Shop tempShop = new Shop();
@@ -563,6 +576,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private void sortProductList(List<Product> productList){
         // Sorteert een productlist op entityname alfabetisch
         Product tempProduct = new Product();
@@ -578,6 +592,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private void sortMealList(List<Meal> meals){
         // Sorteert een meallist op entityname alfabetisch
         Meal tempEntity = new Meal();
@@ -602,6 +617,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return lineList;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertProdShopListinDataList(List<ProductInShop> itemList){
         // Converteert een prodinshoplist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
@@ -611,6 +627,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return lineList;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertProdMealListinDataList(List<ProductInMeal> itemList){
         // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
@@ -620,6 +637,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return lineList;
     }
 
+    // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertMealMealListinDataList(List<MealInMeal> itemList){
         // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();

@@ -17,6 +17,10 @@ public class Shop extends ShopEntity{
         convertFromFileLine(fileLine);
     }
 
+    public void setShopEntity(Shop shop) {
+        super.setShopEntity(shop);
+    }
+
     public void convertFromFileLine(String fileLine) {
         // Maakt een shop obv een fileline - format: <key><1022021><shop><azerty>
         // fileLine splitsen in argumenten

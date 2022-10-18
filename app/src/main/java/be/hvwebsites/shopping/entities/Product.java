@@ -54,6 +54,14 @@ public class Product extends ShopEntity{
         }
     }
 
+    public void setShopEntity(Product inProdukt) {
+        super.setShopEntity(inProdukt);
+        setPreferredShopId(inProdukt.getPreferredShopId());
+        setToBuy(inProdukt.isToBuy());
+        setWanted(inProdukt.isWanted());
+        setCooled(inProdukt.isCooled());
+    }
+
     public void setProduct(Product inProduct){
         setShopEntity(inProduct);
         setPreferredShopId(inProduct.getPreferredShopId());

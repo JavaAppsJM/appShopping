@@ -40,6 +40,12 @@ public class Meal extends ShopEntity{
         }
     }
 
+    public void setShopEntity(Meal inMeal){
+        super.setShopEntity(inMeal);
+        setToBuy(inMeal.isToBuy());
+        setWanted(inMeal.isWanted());
+    }
+
     public void setMeal(Meal inMeal){
         setShopEntity(inMeal);
         setToBuy(inMeal.isToBuy());
