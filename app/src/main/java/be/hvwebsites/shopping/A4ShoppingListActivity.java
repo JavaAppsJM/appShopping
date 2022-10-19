@@ -111,7 +111,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 android.R.layout.simple_spinner_item);
         shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
-        shopFilterAdapter.addAll(viewModel.getShopNameList());
+        shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
         shopFilterAdapter.add(SpecificData.NO_FILTER);
 
         // Enkel aangeklikte artikels ?
@@ -164,7 +164,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 int positionAA = shopFilterAdapter.getCount()-1;
                 shopFilterSpinner.setSelection(positionAA, false);
             }else {
-                shopFilterSpinner.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()), false);
+                shopFilterSpinner.setSelection(viewModel.getIndexById(viewModel.getShopList(), shopFilter.getEntityId()), false);
             }
         }
         // selection listener activeren, moet gebueren nadat de adapter gekoppeld is aan de spinner !!

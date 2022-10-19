@@ -73,7 +73,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 android.R.layout.simple_spinner_item);
         prefShopAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Spinner vullen met shops
-        prefShopAdapter.addAll(viewModel.getShopNameList());
+        prefShopAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
         // selection listener activeren
         prefShopSpinner.setOnItemSelectedListener(this);
 
@@ -99,7 +99,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             EditText nameView = view.findViewById(R.id.editNameNewProduct);
             nameView.setText(productToUpdate.getEntityName());
             // Is er al een preferred shop voor het product in kwestie ?
-            int prefShopIndex = viewModel.getShopIndexById(productToUpdate.getPreferredShopId());
+            int prefShopIndex = viewModel.getIndexById(viewModel.getShopList(), productToUpdate.getPreferredShopId());
 //            String prefShopName = "nog geen voorkeur winkel geregistreerd !";
             if (prefShopIndex != StaticData.ITEM_NOT_FOUND) {
                 // er is een preferred shop

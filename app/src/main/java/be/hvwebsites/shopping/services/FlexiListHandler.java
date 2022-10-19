@@ -12,7 +12,9 @@ import be.hvwebsites.shopping.entities.SuperCombination;
 
 public class FlexiListHandler {
 
-    public int determineHighestID(List<ShoppingEntity> inList){
+    // Terug bij ShopEntitiesViewModel
+/*
+    public int determineHighestID(List<? extends ShoppingEntity> inList){
         int highestID = 0;
         for (int i = 0; i < inList.size(); i++) {
             if (inList.get(i).getEntityId().getId() > highestID ){
@@ -21,16 +23,7 @@ public class FlexiListHandler {
         }
         return highestID;
     }
-
-    public int getIndexById(List<ShoppingEntity> inList, IDNumber inID){
-        // Bepaalt de index vh element met een opgegeven IDNumber
-        for (int i = 0; i < inList.size(); i++) {
-            if (inList.get(i).getEntityId().getId() == inID.getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-    }
+*/
 
     public List<String> getNameListFromList(List<ShoppingEntity> inList, int indisplay){
         // bepaalt een lijst met entitynamen obv inlist
@@ -128,6 +121,8 @@ public class FlexiListHandler {
     }
 */
 
+    // Terug bij ShopEntitiesViewModel
+/*
     public List<String> convertCombinListinDataList(List<SuperCombination> itemList){
         // Converteert een SuperCombinationList in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
@@ -136,4 +131,5 @@ public class FlexiListHandler {
         }
         return lineList;
     }
+*/
 }

@@ -61,7 +61,7 @@ public class ShopListFragment extends Fragment {
         TextView labelColHead1 = view.findViewById(R.id.listColHeadShops);
         labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T1);
         lineList.clear();
-        lineList.addAll(viewModel.getShopNameList());
+        lineList.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
 
         // om te kunnen swipen in de recyclerview ; swippen == deleten
         ItemTouchHelper helper = new ItemTouchHelper(
@@ -84,7 +84,7 @@ public class ShopListFragment extends Fragment {
                         viewModel.deleteShop(position);
                         // Refresh recyclerview
                         lineList.clear();
-                        lineList.addAll(viewModel.getShopNameList());
+                        lineList.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
                         adapter.setReference(SpecificData.LIST_TYPE_1);
                         adapter.setBaseSwitch(viewModel.getBaseSwitch());
                         adapter.setReusableList(lineList);
