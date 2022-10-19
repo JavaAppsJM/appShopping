@@ -3,17 +3,16 @@ package be.hvwebsites.shopping.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
-import be.hvwebsites.shopping.entities.ProductInShop;
-import be.hvwebsites.shopping.entities.Shop;
-import be.hvwebsites.shopping.entities.ShopEntity;
+import be.hvwebsites.shopping.entities.ShoppingEntity;
 import be.hvwebsites.shopping.entities.SuperCombination;
 
 public class FlexiListHandler {
 
-    public int determineHighestID(List<ShopEntity> inList){
+    public int determineHighestID(List<ShoppingEntity> inList){
         int highestID = 0;
         for (int i = 0; i < inList.size(); i++) {
             if (inList.get(i).getEntityId().getId() > highestID ){
@@ -23,7 +22,7 @@ public class FlexiListHandler {
         return highestID;
     }
 
-    public int getIndexById(List<ShopEntity> inList, IDNumber inID){
+    public int getIndexById(List<ShoppingEntity> inList, IDNumber inID){
         // Bepaalt de index vh element met een opgegeven IDNumber
         for (int i = 0; i < inList.size(); i++) {
             if (inList.get(i).getEntityId().getId() == inID.getId()){
@@ -33,7 +32,7 @@ public class FlexiListHandler {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    public List<String> getNameListFromList(List<ShopEntity> inList, int indisplay){
+    public List<String> getNameListFromList(List<ShoppingEntity> inList, int indisplay){
         // bepaalt een lijst met entitynamen obv inlist
         List<String> nameList = new ArrayList<>();
         for (int i = 0; i < inList.size(); i++) {
@@ -71,10 +70,10 @@ public class FlexiListHandler {
         }
     }
 
-    public List<ShopEntity> sortShopEntityList(List<ShopEntity> inList){
+    public List<ShoppingEntity> sortShopEntityList(List<ShoppingEntity> inList){
         // Sorteert een list op entityname alfabetisch
-        ShopEntity tempEntity = new ShopEntity();
-        List<ShopEntity> outList = new ArrayList<>();
+        ShoppingEntity tempEntity = new ShoppingEntity();
+        List<ShoppingEntity> outList = new ArrayList<>();
         outList.addAll(inList);
         for (int i = outList.size() ; i > 0; i--) {
             for (int j = 1; j < i ; j++) {
@@ -88,7 +87,48 @@ public class FlexiListHandler {
         return outList;
     }
 
-    private List<String> convertCombinListinDataList(List<SuperCombination> itemList){
+/*
+    // TODO: niet rijp voor flexi !
+    public List<CheckboxHelper> convertListToCheckboxs(List<ShoppingEntity> inList,
+                                                           int inDisplayType,
+                                                           boolean onlyChecked){
+        // Converteert een lijst met Shopentities in een checkboxList obv een displaytype
+        // Het displaytype bepaalt of de preferred shop meegetoond wordt (LARGE) of niet (SMALL)
+        // enkel voor produkten
+        List<CheckboxHelper> checkboxList = new ArrayList<>();
+        String productDisplayLine = "";
+        String cbTextStyle;
+        for (int i = 0; i < inList.size(); i++) {
+            cbTextStyle = SpecificData.STYLE_DEFAULT;
+            // Controle only checked
+            if ((inList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
+                if (inDisplayType == SpecificData.DISPLAY_LARGE){
+                    // TODO: moet in viewmodel bepaald worden om de preferred shop op te halen
+                    //  ve produkt
+                    //productDisplayLine = getProductLargeDisplay(inList.get(i));
+                }else {
+                    productDisplayLine = inList.get(i).getEntityName();
+                }
+                if ((inDisplayType == SpecificData.DISPLAY_SMALL_BOLD) &&
+                        (inList.get(i).isCooled())){
+                    cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
+                }
+                // Check eigenschap cooled, style = red
+                if ((inDisplayType == SpecificData.DISPLAY_SMALL) &&
+                        (inList.get(i).isCooled())){
+                    cbTextStyle = SpecificData.STYLE_COOLED;
+                }
+                checkboxList.add(new CheckboxHelper(
+                        productDisplayLine,
+                        inList.get(i).isToBuy(),cbTextStyle,
+                        inList.get(i).getEntityId()));
+            }
+        }
+        return checkboxList;
+    }
+*/
+
+    public List<String> convertCombinListinDataList(List<SuperCombination> itemList){
         // Converteert een SuperCombinationList in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {

@@ -2,21 +2,21 @@
 
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
-          public class ShopEntity {
-              // Dit is een generiek object dat een super is van zowel Product als Shop
+          public class ShoppingEntity {
+              // Dit is een generiek object dat een super is van zowel Product als Shop als Meal
               private IDNumber entityId;
               private String entityName;
 
 
-              public ShopEntity() {
+              public ShoppingEntity() {
               }
 
-              public ShopEntity(String basedir, String entity){
+              public ShoppingEntity(String basedir, String entity){
                   entityId = new IDNumber(basedir, entity);
                   entityName = "";
               }
 
-              public void setShopEntity(ShopEntity shopEntity){
+              public void setShopEntity(ShoppingEntity shopEntity){
                   setEntityId(shopEntity.getEntityId());
                   setEntityName(shopEntity.getEntityName());
               }
@@ -40,7 +40,6 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
               }
 
               public void convertFromFileLine(String fileLine){
-
               }
 
               public String convertToFileLine(){
@@ -49,5 +48,12 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
               public String getDisplayLine() {
                   return "";
+              }
+
+              public boolean isToBuy(){
+                  return true;
+              }
+              public boolean isCooled(){
+                  return false;
               }
           }

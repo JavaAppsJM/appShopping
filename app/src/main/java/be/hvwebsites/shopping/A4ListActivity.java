@@ -89,8 +89,8 @@ public class A4ListActivity extends AppCompatActivity {
         if (temp == 1){
             viewModel.clearAllProductInShop();
         }
-        int highestShop = viewModel.determineHighestShopID();
-        int highestProd = viewModel.determineHighestProductID();
+        int highestShop = viewModel.determineHighestID(viewModel.getShopList());
+        int highestProd = viewModel.determineHighestID(viewModel.getProductList());
 
         // Data uit intent halen als die er is
         CookieRepository cookieRepository = new CookieRepository(filebaseDir);

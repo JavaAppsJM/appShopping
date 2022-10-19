@@ -3,7 +3,7 @@ package be.hvwebsites.shopping.entities;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 
-public class Product extends ShopEntity{
+public class Product extends ShoppingEntity {
     private IDNumber preferredShopId;
     public static final int NO_PREFERRED_SHOP = StaticData.ITEM_NOT_FOUND;
     private boolean toBuy;

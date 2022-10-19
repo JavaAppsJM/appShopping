@@ -1,9 +1,8 @@
 package be.hvwebsites.shopping.entities;
 
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
-import be.hvwebsites.libraryandroid4.statics.StaticData;
 
-public class Meal extends ShopEntity{
+public class Meal extends ShoppingEntity {
     private boolean toBuy;
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     public static final String MEAL_LATEST_ID = "meal";

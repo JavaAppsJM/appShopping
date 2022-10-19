@@ -2,7 +2,7 @@ package be.hvwebsites.shopping.entities;
 
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
-public class Shop extends ShopEntity{
+public class Shop extends ShoppingEntity {
     public static final String SHOP_LATEST_ID = "shop";
 
     public Shop() {

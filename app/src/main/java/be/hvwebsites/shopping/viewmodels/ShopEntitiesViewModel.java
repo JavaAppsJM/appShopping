@@ -12,7 +12,6 @@ import java.util.List;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
-import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.repositories.FlexiRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
@@ -24,7 +23,7 @@ import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.entities.ProductInMeal;
 import be.hvwebsites.shopping.entities.ProductInShop;
 import be.hvwebsites.shopping.entities.Shop;
-import be.hvwebsites.shopping.entities.ShopEntity;
+import be.hvwebsites.shopping.entities.ShoppingEntity;
 
 public class ShopEntitiesViewModel extends AndroidViewModel {
     private FlexiRepository repository;
@@ -125,17 +124,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
         repository.storeData(shopExtFile, convertEntityListinDataList(shopList));
         // Zet hoogste ID in Cookie
-        setHighestIDInCookie(Shop.SHOP_LATEST_ID, basedir, determineHighestShopID());
+        setHighestIDInCookie(Shop.SHOP_LATEST_ID, basedir, determineHighestID(shopList));
 
         repository.storeData(productExtFile, convertEntityListinDataList(productList));
         // Zet hoogste ID in Cookie
-        setHighestIDInCookie(Product.PRODUCT_LATEST_ID, basedir, determineHighestProductID());
+        setHighestIDInCookie(Product.PRODUCT_LATEST_ID, basedir, determineHighestID(productList));
 
         repository.storeData(productInShopExtFile, convertProdShopListinDataList(productInShopList));
 
         repository.storeData(mealFile, convertEntityListinDataList(mealList));
         // Zet hoogste ID in Cookie
-        setHighestIDInCookie(Meal.MEAL_LATEST_ID, basedir, determineHighestMealID());
+        setHighestIDInCookie(Meal.MEAL_LATEST_ID, basedir, determineHighestID(mealList));
 
         repository.storeData(productInMealFile, convertProdMealListinDataList(productInMealList));
         repository.storeData(mealInMealFile, convertMealMealListinDataList(mealInMealList));
@@ -143,37 +142,19 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public int determineHighestShopID(){
-        int highestShopID = 0;
-        for (int i = 0; i < shopList.size(); i++) {
-            if (shopList.get(i).getEntityId().getId() > highestShopID ){
-                highestShopID = shopList.get(i).getEntityId().getId();
+    public int determineHighestID(List<? extends ShoppingEntity> inList){
+        int highestID = 0;
+        for (int i = 0; i < inList.size(); i++) {
+            if (inList.get(i).getEntityId().getId() > highestID ){
+                highestID = inList.get(i).getEntityId().getId();
             }
         }
-        return highestShopID;
+        return highestID;
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public int determineHighestProductID(){
-        int highestProductID = 0;
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getEntityId().getId() > highestProductID ){
-                highestProductID = productList.get(i).getEntityId().getId();
-            }
-        }
-        return highestProductID;
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public int determineHighestMealID(){
-        int highestMealID = 0;
-        for (int i = 0; i < mealList.size(); i++) {
-            if (mealList.get(i).getEntityId().getId() > highestMealID ){
-                highestMealID = mealList.get(i).getEntityId().getId();
-            }
-        }
-        return highestMealID;
+    private void setHighestIDInCookie(String entity, String basedir, int highestId){
+        CookieRepository cookieRepository = new CookieRepository(basedir);
+        cookieRepository.registerCookie(entity, String.valueOf(highestId));
     }
 
     public void forceBtData(String basedir){
@@ -211,24 +192,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         boolean debug = true;
     }
 
-    private void setHighestIDInCookie(String entity, String basedir, int highestId){
-        CookieRepository cookieRepository = new CookieRepository(basedir);
-        cookieRepository.registerCookie(entity, String.valueOf(highestId));
-        // TODO: Voorgaande lijn vervangt onderstaande ; moet nog getest worden
-/*
-        if (cookieRepository.bestaatCookie(entity) != CookieRepository.COOKIE_NOT_FOUND){
-            // Cookie vervangen met nieuwe hoogste id
-            Cookie cookie = new Cookie(entity, String.valueOf(highestId));
-            cookieRepository.deleteCookie(entity);
-            cookieRepository.addCookie(cookie);
-        }else {
-            // Cookie not found (er is nog geen latest ID voor opgegeven entity
-            // Cookie met hoogste id bewaren
-            Cookie cookie = new Cookie(entity, String.valueOf(highestId));
-            cookieRepository.addCookie(cookie);
-        }
-*/
-    }
+    /** Shoplist methodes */
 
     public Shop getShopByShopName(String inShopName){
         // Shop bepalen obv een shopnaam
@@ -302,6 +266,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return shopsNotForProduct;
     }
 
+    /** Produkt-Shoplist methodes */
+
     public int getProductShopCombinIndex(IDNumber inProductID, IDNumber inShopID){
         // Bepaalt de index vd produkt-shop combinatie als die bestaat
         for (int i = 0; i < productInShopList.size(); i++) {
@@ -325,6 +291,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
         return productForShops;
     }
+
+    /** Productlist methodes */
 
     public Product getProductByID(IDNumber inProductID){
         // Bepaalt het produkt voor een opgegeven IDNumber
@@ -440,7 +408,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
-    private void deleteProductsByShop(ShopEntity inShop){
+    private void deleteProductsByShop(ShoppingEntity inShop){
         // Verwijdert de prodinshop combinaties voor een opgegeven shop
         int position = getFirstProductInshopByShop(inShop);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -450,7 +418,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInshopByShop(ShopEntity inShop){
+    private int getFirstProductInshopByShop(ShoppingEntity inShop){
         // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
         // opgegeven shop
         for (int i = 0; i < productInShopList.size(); i++) {
@@ -506,7 +474,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteProductsByMeal(ShopEntity inMeal){
+    public void deleteProductsByMeal(ShoppingEntity inMeal){
         // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
         int position = getFirstProductInMealByMeal(inMeal);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -516,7 +484,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInMealByMeal(ShopEntity inMeal){
+    private int getFirstProductInMealByMeal(ShoppingEntity inMeal){
         // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
         // opgegeven gerecht
         for (int i = 0; i < productInMealList.size(); i++) {
@@ -608,7 +576,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    private List<String> convertEntityListinDataList(List<? extends ShopEntity> shopEntityList){
+    private List<String> convertEntityListinDataList(List<? extends ShoppingEntity> shopEntityList){
         // Converteert een shopentitylist in een datalist voor bewaard te worden in een bestand
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < shopEntityList.size(); i++) {
@@ -713,17 +681,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             cbTextStyle = SpecificData.STYLE_DEFAULT;
             // Controle only checked
             if ((prodList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
-                if (inDisplayType == SpecificData.PRODUCT_DISPLAY_LARGE){
+                if (inDisplayType == SpecificData.DISPLAY_LARGE){
                     productDisplayLine = getProductLargeDisplay(prodList.get(i));
                 }else {
                     productDisplayLine = prodList.get(i).getEntityName();
                 }
-                if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL_BOLD) &&
+                if ((inDisplayType == SpecificData.DISPLAY_SMALL_BOLD) &&
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
                 }
                 // Check eigenschap cooled, style = red
-                if ((inDisplayType == SpecificData.PRODUCT_DISPLAY_SMALL) &&
+                if ((inDisplayType == SpecificData.DISPLAY_SMALL) &&
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED;
                 }
@@ -797,8 +765,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
         // Bepaalt de index vd produkt-shop combinatie als die bestaat
         for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getProductId().getId() == inProductID.getId() &&
-                    productInMealList.get(i).getMealId().getId() == inMealID.getId()){
+            if (productInMealList.get(i).getSecondID().getId() == inProductID.getId() &&
+                    productInMealList.get(i).getFirstID().getId() == inMealID.getId()){
                 return i;
             }
         }
@@ -810,12 +778,12 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de parentgerechten die een combinatie hebben met het opgegeven gerecht
         List<Meal> childMeals = new ArrayList<>();
         for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getChildMealId().getId() == inMeal.getEntityId().getId()){
-                if(getMealByID(mealInMealList.get(i).getChildMealId()) != null){
+            if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
                     ListItemHelper itemHelper = new ListItemHelper(
-                            getMealByID(mealInMealList.get(i).getChildMealId()).getEntityName(),
+                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
                             "",
-                            mealInMealList.get(i).getChildMealId());
+                            mealInMealList.get(i).getSecondID());
                     parentMealNames.add(itemHelper);
                 }
             }
@@ -828,12 +796,12 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de deelgerechten die een combinatie hebben met het opgegeven gerecht
         List<Meal> childMeals = new ArrayList<>();
         for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getParentMealId().getId() == inMeal.getEntityId().getId()){
-                if(getMealByID(mealInMealList.get(i).getChildMealId()) != null){
+            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
                     ListItemHelper itemHelper = new ListItemHelper(
-                            getMealByID(mealInMealList.get(i).getChildMealId()).getEntityName(),
+                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
                             "",
-                            mealInMealList.get(i).getChildMealId());
+                            mealInMealList.get(i).getSecondID());
                     childMealNames.add(itemHelper);
                 }
             }
@@ -858,9 +826,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de produkten die een combinatie hebben met het opgegeven gerecht
         List<Product> productsForMeal = new ArrayList<>();
         for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getMealId().getId() == inMeal.getEntityId().getId()){
-                if(getProductByID(productInMealList.get(i).getProductId()) != null){
-                    productsForMeal.add(getProductByID(productInMealList.get(i).getProductId()));
+            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                if(getProductByID(productInMealList.get(i).getSecondID()) != null){
+                    productsForMeal.add(getProductByID(productInMealList.get(i).getSecondID()));
                 }
             }
         }
