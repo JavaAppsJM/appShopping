@@ -586,9 +586,9 @@ public class BluetoothCom extends AppCompatActivity {
                 // de eerste uit prodshop mag gestuurd worden
                 // Patroon6 verstuur: <send><shopprod><0: index in arraylist><shopID><productID>
                 String msg = "<send><shopprod><0><";
-                msg = msg.concat(viewModel.getProductInShopList().get(0).getShopId().getIdString());
+                msg = msg.concat(viewModel.getProductInShopList().get(0).getFirstID().getIdString());
                 msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductInShopList().get(0).getProductId().getIdString());
+                msg = msg.concat(viewModel.getProductInShopList().get(0).getSecondID().getIdString());
                 msg = msg.concat(">");
                 sendMessage(msg);
             }
@@ -603,9 +603,9 @@ public class BluetoothCom extends AppCompatActivity {
                     msg = msg.concat("shopprod><");
                     msg = msg.concat(vlgndIndex);
                     msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductInShopList().get(volgendeIndex).getShopId().getIdString());
+                    msg = msg.concat(viewModel.getProductInShopList().get(volgendeIndex).getFirstID().getIdString());
                     msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductInShopList().get(volgendeIndex).getProductId().getIdString());
+                    msg = msg.concat(viewModel.getProductInShopList().get(volgendeIndex).getSecondID().getIdString());
                     msg = msg.concat(">");
                 }else {
                     //Einde vd shopprod list en einde vn send operatie verstuur: <send><end>

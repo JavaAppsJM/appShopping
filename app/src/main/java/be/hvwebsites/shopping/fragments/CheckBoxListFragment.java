@@ -138,6 +138,7 @@ public class CheckBoxListFragment extends Fragment{
         helper.attachToRecyclerView(recyclerView);
 
         // Invullen adapter
+        cbListAdapter.setReference(entityName);
         cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
         cbListAdapter.setCheckboxList(checkboxList);
 

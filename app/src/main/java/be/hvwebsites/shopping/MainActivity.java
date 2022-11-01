@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button buttonMeals = findViewById(R.id.meals);
-        buttonProducts.setOnClickListener(new View.OnClickListener() {
+        buttonMeals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ListActivity.class);
