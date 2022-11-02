@@ -173,6 +173,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                     productToSave.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
                     viewModel.getProductList().set(indexToUpdate, productToSave);
                 }
+                viewModel.sortProductList();
                 viewModel.storeProducts();
                 Intent replyIntent = new Intent(getContext(), A4ListActivity.class);
                 replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_2);

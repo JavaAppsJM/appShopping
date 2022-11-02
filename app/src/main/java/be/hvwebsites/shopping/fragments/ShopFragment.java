@@ -82,6 +82,7 @@ public class ShopFragment extends Fragment {
                     newShop.setEntityName(String.valueOf(nameView.getText()));
                     viewModel.getShopList().add(newShop);
                 }
+                viewModel.sortShopList();
                 viewModel.storeShops();
                 Intent replyIntent = new Intent(getContext(), A4ListActivity.class);
                 replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_1);

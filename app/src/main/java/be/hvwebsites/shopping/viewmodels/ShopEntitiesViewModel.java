@@ -317,18 +317,22 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public List<ShoppingEntity> sortShopEntityList(List<? extends ShoppingEntity> inList){
         // Sorteert een list op entityname alfabetisch
-        ShoppingEntity tempEntity = new ShoppingEntity();
+        ShoppingEntity tempEntity;
         List<ShoppingEntity> outList = new ArrayList<>();
-        outList.addAll(inList);
-        for (int i = outList.size() ; i > 0; i--) {
+        // Werkt niet met ShoppingEntity !!
+        //outList.addAll(inList);
+/*
+        for (int i = inList.size() ; i > 0; i--) {
             for (int j = 1; j < i ; j++) {
-                if (outList.get(j).getEntityName().compareToIgnoreCase(outList.get(j-1).getEntityName()) < 0){
-                    tempEntity = outList.get(j);
-                    outList.set(j, outList.get(j-1));
-                    outList.set(j-1, tempEntity);
+                if (inList.get(j).getEntityName().compareToIgnoreCase(inList.get(j-1).getEntityName()) < 0){
+                    tempEntity = inList.get(j);
+                    inList.get(j) = inList.get(j-1);
+                    inList.set(j, inList.get(j-1));
+                    inList.set(j-1, tempEntity);
                 }
             }
         }
+*/
         return outList;
     }
 
@@ -471,9 +475,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public ReturnInfo storeShops(){
         // Bewaart de shoplist
-        // Eerst de shoplist alfabetisch sorteren
-        sortShopEntityList(shopList);
-        //sortShopList(shopList);
+        // Sortering is reeds gebeurd in ShopFragment
         ReturnInfo returnInfo = new ReturnInfo(0);
         repository.storeData(shopFile, convertEntityListinDataList(shopList));
         return returnInfo;
@@ -481,9 +483,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public ReturnInfo storeProducts(){
         // Bewaart de productlist
-        // Eerst de productlist alfabetisch sorteren
-        sortShopEntityList(productList);
-        //sortProductList(productList);
+        // Sortering is reeds gebeurd in ProductFragment
         ReturnInfo returnInfo = new ReturnInfo(0);
         repository.storeData(productFile, convertEntityListinDataList(productList));
         return returnInfo;
@@ -491,9 +491,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public ReturnInfo storeMeals(){
         // Bewaart de meallist
-        // Eerst de list alfabetisch sorteren
-        sortShopEntityList(mealList);
-        //sortMealList(mealList);
+        // TODO: Miss moet de sortering bij enkel bij toevoegen en naamswijziging gebeuren ?
+        //sortShopEntityList(mealList);
+        sortMealList();
         ReturnInfo returnInfo = new ReturnInfo(0);
         repository.storeData(mealFile, convertEntityListinDataList(mealList));
         return returnInfo;
@@ -681,8 +681,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private void sortShopList(List<Shop> shopList){
+    public void sortShopList(){
         // Sorteert een shoplist op entityname alfabetisch
         Shop tempShop = new Shop();
         for (int i = shopList.size() ; i > 0; i--) {
@@ -696,8 +695,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private void sortProductList(List<Product> productList){
+    public void sortProductList(){
         // Sorteert een productlist op entityname alfabetisch
         Product tempProduct = new Product();
         for (int i = productList.size() ; i > 0; i--) {
@@ -712,17 +710,16 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private void sortMealList(List<Meal> meals){
+    public void sortMealList(){
         // Sorteert een meallist op entityname alfabetisch
         Meal tempEntity = new Meal();
-        for (int i = meals.size() ; i > 0; i--) {
+        for (int i = mealList.size() ; i > 0; i--) {
             for (int j = 1; j < i ; j++) {
-                if (meals.get(j).getEntityName().compareToIgnoreCase(
-                        meals.get(j-1).getEntityName()) < 0){
-                    tempEntity.setMeal(meals.get(j));
-                    meals.get(j).setMeal(meals.get(j-1));
-                    meals.get(j-1).setMeal(tempEntity);
+                if (mealList.get(j).getEntityName().compareToIgnoreCase(
+                        mealList.get(j-1).getEntityName()) < 0){
+                    tempEntity.setMeal(mealList.get(j));
+                    mealList.get(j).setMeal(mealList.get(j-1));
+                    mealList.get(j-1).setMeal(tempEntity);
                 }
             }
         }
