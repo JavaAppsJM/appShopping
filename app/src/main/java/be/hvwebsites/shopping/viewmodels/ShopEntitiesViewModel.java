@@ -227,6 +227,15 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return lineList;
     }
 
+    private List<String> convertEntityListinDataList(List<? extends ShoppingEntity> shopEntityList){
+        // Converteert een shopentitylist in een datalist voor bewaard te worden in een bestand
+        List<String> lineList = new ArrayList<>();
+        for (int i = 0; i < shopEntityList.size(); i++) {
+            lineList.add(shopEntityList.get(i).convertToFileLine());
+        }
+        return lineList;
+    }
+
     public List<String> getNameListFromList(List<? extends ShoppingEntity> inList, int indisplay){
         // bepaalt een lijst met entitynamen obv inlist
         List<String> nameList = new ArrayList<>();
@@ -295,7 +304,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return shopsForProduct;
     }
 
-    public int getFirstPartnerIndexfromId(List<? extends SuperCombination> inList, IDNumber inID, boolean first){
+    public int getFirstPartnerIndexfromId(List<? extends SuperCombination> inList,
+                                          IDNumber inID,
+                                          boolean first){
         for (int i = 0; i < inList.size(); i++) {
             if ((inList.get(i).getFirstID().getId() == inID.getId()) && (first)){
                 return i;
@@ -306,7 +317,9 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return StaticData.ITEM_NOT_FOUND;
     }
 
-    public void deleteCombinById(List<? extends SuperCombination> inList, IDNumber inID, boolean first){
+    public void deleteCombinById(List<? extends SuperCombination> inList,
+                                 IDNumber inID,
+                                 boolean first){
         // Verwijdert de combinaties voor een first of second opgegeven ID
         int position = getFirstPartnerIndexfromId(inList, inID, first);
         while (position != StaticData.ITEM_NOT_FOUND){
@@ -491,9 +504,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public ReturnInfo storeMeals(){
         // Bewaart de meallist
-        // TODO: Miss moet de sortering bij enkel bij toevoegen en naamswijziging gebeuren ?
-        //sortShopEntityList(mealList);
-        sortMealList();
+        // Sortering moet reeds gebeurd zijn
         ReturnInfo returnInfo = new ReturnInfo(0);
         repository.storeData(mealFile, convertEntityListinDataList(mealList));
         return returnInfo;
@@ -562,11 +573,14 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     // TODO: Kan vervangen worden door FlexiListHandler
     private void deleteProductsByShop(ShoppingEntity inShop){
         // Verwijdert de prodinshop combinaties voor een opgegeven shop
+        deleteCombinById(productInShopList, inShop.getEntityId(), true);
+/*
         int position = getFirstProductInshopByShop(inShop);
         while (position != StaticData.ITEM_NOT_FOUND){
             productInShopList.remove(position);
             position = getFirstProductInshopByShop(inShop);
         }
+*/
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
@@ -595,12 +609,15 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     private int getFirstProductInshopByProduct(Product inProduct){
         // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
         // opgegeven produkt
+        return getFirstPartnerIndexfromId(productInShopList, inProduct.getEntityId(), false);
+/*
         for (int i = 0; i < productInShopList.size(); i++) {
             if (productInShopList.get(i).getSecondID().getId() == inProduct.getEntityId().getId()){
                 return i;
             }
         }
         return StaticData.ITEM_NOT_FOUND;
+*/
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
@@ -725,43 +742,43 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    private List<String> convertEntityListinDataList(List<? extends ShoppingEntity> shopEntityList){
-        // Converteert een shopentitylist in een datalist voor bewaard te worden in een bestand
-        List<String> lineList = new ArrayList<>();
-        for (int i = 0; i < shopEntityList.size(); i++) {
-            lineList.add(shopEntityList.get(i).convertToFileLine());
-        }
-        return lineList;
-    }
-
     // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertProdShopListinDataList(List<ProductInShop> itemList){
         // Converteert een prodinshoplist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+/*
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
             lineList.add(itemList.get(i).convertCombinInFileLine());
         }
         return lineList;
+*/
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertProdMealListinDataList(List<ProductInMeal> itemList){
         // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+/*
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
             lineList.add(itemList.get(i).convertCombinInFileLine());
         }
         return lineList;
+*/
     }
 
     // TODO: Kan vervangen worden door FlexiListHandler
     private List<String> convertMealMealListinDataList(List<MealInMeal> itemList){
         // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+/*
         List<String> lineList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
             lineList.add(itemList.get(i).convertCombinInFileLine());
         }
         return lineList;
+*/
     }
 
     private List<Shop> getShopsFromDataList(List<String> dataList){
@@ -913,6 +930,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
         // Bepaalt de index vd produkt-shop combinatie als die bestaat
+        return getIndexByIdsFromCList(productInMealList, inMealID, inProductID);
+/*
         for (int i = 0; i < productInMealList.size(); i++) {
             if (productInMealList.get(i).getSecondID().getId() == inProductID.getId() &&
                     productInMealList.get(i).getFirstID().getId() == inMealID.getId()){
@@ -920,6 +939,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             }
         }
         return StaticData.ITEM_NOT_FOUND;
+*/
     }
 
     public List<ListItemHelper> getParentMealNamesByMeal(Meal inMeal){
