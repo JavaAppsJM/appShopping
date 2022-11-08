@@ -254,6 +254,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return nameList;
     }
 
+    public List<ListItemHelper> getItemsFromList(List<? extends ShoppingEntity> inList){
+        // bepaalt een lijst met ListItemHelpers obv inlist
+        List<ListItemHelper> nameList = new ArrayList<>();
+        for (int i = 0; i < inList.size(); i++) {
+            nameList.add(new ListItemHelper(inList.get(i).getEntityName(),
+                    "",
+                    inList.get(i).getEntityId()));
+        }
+        return nameList;
+    }
+
     public String getNameByIdFromList(List<? extends ShoppingEntity> inList, int inId){
         // bepaalt de entitynaam obv inlist en inId
         String name = "";
@@ -364,6 +375,16 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return null;
     }
 
+    public Shop getShopByID(IDNumber inID){
+        // Bepaalt de shop voor een opgegeven IDNumber
+        int indexInShopList = getIndexById(shopList, inID);
+        if (indexInShopList != StaticData.ITEM_NOT_FOUND){
+            return shopList.get(indexInShopList);
+        }else {
+            return null; // Shop niet gevonden
+        }
+    }
+
     /** Produkt-Shoplist methodes */
 
     public List<String> getShopNamesByProduct(Product inProduct){
@@ -454,15 +475,15 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
 
     public List<Product> getProductsByPrefShop(Shop inPrefShop){
         // Bepaalt de produkten voor een opgegeven preferred shop
-        List<Product> productForShops = new ArrayList<>();
+        List<Product> productsForShop = new ArrayList<>();
         if (inPrefShop != null){
             for (int i = 0; i < productList.size(); i++) {
                 if (productList.get(i).getPreferredShopId().getId() == inPrefShop.getEntityId().getId()){
-                    productForShops.add(productList.get(i));
+                    productsForShop.add(productList.get(i));
                 }
             }
         }
-        return productForShops;
+        return productsForShop;
     }
 
     public ReturnInfo storeProdInShop(){
@@ -856,7 +877,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
                 }
-                // Check eigenschap cooled, style = red
+                // Check eigenschap cooled, style = cooled
                 if ((inDisplayType == SpecificData.DISPLAY_SMALL) &&
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED;

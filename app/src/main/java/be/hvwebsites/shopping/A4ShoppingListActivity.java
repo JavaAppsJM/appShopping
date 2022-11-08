@@ -30,6 +30,8 @@ import java.util.List;
 
 import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
+import be.hvwebsites.libraryandroid4.helpers.IDNumber;
+import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
@@ -54,6 +56,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private Shop shopFilter;
     private ChckbxListAdapter cbListAdapter;
     private ArrayAdapter<String> shopFilterAdapter;
+    private ArrayAdapter<ListItemHelper> shopItemAdapter;
     private Switch switchV;
 
 
@@ -111,8 +114,18 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 android.R.layout.simple_spinner_item);
         shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
-        shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
+        shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(),
+                SpecificData.DISPLAY_SMALL));
         shopFilterAdapter.add(SpecificData.NO_FILTER);
+        // Adapter obv ListItemHelper
+        shopItemAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item);
+        shopItemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Adapter vullen met shops
+        shopItemAdapter.addAll(viewModel.getItemsFromList(viewModel.getShopList()));
+        shopItemAdapter.add(new ListItemHelper(SpecificData.NO_FILTER,
+                "",
+                StaticData.IDNUMBER_NOT_FOUND));
 
         // Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
@@ -155,13 +168,14 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 shopFilter = viewModel.getShopByShopName(shopFilterString);
             }
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
-            checkboxList.clear();
             composeCheckboxList();
             // spinner met selectie gebruiken
-            shopFilterSpinner.setAdapter(shopFilterAdapter);
+            //shopFilterSpinner.setAdapter(shopFilterAdapter);
+            shopFilterSpinner.setAdapter(shopItemAdapter);
             // animate parameter moet false staan om het onnodig afvuren vd spinner tegen te gaan
             if (shopFilterString.equals(SpecificData.NO_FILTER)){
-                int positionAA = shopFilterAdapter.getCount()-1;
+                //int positionAA = shopFilterAdapter.getCount()-1;
+                int positionAA = shopItemAdapter.getCount()-1;
                 shopFilterSpinner.setSelection(positionAA, false);
             }else {
                 shopFilterSpinner.setSelection(viewModel.getIndexById(viewModel.getShopList(), shopFilter.getEntityId()), false);
@@ -228,13 +242,28 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             Toast.makeText(A4ShoppingListActivity.this,
                     "Hersamenstellen artikels ...",
                     Toast.LENGTH_LONG).show();
-            shopFilterString = String.valueOf(parent.getItemAtPosition(position));
+            // Bepalen wat geselecteerd is
+            ListItemHelper selecShop = (ListItemHelper) parent.getItemAtPosition(position);
+            if (selecShop.getItemID().getId() == StaticData.IDNUMBER_NOT_FOUND.getId()){
+                // Alle artikels
+                shopFilterString = SpecificData.NO_FILTER;
+                shopFilter = null;
+            }else {
+                // Bepaal Shop om te filteren ==> nieuwe shopfilter
+                shopFilter = viewModel.getShopByID(selecShop.getItemID());
+                shopFilterString = shopFilter.getEntityName();
+            }
+            //shopFilterString = String.valueOf(parent.getItemAtPosition(position));
             // Shopfilter bewaren als Cookie
             cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
+/*
             // bepaal shop voor herbepalen checkboxlist
             if (!shopFilterString.equals(SpecificData.NO_FILTER)){
                 shopFilter = viewModel.getShopByShopName(shopFilterString);
+            }else {
+                shopFilter = null;
             }
+*/
             // spinner refreshen hoeft niet
 //            parent.setAdapter(shopFilterAdapter);
 //            parent.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()));
@@ -251,16 +280,19 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
     private void composeCheckboxList(){
         // stel de checkboxlist samen obv de shopfilter
+        // Clearen vn Lists
+        prodinShopMatchingShopFilter.clear();
+        productsMatchingShopfilter.clear();
+        checkboxList.clear();
         // selectief producten ophalen
         // eerst de producten met de shopfilter als prefShop
         if (shopFilterString.equals(SpecificData.NO_FILTER)){
-            prodinShopMatchingShopFilter = viewModel.getProductList();
+            prodinShopMatchingShopFilter.addAll(viewModel.getProductList());
         }else {
-            productsMatchingShopfilter = viewModel.getProductsByPrefShop(shopFilter);
+            productsMatchingShopfilter.addAll(viewModel.getProductsByPrefShop(shopFilter));
             // dan de producten met de shopfilter als prodinshop combinatie
-            prodinShopMatchingShopFilter = viewModel.getProductsByShop(shopFilter);
+            prodinShopMatchingShopFilter.addAll(viewModel.getProductsByShop(shopFilter));
         }
-        checkboxList.clear();
 
         // eerst producten met pref shop omzetten nr checkboxen
         if (productsMatchingShopfilter.size() > 0){
