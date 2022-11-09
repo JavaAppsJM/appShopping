@@ -21,9 +21,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.A4ListActivity;
+import be.hvwebsites.shopping.ManageItemActivity;
 import be.hvwebsites.shopping.R;
 import be.hvwebsites.shopping.adapters.SmallItemListAdapter;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
@@ -94,6 +97,20 @@ public class MealFragment extends Fragment {
                 new SmartTextItemListAdapter(this.getContext());
         recycVwMealDetails.setAdapter(recycMealDetailAdapter);
         recycVwMealDetails.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_edit_meal_detail);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Toevoegen van een productmeal of een childmeal of een parentmeal
+                Intent intent = new Intent(getContext(),
+                        ManageItemActivity.class);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_3);
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_NEW);
+//                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+                startActivity(intent);
+            }
+        });
 
         // Wat zijn de argumenten die werden meegegeven
         action = requireArguments().getString(StaticData.EXTRA_INTENT_KEY_ACTION);

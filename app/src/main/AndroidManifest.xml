@@ -7,9 +7,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -21,9 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shopping"
         tools:targetApi="31">
-        <activity android:name=".BluetoothCom"
-            android:label="Bluetooth Communication">
+        <activity
+            android:name=".AddMealCombins"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <activity
+            android:name=".BluetoothCom"
+            android:label="Bluetooth Communication"></activity>
         <activity
             android:name=".services.BtDeviceListActivity"
             android:label="@string/title_bluetooth_services"

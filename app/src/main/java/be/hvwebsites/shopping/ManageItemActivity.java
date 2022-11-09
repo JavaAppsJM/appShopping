@@ -59,8 +59,7 @@ public class ManageItemActivity extends AppCompatActivity  {
         Bundle fragmentBundle = new Bundle();
         fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_ACTION, action);
         // TODO: is dit nodig want gans het viewmodel wordt gerecupereerd in het fragment ?
-        fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR,
-                fileBaseService.getFileBaseDir());
+        //fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, fileBaseService.getFileBaseDir());
 
         // indien update
         if (action.equals(StaticData.ACTION_UPDATE)){
