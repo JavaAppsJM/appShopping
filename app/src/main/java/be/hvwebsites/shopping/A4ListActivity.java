@@ -17,8 +17,6 @@ import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.fragments.CheckBoxListFragment;
-import be.hvwebsites.shopping.fragments.ProductListFragment;
-import be.hvwebsites.shopping.fragments.ShopListFragment;
 import be.hvwebsites.shopping.fragments.TextItemListFragment;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
@@ -73,6 +71,8 @@ public class A4ListActivity extends AppCompatActivity {
         ReturnInfo viewModelStatus = viewModel.initializeViewModel(filebaseDir);
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
+            // Baseswitch in viewmodel zetten is echt nodig voor de creatie ve entity
+            // bij toevoegen in de fragmenten
             viewModel.setBaseSwitch(baseSwitch);
         } else if (viewModelStatus.getReturnCode() == 100) {
             Toast.makeText(A4ListActivity.this,

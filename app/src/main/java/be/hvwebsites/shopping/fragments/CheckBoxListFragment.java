@@ -52,6 +52,8 @@ public class CheckBoxListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Via het viewmodel uit de activity kan je over de data beschikken !
+        // Ook baseswitch zit hierin net als de files !! Dus je hoeft filebasedir of baseswitch niet
+        // apart door te geven
         viewModel = new ViewModelProvider(requireActivity()).get(ShopEntitiesViewModel.class);
 
         // Recyclerview definieren
@@ -131,7 +133,8 @@ public class CheckBoxListFragment extends Fragment{
                             default:
                                 break;
                         }
-                        cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+                        // baseswitch doorgeven nr adapter is niet nodig !
+                        //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                         cbListAdapter.setCheckboxList(checkboxList);
                     }
                 });
@@ -139,7 +142,8 @@ public class CheckBoxListFragment extends Fragment{
 
         // Invullen adapter
         cbListAdapter.setReference(entityName);
-        cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+        // baseswitch doorgeven nr adapter is niet nodig !
+        //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
         cbListAdapter.setCheckboxList(checkboxList);
 
         // Als er geclicked is op een checkbox, kan ik dat hier capteren ?
@@ -170,7 +174,8 @@ public class CheckBoxListFragment extends Fragment{
                     default:
                         break;
                 }
-                cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+                // baseswitch doorgeven nr adapter is niet nodig !
+                //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                 cbListAdapter.setCheckboxList(checkboxList);
                 boolean debug = true;
             }

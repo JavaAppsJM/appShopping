@@ -108,7 +108,9 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
                     Intent intent = new Intent(mContext, ManageItemActivity.class);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+                    // baseswitch doorgeven is niet nodig omdat ManageItemActivity zelf baseswitch
+                    // bepaald
+                    //intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                     intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
                     mContext.startActivity(intent);
                     return true;

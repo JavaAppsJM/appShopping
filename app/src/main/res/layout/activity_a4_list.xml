@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.hvwebsites.winkelen.A4ListActivity">
+    tools:context="be.hvwebsites.shopping.A4ListActivity">
 
     <!--    <include layout="@layout/content_a4_list" />-->
 

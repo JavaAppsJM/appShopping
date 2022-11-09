@@ -26,7 +26,8 @@ public class ManageItemActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_item);
 
-        // Creer een filebase service (bevat file base en file base directory) obv device en package name
+        // Creer een filebase service (bevat file base en file base directory) obv device
+        // en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
 
         // Alle data ophalen
@@ -36,6 +37,8 @@ public class ManageItemActivity extends AppCompatActivity  {
         ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseService.getFileBaseDir());
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
+            // Baseswitch in viewmodel zetten is echt nodig voor de creatie ve entity
+            // bij toevoegen in de fragmenten
             viewModel.setBaseSwitch(fileBaseService.getFileBase());
         } else if (viewModelStatus.getReturnCode() == 100) {
             Toast.makeText(ManageItemActivity.this,
@@ -55,6 +58,7 @@ public class ManageItemActivity extends AppCompatActivity  {
         // Bundle voorbereiden om mee te geven aan fragment
         Bundle fragmentBundle = new Bundle();
         fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_ACTION, action);
+        // TODO: is dit nodig want gans het viewmodel wordt gerecupereerd in het fragment ?
         fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR,
                 fileBaseService.getFileBaseDir());
 
@@ -101,6 +105,12 @@ public class ManageItemActivity extends AppCompatActivity  {
                 }
                 // Creeer fragment_meal
                 // TODO: ga naar mealfragment als het klaar is
+                if (savedInstanceState == null){
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragmentShopEntity, MealFragment.class, fragmentBundle)
+                            .commit();
+                }
 /*
                 if (savedInstanceState == null){
                     getSupportFragmentManager().beginTransaction()
