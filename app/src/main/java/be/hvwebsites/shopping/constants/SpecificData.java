@@ -54,4 +54,9 @@ public class SpecificData {
     public static final String SC_PARENTMEAL = "parentmeal";
     public static final String SC_CHILDMEAL = "childmeal";
 
+    // Cookie Key Values
+    public static final String COOKIE_RETURN_ENTITY_TYPE = "returnentitytype";
+    public static final String COOKIE_RETURN_ACTION = "returnaction";
+    public static final String COOKIE_RETURN_UPDATE_INDEX = "returnindex";
+
 }

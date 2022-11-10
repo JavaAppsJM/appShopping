@@ -6,19 +6,17 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/combinItemMarker"
-        android:layout_width="2dp"
-        android:layout_height="match_parent"
+        android:id="@+id/combinMealMarker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@android:drawable/arrow_down_float" />
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
     <TextView
-        android:id="@+id/combinItem"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintStart_toStartOf="@id/combinItemMarker"
-        tools:text="placeholder text" />
+        android:id="@+id/combinMealItem"
+        android:layout_width="750dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/placeholder" />
 
 </android.widget.LinearLayout>

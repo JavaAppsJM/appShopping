@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import be.hvwebsites.libraryandroid4.repositories.Cookie;
+import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
@@ -50,10 +52,23 @@ public class ManageItemActivity extends AppCompatActivity  {
                     Toast.LENGTH_LONG).show();
         }
 
-        // Data uit intent halen vr het list type, action en evt selectie & index
+        // Data uit intent halen indien ingevuld anders cookies
         Intent manageItemIntent = getIntent();
-        String listType = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
-        String action = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_ACTION);
+        CookieRepository cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
+        String listType = "";
+        if (manageItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_TYPE)){
+            listType = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
+        }else {
+            // er is geen intent, listtype ophalen als Cookie
+            listType = cookieRepository.getCookieValueFromLabel(SpecificData.COOKIE_RETURN_ENTITY_TYPE);
+        }
+        String action = "";
+        if (manageItemIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_ACTION)){
+            action = manageItemIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_ACTION);
+        }else {
+            // er is geen intent, listtype ophalen als Cookie
+            action = cookieRepository.getCookieValueFromLabel(SpecificData.COOKIE_RETURN_ACTION);
+        }
 
         // Bundle voorbereiden om mee te geven aan fragment
         Bundle fragmentBundle = new Bundle();
@@ -61,11 +76,19 @@ public class ManageItemActivity extends AppCompatActivity  {
         // TODO: is dit nodig want gans het viewmodel wordt gerecupereerd in het fragment ?
         //fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, fileBaseService.getFileBaseDir());
 
-        // indien update
+        // Bewaar terugkeerkruimels als cookies
+        cookieRepository.addCookie(new Cookie(SpecificData.COOKIE_RETURN_ENTITY_TYPE, listType));
+        cookieRepository.addCookie(new Cookie(SpecificData.COOKIE_RETURN_ACTION, action));
+
         if (action.equals(StaticData.ACTION_UPDATE)){
             int index = manageItemIntent.getIntExtra(StaticData.EXTRA_INTENT_KEY_INDEX, 0);
+            //TODO: index moet nog uit cookie gehaald worden indien niet in intent
             fragmentBundle.putInt(StaticData.EXTRA_INTENT_KEY_INDEX, index);
+            cookieRepository.addCookie(new Cookie(SpecificData.COOKIE_RETURN_UPDATE_INDEX, String.valueOf(index)));
         }
+
+
+
 
         switch (listType){
             case SpecificData.LIST_TYPE_1:
