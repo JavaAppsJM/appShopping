@@ -51,8 +51,9 @@ public class SpecificData {
     public static final String SC_SHOP = "shop";
     public static final String SC_PRODUCT = "product";
     public static final String SC_MEAL = "meal";
+    public static final String SC_PRODUCTSMEAL = "productsmeal";
     public static final String SC_PARENTMEAL = "parentmeal";
-    public static final String SC_CHILDMEAL = "childmeal";
+    public static final String SC_SUBMEAL = "submeal";
 
     // Cookie Key Values
     public static final String COOKIE_RETURN_ENTITY_TYPE = "returnentitytype";

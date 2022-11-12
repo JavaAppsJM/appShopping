@@ -42,8 +42,8 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
 
         @Override
         public void onClick(View v) {
-            // er is geclicked op een item, dit betekent dat er nr detail vd item vr evt update wordt gegaan
-            // daarvoor gaan we nr de update activity
+            // er is geclicked op een item
+
             int indexToUpdate = getAdapterPosition();
 
 /*
@@ -91,21 +91,9 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
         }
     }
 
-/*
-    public String getBaseSwitch() {
-        return baseSwitch;
-    }
-
-    public void setBaseSwitch(String baseSwitch) {
-        this.baseSwitch = baseSwitch;
-    }
-*/
-
     @Override
     public int getItemCount() {
         if (reusableList != null) return reusableList.size();
         else return 0;
     }
-
-
 }

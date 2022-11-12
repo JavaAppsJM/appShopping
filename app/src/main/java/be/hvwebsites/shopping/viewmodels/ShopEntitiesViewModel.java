@@ -486,6 +486,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productsForShop;
     }
 
+    /** Store methodes */
+
     public ReturnInfo storeProdInShop(){
         // Bewaart de produktInShopList
         ReturnInfo returnInfo = new ReturnInfo(0);
@@ -530,6 +532,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         repository.storeData(mealFile, convertEntityListinDataList(mealList));
         return returnInfo;
     }
+
+    /** Delete methodes */
 
     public ReturnInfo deleteShop(int position){
         // Verwijdert een shop
@@ -718,6 +722,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
         return StaticData.ITEM_NOT_FOUND;
     }
+
+    /** Sort methodes */
 
     public void sortShopList(){
         // Sorteert een shoplist op entityname alfabetisch

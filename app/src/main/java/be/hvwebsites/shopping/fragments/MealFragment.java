@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,19 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.A4ListActivity;
-import be.hvwebsites.shopping.ManageItemActivity;
+import be.hvwebsites.shopping.AddMealCombins;
 import be.hvwebsites.shopping.R;
-import be.hvwebsites.shopping.adapters.SmallItemListAdapter;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
-import be.hvwebsites.shopping.adapters.TextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Meal;
-import be.hvwebsites.shopping.entities.Product;
-import be.hvwebsites.shopping.entities.ProductInShop;
-import be.hvwebsites.shopping.entities.Shop;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class MealFragment extends Fragment {
@@ -44,6 +35,8 @@ public class MealFragment extends Fragment {
     private int indexToUpdate = 0;
     // Meal
     private Meal mealToSave = new Meal();
+    // SuperCombination Type
+    private String combinationType = SpecificData.SC_PRODUCTSMEAL;
     // Textviews voor de labels vd recyclerview
     private TextView labelProductsMeal;
     private TextView labelSubMeal;
@@ -104,10 +97,10 @@ public class MealFragment extends Fragment {
             public void onClick(View view) {
                 // TODO: Toevoegen van een productmeal of een childmeal of een parentmeal
                 Intent intent = new Intent(getContext(),
-                        ManageItemActivity.class);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_3);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_NEW);
-//                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+                        AddMealCombins.class);
+                // Meal Id en combinationType meegeven
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_ID, mealToSave.getEntityId().getId());
+                intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, combinationType);
                 startActivity(intent);
             }
         });
@@ -148,6 +141,8 @@ public class MealFragment extends Fragment {
                     labelProductsMeal.setTypeface(null, Typeface.BOLD);
                     labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.black));
+                    // CombinationType zetten
+                    combinationType = SpecificData.SC_PRODUCTSMEAL;
                     // Recyclerview invullen met artikels
                     recycMealDetailAdapter.setReference(SpecificData.LIST_TYPE_2);
                     recycMealDetailAdapter.setReusableList(viewModel.getProductNamesByMeal(mealToUpdate));
@@ -168,6 +163,8 @@ public class MealFragment extends Fragment {
                     labelSubMeal.setTypeface(null, Typeface.BOLD);
                     labelSubMeal.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.black));
+                    // CombinationType zetten
+                    combinationType = SpecificData.SC_SUBMEAL;
                     // Recyclerview invullen met deelgerechten
                     recycMealDetailAdapter.setReference(SpecificData.LIST_TYPE_3);
                     recycMealDetailAdapter.setReusableList(viewModel.getChildMealNamesByMeal(mealToUpdate));
@@ -187,6 +184,8 @@ public class MealFragment extends Fragment {
                     labelParentMeal.setTypeface(null, Typeface.BOLD);
                     labelParentMeal.setTextColor(ContextCompat.getColor(getContext(),
                             R.color.black));
+                    // CombinationType zetten
+                    combinationType = SpecificData.SC_PARENTMEAL;
                     // Recyclerview invullen met deelgerechten
                     recycMealDetailAdapter.setReference(SpecificData.LIST_TYPE_3);
                     recycMealDetailAdapter.setReusableList(viewModel.getParentMealNamesByMeal(mealToUpdate));
@@ -197,7 +196,7 @@ public class MealFragment extends Fragment {
             recycMealDetailAdapter.setReference(SpecificData.LIST_TYPE_2);
             recycMealDetailAdapter.setReusableList(viewModel.getProductNamesByMeal(mealToUpdate));
         }else {
-            // Bij new geen wanted en geen labels met recyclerlist
+            // Bij new geen wanted en geen labels en geen recyclerlist
             wantedView.setVisibility(View.INVISIBLE);
             labelProductsMeal.setVisibility(View.INVISIBLE);
             labelSubMeal.setVisibility(View.INVISIBLE);

@@ -11,12 +11,19 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import be.hvwebsites.libraryandroid4.helpers.IDNumber;
+import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Meal;
+import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
@@ -24,6 +31,8 @@ public class AddMealCombins extends AppCompatActivity {
     // Device
     private final String deviceModel = Build.MODEL;
     private ShopEntitiesViewModel viewModel;
+    private String combinationType = "";
+    private Meal mealToManage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +63,12 @@ public class AddMealCombins extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
-        // Data uit intent halen vr het list type, action en evt selectie & index
+        // Data uit intent halen
         Intent addCombinsIntent = getIntent();
-        String action = addCombinsIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_ACTION);
-        // Data uit intent halen als die er is
-        CookieRepository cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
-        if (addCombinsIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_TYPE)){
-            listType = addCombinsIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
-            // listtype in cookie steken
-            cookieRepository.addCookie(new Cookie(SpecificData.COOKIE_RETURN_ENTITY_TYPE, listType));
-        }else {
-            // er is geen intent, listtype ophalen als Cookie
-            listType = cookieRepository.getCookieValueFromLabel(SpecificData.LIST_TYPE);
-        }
+        combinationType = addCombinsIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_TYPE);
+        int mealId = addCombinsIntent.getIntExtra(StaticData.EXTRA_INTENT_KEY_ID,
+                StaticData.ITEM_NOT_FOUND);
+        mealToManage = viewModel.getMealByID(new IDNumber(mealId));
 
         // Schermviews definieren
         RecyclerView recycMealCombins = findViewById(R.id.recycMealCombins);
@@ -79,7 +81,48 @@ public class AddMealCombins extends AppCompatActivity {
         recycNotMealCombins.setAdapter(recycMealNotCombinsAdapter);
         recycNotMealCombins.setLayoutManager(new LinearLayoutManager(this));
 
-        // Recyclerlists vullen
-        recycMealCombinsAdapter.setReusableList();
+        // Recyclerlists vullen afhankelijk van combinationType
+        switch (combinationType){
+            case SpecificData.SC_PRODUCTSMEAL:
+                // Vullen met productsmeal
+                recycMealCombinsAdapter.setReusableList(viewModel.getProductNamesByMeal(mealToManage));
+                // TODO: Vullen met nog niet gekoppelde producten
+                recycMealNotCombinsAdapter.setReusableList(
+                        getMissingProducts(recycMealCombinsAdapter.getReusableList()));
+                break;
+            case SpecificData.SC_SUBMEAL:
+                // Vullen met submeals
+                recycMealCombinsAdapter.setReusableList(viewModel.getChildMealNamesByMeal(mealToManage));
+                break;
+            case SpecificData.SC_PARENTMEAL:
+                // Vullen met parentmeals
+                recycMealCombinsAdapter.setReusableList(viewModel.getParentMealNamesByMeal(mealToManage));
+                break;
+            default:
+        }
+    }
+
+    private List<ListItemHelper> getMissingProducts(List<ListItemHelper> inList){
+        List<ListItemHelper> missingProcucts = new ArrayList<>();
+
+        for (int i = 0; i < viewModel.getProductList().size(); i++) {
+            // Elk product dat niet in de inList zit is een missing product
+            Product tempProduct = viewModel.getProductList().get(i);
+            if (!existIdInList(tempProduct.getEntityId().getId(), inList)){
+                missingProcucts.add(new ListItemHelper(tempProduct.getEntityName(), "",
+                        tempProduct.getEntityId()));
+            }
+
+        }
+        return missingProcucts;
+    }
+
+    private boolean existIdInList(int inId, List<ListItemHelper> inList){
+        for (int i = 0; i < inList.size(); i++) {
+            if (inList.get(i).getItemID().getId() == inId){
+                return true;
+            }
+        }
+        return false;
     }
 }
