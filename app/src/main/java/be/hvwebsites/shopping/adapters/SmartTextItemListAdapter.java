@@ -16,6 +16,7 @@ import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.ManageItemActivity;
 import be.hvwebsites.shopping.R;
+import be.hvwebsites.shopping.constants.SpecificData;
 
 public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItemListAdapter.ListViewHolder> {
     private final LayoutInflater inflater;
@@ -23,11 +24,24 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
 
     private List<ListItemHelper> reusableList;
     private String reference;
+    private String client;
+    private ClickListener clickListener;
 //    private String baseSwitch;
 
     public SmartTextItemListAdapter(Context context) {
         this.mContext = context;
         inflater = LayoutInflater.from(context);
+    }
+
+    public void setOnItemClickListener(ClickListener clickListener){
+        // Methode om de clicklistener property vd adapter in te vullen met het
+        // bewaren vd tobuy
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener{
+        // Interface om een clicklistener door te geven nr de activity
+        void onItemClicked(int position, View v);
     }
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -42,9 +56,16 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
 
         @Override
         public void onClick(View v) {
-            // er is geclicked op een item
+            // Er is geclicked op een item
+            if (client.equals(SpecificData.ACTIVITY_ADDMEALCOMBINS)){
+                // TODO: verwerking vn click vr addmealcombins
+                int indexToUpdate = getAdapterPosition();
 
-            int indexToUpdate = getAdapterPosition();
+                // clicklistener mt properties doorgeven nr activity
+                clickListener.onItemClicked(indexToUpdate, v);
+
+            }
+
 
 /*
             Intent intent = new Intent(mContext, ManageItemActivity.class);
@@ -64,6 +85,14 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
     public void setReusableList(List<ListItemHelper> reusableList) {
         this.reusableList = reusableList;
         notifyDataSetChanged();
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 
     public String getReference() {
