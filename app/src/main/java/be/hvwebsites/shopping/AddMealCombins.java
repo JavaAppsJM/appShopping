@@ -25,7 +25,9 @@ import be.hvwebsites.shopping.adapters.ChckbxListAdapter;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Meal;
+import be.hvwebsites.shopping.entities.MealInMeal;
 import be.hvwebsites.shopping.entities.Product;
+import be.hvwebsites.shopping.entities.ProductInMeal;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
@@ -41,8 +43,6 @@ public class AddMealCombins extends AppCompatActivity {
             new SmartTextItemListAdapter(this);
     private SmartTextItemListAdapter recycMealNotCombinsAdapter =
             new SmartTextItemListAdapter(this);
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,39 +150,48 @@ public class AddMealCombins extends AppCompatActivity {
         recycMealNotCombinsAdapter.setOnItemClickListener(new SmartTextItemListAdapter.ClickListener() {
             @Override
             public void onItemClicked(int position, View v) {
-                int indexCombinToDelete;
                 // via het itemID vd listitemhelper het juiste item bepalen en de combinatie
                 // met mealToManage toevoegen
                 // TODO: Verwerken afhankelijk vn combinatieType
                 switch (combinationType){
                     case SpecificData.SC_PRODUCTSMEAL:
-                        // TODO: Verbinding meal en product toevoegen
+                        // Verbinding meal en product toevoegen
                         // Product bepalen
                         Product clickedProduct = viewModel.getProductByID(mealNotCombins.get(position).getItemID());
+                        if (viewModel.getIndexByIdsFromCList(viewModel.getProductInMealList(),
+                                mealToManage.getEntityId(),
+                                clickedProduct.getEntityId()) == StaticData.ITEM_NOT_FOUND){
+                            // Combinatie bestaat niet, moet gecreerd worden
+                            viewModel.getProductInMealList().add(new ProductInMeal(clickedProduct.getEntityId(),
+                                    mealToManage.getEntityId()));
+                            viewModel.storeProdsInMeal();
+                        }
                         break;
                     case SpecificData.SC_SUBMEAL:
-                        // Verbinding meal en submeal verbreken
+                        // Verbinding meal en submeal toevoegen
                         // Submeal bepalen
                         Meal clickedSubMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
-                        // Index van meal, submeal combinatie bepalen
-                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
-                                viewModel.getMealInMealList(),
+                        if (viewModel.getIndexByIdsFromCList(viewModel.getMealInMealList(),
                                 mealToManage.getEntityId(),
-                                clickedSubMeal.getEntityId());
-                        // Meal, submeal combinatie deleten
-                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                                clickedSubMeal.getEntityId()) == StaticData.ITEM_NOT_FOUND){
+                            // Combinatie bestaat niet, moet gecreerd worden
+                            viewModel.getMealInMealList().add(new MealInMeal(mealToManage.getEntityId(),
+                                    clickedSubMeal.getEntityId()));
+                            viewModel.storeMealInMeal();
+                        }
                         break;
                     case SpecificData.SC_PARENTMEAL:
                         // Verbinding meal en parentmeal verbreken
                         // Parentmeal bepalen
                         Meal clickedParentMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
-                        // Index van parentmeal, meal combinatie bepalen
-                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
-                                viewModel.getMealInMealList(),
+                        if (viewModel.getIndexByIdsFromCList(viewModel.getMealInMealList(),
                                 clickedParentMeal.getEntityId(),
-                                mealToManage.getEntityId());
-                        // Meal, submeal combinatie deleten
-                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                                mealToManage.getEntityId()) == StaticData.ITEM_NOT_FOUND){
+                            // Combinatie bestaat niet, moet gecreerd worden
+                            viewModel.getMealInMealList().add(new MealInMeal(clickedParentMeal.getEntityId(),
+                                    mealToManage.getEntityId()));
+                            viewModel.storeMealInMeal();
+                        }
                         break;
                     default:
                 }
