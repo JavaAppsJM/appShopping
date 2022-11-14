@@ -35,6 +35,14 @@ public class AddMealCombins extends AppCompatActivity {
     private ShopEntitiesViewModel viewModel;
     private String combinationType = "";
     private Meal mealToManage;
+    private List<ListItemHelper> mealCombins = new ArrayList<>();
+    private List<ListItemHelper> mealNotCombins = new ArrayList<>();
+    private SmartTextItemListAdapter recycMealCombinsAdapter =
+            new SmartTextItemListAdapter(this);
+    private SmartTextItemListAdapter recycMealNotCombinsAdapter =
+            new SmartTextItemListAdapter(this);
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,71 +82,150 @@ public class AddMealCombins extends AppCompatActivity {
 
         // Schermviews definieren
         RecyclerView recycMealCombins = findViewById(R.id.recycMealCombins);
-        SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
+        //SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
         recycMealCombins.setAdapter(recycMealCombinsAdapter);
         recycMealCombins.setLayoutManager(new LinearLayoutManager(this));
         recycMealCombinsAdapter.setClient(SpecificData.ACTIVITY_ADDMEALCOMBINS);
 
         RecyclerView recycNotMealCombins = findViewById(R.id.recycNotCombins);
-        SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
+        //SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
         recycNotMealCombins.setAdapter(recycMealNotCombinsAdapter);
         recycNotMealCombins.setLayoutManager(new LinearLayoutManager(this));
         recycMealNotCombinsAdapter.setClient(SpecificData.ACTIVITY_ADDMEALCOMBINS);
 
+        // RecycleList vullen voor eerste keer
+        fillReusablelist();
+
+        // Als er geclicked is op een item inde mealcombins recycler list, wordt dat hier gecapteerd
+        recycMealCombinsAdapter.setOnItemClickListener(new SmartTextItemListAdapter.ClickListener() {
+            @Override
+            public void onItemClicked(int position, View v) {
+                int indexCombinToDelete;
+                // via het itemID vd listitemhelper het juiste item bepalen en de combinatie
+                // met mealToManage verbreken
+                // Verwerken afhankelijk vn combinatieType
+                switch (combinationType){
+                    case SpecificData.SC_PRODUCTSMEAL:
+                        // Verbinding meal en product verbreken
+                        // Product bepalen
+                        Product clickedProduct = viewModel.getProductByID(mealCombins.get(position).getItemID());
+                        // Index van product, meal combinatie bepalen
+                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
+                                viewModel.getProductInMealList(),
+                                mealToManage.getEntityId(),
+                                clickedProduct.getEntityId());
+                        // Product, meal combinatie deleten
+                        viewModel.getProductInMealList().remove(indexCombinToDelete);
+                        break;
+                    case SpecificData.SC_SUBMEAL:
+                        // Verbinding meal en submeal verbreken
+                        // Submeal bepalen
+                        Meal clickedSubMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        // Index van meal, submeal combinatie bepalen
+                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
+                                viewModel.getMealInMealList(),
+                                mealToManage.getEntityId(),
+                                clickedSubMeal.getEntityId());
+                        // Meal, submeal combinatie deleten
+                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        break;
+                    case SpecificData.SC_PARENTMEAL:
+                        // Verbinding meal en parentmeal verbreken
+                        // Parentmeal bepalen
+                        Meal clickedParentMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        // Index van parentmeal, meal combinatie bepalen
+                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
+                                viewModel.getMealInMealList(),
+                                clickedParentMeal.getEntityId(),
+                                mealToManage.getEntityId());
+                        // Meal, submeal combinatie deleten
+                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        break;
+                    default:
+                }
+                fillReusablelist();
+            }
+        });
+        // Als er geclicked is op een item inde mealNotcombins recycler list, wordt dat hier gecapteerd
+        recycMealNotCombinsAdapter.setOnItemClickListener(new SmartTextItemListAdapter.ClickListener() {
+            @Override
+            public void onItemClicked(int position, View v) {
+                int indexCombinToDelete;
+                // via het itemID vd listitemhelper het juiste item bepalen en de combinatie
+                // met mealToManage toevoegen
+                // TODO: Verwerken afhankelijk vn combinatieType
+                switch (combinationType){
+                    case SpecificData.SC_PRODUCTSMEAL:
+                        // TODO: Verbinding meal en product toevoegen
+                        // Product bepalen
+                        Product clickedProduct = viewModel.getProductByID(mealNotCombins.get(position).getItemID());
+                        break;
+                    case SpecificData.SC_SUBMEAL:
+                        // Verbinding meal en submeal verbreken
+                        // Submeal bepalen
+                        Meal clickedSubMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        // Index van meal, submeal combinatie bepalen
+                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
+                                viewModel.getMealInMealList(),
+                                mealToManage.getEntityId(),
+                                clickedSubMeal.getEntityId());
+                        // Meal, submeal combinatie deleten
+                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        break;
+                    case SpecificData.SC_PARENTMEAL:
+                        // Verbinding meal en parentmeal verbreken
+                        // Parentmeal bepalen
+                        Meal clickedParentMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        // Index van parentmeal, meal combinatie bepalen
+                        indexCombinToDelete = viewModel.getIndexByIdsFromCList(
+                                viewModel.getMealInMealList(),
+                                clickedParentMeal.getEntityId(),
+                                mealToManage.getEntityId());
+                        // Meal, submeal combinatie deleten
+                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        break;
+                    default:
+                }
+                fillReusablelist();
+            }
+        });
+    }
+
+    private void fillReusablelist(){
         // Recyclerlists vullen afhankelijk van combinationType
         switch (combinationType){
             case SpecificData.SC_PRODUCTSMEAL:
                 // Vullen met productsmeal
-                recycMealCombinsAdapter.setReusableList(viewModel.getProductNamesByMeal(mealToManage));
+                mealCombins.clear();
+                mealCombins.addAll(viewModel.getProductNamesByMeal(mealToManage));
+                recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde producten
-                recycMealNotCombinsAdapter.setReusableList(
-                        getMissingProducts(recycMealCombinsAdapter.getReusableList()));
+                mealNotCombins.clear();
+                mealNotCombins.addAll(getMissingProducts(mealCombins));
+                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             case SpecificData.SC_SUBMEAL:
                 // Vullen met submeals
-                recycMealCombinsAdapter.setReusableList(viewModel.getChildMealNamesByMeal(mealToManage));
+                mealCombins.clear();
+                mealCombins.addAll(viewModel.getChildMealNamesByMeal(mealToManage));
+                recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde submeals
-                recycMealNotCombinsAdapter.setReusableList(
-                        getMissingMeals(recycMealCombinsAdapter.getReusableList(), mealToManage));
+                mealNotCombins.clear();
+                mealNotCombins.addAll(getMissingMeals(mealCombins, mealToManage));
+                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             case SpecificData.SC_PARENTMEAL:
                 // Vullen met parentmeals
-                recycMealCombinsAdapter.setReusableList(viewModel.getParentMealNamesByMeal(mealToManage));
+                mealCombins.clear();
+                mealCombins.addAll(viewModel.getParentMealNamesByMeal(mealToManage));
+                recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde parentmeals
-                recycMealNotCombinsAdapter.setReusableList(
-                        getMissingMeals(recycMealCombinsAdapter.getReusableList(), mealToManage));
+                mealNotCombins.clear();
+                mealNotCombins.addAll(getMissingMeals(mealCombins, mealToManage));
+                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             default:
         }
-        // Als er geclicked is op een item, wordt dat hier gecapteerd
-        recycMealCombinsAdapter.setOnItemClickListener(new SmartTextItemListAdapter.ClickListener() {
-            @Override
-            public void onItemClicked(int position, View v) {
-                // via het itemID vd checkboxhelper het juiste produkt bepalen en de toBuy zetten
-                Product clickedProduct = viewModel.getProductByID(checkboxList.get(position).getItemID());
-                clickedProduct.setToBuy(checked);
-//                viewModel.getProductByID(checkboxList.get(position).getItemID()).setToBuy(checked);
-                viewModel.storeProducts();
-                composeCheckboxList();
-                cbListAdapter.setCheckboxList(checkboxList);
-
-                // Voorbereiden SMS msg indien sms on
-                if (smsOn){
-                    String smsMsg = clickedProduct.getSMSLine();
-                    String smsReceiver = StaticData.SMS_RECEIVER_DEFAULT;
-                    //Getting intent and PendingIntent instance
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
-                    //Get the SmsManager instance and call the sendTextMessage method to send message
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(smsReceiver, null, smsMsg, pi,null);
-
-                    Toast.makeText(getApplicationContext(), "Message Sent!!",
-                            Toast.LENGTH_LONG).show();
-                }
-                boolean debug = true;
-            }
-        });
     }
 
     private List<ListItemHelper> getMissingProducts(List<ListItemHelper> inList){
