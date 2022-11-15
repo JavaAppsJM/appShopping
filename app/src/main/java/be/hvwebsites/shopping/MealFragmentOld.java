@@ -16,33 +16,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.shopping.adapters.SmallItemListAdapter;
 import be.hvwebsites.shopping.adapters.TextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Meal;
-import be.hvwebsites.shopping.entities.Product;
-import be.hvwebsites.shopping.entities.ProductInShop;
-import be.hvwebsites.shopping.entities.Shop;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
-public class MealFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class MealFragmentOld extends Fragment implements AdapterView.OnItemSelectedListener {
     private ShopEntitiesViewModel viewModel;
     private List<ListItemHelper> itemList = new ArrayList<>();
     private String listEntityType;
@@ -62,7 +55,7 @@ public class MealFragment extends Fragment implements AdapterView.OnItemSelected
     private static final String ENTITY_PARENT_MEAL = "parentmeal";
 
     // Toegevoegd vanuit android tutorial
-    public MealFragment(){
+    public MealFragmentOld(){
         super(R.layout.fragment_meal);
     }
 

@@ -21,13 +21,6 @@
         android:theme="@style/Theme.Shopping"
         tools:targetApi="31">
         <activity
-            android:name=".AddMealCombins"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".BluetoothCom"
             android:label="Bluetooth Communication"></activity>
         <activity
@@ -37,6 +30,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BluetoothCom" />
+        </activity>
+        <activity
+            android:name=".AddMealCombins"
+            android:label="@string/title_activity_add_meal_combins"
+            android:parentActivityName=".ManageItemActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ManageItemActivity" />
         </activity>
         <activity
             android:name=".ManageItemActivity"

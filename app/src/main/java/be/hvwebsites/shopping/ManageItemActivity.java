@@ -15,6 +15,7 @@ import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.fragments.MealFragment;
 import be.hvwebsites.shopping.fragments.ProductFragment;
 import be.hvwebsites.shopping.fragments.ShopFragment;
 import be.hvwebsites.shopping.services.FileBaseService;
@@ -137,14 +138,6 @@ public class ManageItemActivity extends AppCompatActivity  {
                             .add(R.id.fragmentShopEntity, MealFragment.class, fragmentBundle)
                             .commit();
                 }
-/*
-                if (savedInstanceState == null){
-                    getSupportFragmentManager().beginTransaction()
-                            .setReorderingAllowed(true)
-                            .add(R.id.fragmentShopEntity, MealFragment.class, fragmentBundle)
-                            .commit();
-                }
-*/
                 break;
         }
     }

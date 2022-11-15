@@ -68,18 +68,19 @@
         android:id="@+id/labelProductsMeal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="32dp"
         android:text="Artikels"
+        android:textColorHighlight="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButtonMeal"
-        android:layout_marginLeft="40dp" />
+        app:layout_constraintTop_toBottomOf="@+id/saveButtonMeal" />
 
     <TextView
         android:id="@+id/labelSubMeal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="25dp"
         android:text="Deelgerechten"
         app:layout_constraintBaseline_toBaselineOf="@+id/labelProductsMeal"
         app:layout_constraintStart_toEndOf="@+id/labelProductsMeal"
@@ -99,7 +100,7 @@
         android:id="@+id/recyclerMealDetail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -107,7 +108,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelProductsMeal"
-        tools:listitem="@layout/list_text_item" />
+        tools:listitem="@layout/list_text_item"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_edit_meal_detail"

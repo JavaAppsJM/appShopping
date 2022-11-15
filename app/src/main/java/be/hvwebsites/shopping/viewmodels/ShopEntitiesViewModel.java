@@ -1032,7 +1032,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     }
 
     public Meal getMealByID(IDNumber inMealID){
-        return new Meal();
+        return mealList.get(getIndexById(mealList, inMealID));
     }
 
     public void setSpinnerSelection(String spinnerSelection) {

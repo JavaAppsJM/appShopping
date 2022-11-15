@@ -55,8 +55,7 @@ public class MealFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal, container, false);
     }
@@ -108,11 +107,16 @@ public class MealFragment extends Fragment {
         // Wat zijn de argumenten die werden meegegeven
         action = requireArguments().getString(StaticData.EXTRA_INTENT_KEY_ACTION);
         if (action.equals(StaticData.ACTION_UPDATE)){
-            indexToUpdate = requireArguments().getInt(StaticData.EXTRA_INTENT_KEY_INDEX);
+            // Visible zetten vd invisible zaken
+            labelProductsMeal.setVisibility(View.VISIBLE);
+            labelSubMeal.setVisibility(View.VISIBLE);
+            labelParentMeal.setVisibility(View.VISIBLE);
+            recycVwMealDetails.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
 
-            // Bepaal geselecteerd gerecht obv meegegeven index
+            // Bepaal het gerecht dat moet aangepast worden
+            indexToUpdate = requireArguments().getInt(StaticData.EXTRA_INTENT_KEY_INDEX);
             Meal mealToUpdate = viewModel.getMealList().get(indexToUpdate);
-            // TODO: Is dit nodig ?
             mealToSave.setMeal(mealToUpdate);
 
             // Vul Scherm in met gegevens, eerst Textviews in dit geval naam vh gerecht
@@ -202,6 +206,7 @@ public class MealFragment extends Fragment {
             labelSubMeal.setVisibility(View.INVISIBLE);
             labelParentMeal.setVisibility(View.INVISIBLE);
             recycVwMealDetails.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.INVISIBLE);
         }
 
         // Als toevoegen/aanpassen ingedrukt wordt...

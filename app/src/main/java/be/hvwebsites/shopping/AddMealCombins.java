@@ -39,10 +39,8 @@ public class AddMealCombins extends AppCompatActivity {
     private Meal mealToManage;
     private List<ListItemHelper> mealCombins = new ArrayList<>();
     private List<ListItemHelper> mealNotCombins = new ArrayList<>();
-    private SmartTextItemListAdapter recycMealCombinsAdapter =
-            new SmartTextItemListAdapter(this);
-    private SmartTextItemListAdapter recycMealNotCombinsAdapter =
-            new SmartTextItemListAdapter(this);
+    //private SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
+    //private SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +80,22 @@ public class AddMealCombins extends AppCompatActivity {
 
         // Schermviews definieren
         RecyclerView recycMealCombins = findViewById(R.id.recycMealCombins);
-        //SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
+        SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
         recycMealCombins.setAdapter(recycMealCombinsAdapter);
         recycMealCombins.setLayoutManager(new LinearLayoutManager(this));
         recycMealCombinsAdapter.setClient(SpecificData.ACTIVITY_ADDMEALCOMBINS);
 
         RecyclerView recycNotMealCombins = findViewById(R.id.recycNotCombins);
-        //SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
+        SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
         recycNotMealCombins.setAdapter(recycMealNotCombinsAdapter);
         recycNotMealCombins.setLayoutManager(new LinearLayoutManager(this));
         recycMealNotCombinsAdapter.setClient(SpecificData.ACTIVITY_ADDMEALCOMBINS);
 
         // RecycleList vullen voor eerste keer
-        fillReusablelist();
+        fillMealCombins();
+        recycMealCombinsAdapter.setReusableList(mealCombins);
+        recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+        //fillReusablelist();
 
         // Als er geclicked is op een item inde mealcombins recycler list, wordt dat hier gecapteerd
         recycMealCombinsAdapter.setOnItemClickListener(new SmartTextItemListAdapter.ClickListener() {
@@ -116,6 +117,7 @@ public class AddMealCombins extends AppCompatActivity {
                                 clickedProduct.getEntityId());
                         // Product, meal combinatie deleten
                         viewModel.getProductInMealList().remove(indexCombinToDelete);
+                        viewModel.storeProdsInMeal();
                         break;
                     case SpecificData.SC_SUBMEAL:
                         // Verbinding meal en submeal verbreken
@@ -128,6 +130,7 @@ public class AddMealCombins extends AppCompatActivity {
                                 clickedSubMeal.getEntityId());
                         // Meal, submeal combinatie deleten
                         viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        viewModel.storeMealInMeal();
                         break;
                     case SpecificData.SC_PARENTMEAL:
                         // Verbinding meal en parentmeal verbreken
@@ -140,10 +143,14 @@ public class AddMealCombins extends AppCompatActivity {
                                 mealToManage.getEntityId());
                         // Meal, submeal combinatie deleten
                         viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        viewModel.storeMealInMeal();
                         break;
                     default:
                 }
-                fillReusablelist();
+                fillMealCombins();
+                recycMealCombinsAdapter.setReusableList(mealCombins);
+                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+                //fillReusablelist();
             }
         });
         // Als er geclicked is op een item inde mealNotcombins recycler list, wordt dat hier gecapteerd
@@ -170,7 +177,7 @@ public class AddMealCombins extends AppCompatActivity {
                     case SpecificData.SC_SUBMEAL:
                         // Verbinding meal en submeal toevoegen
                         // Submeal bepalen
-                        Meal clickedSubMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        Meal clickedSubMeal = viewModel.getMealByID(mealNotCombins.get(position).getItemID());
                         if (viewModel.getIndexByIdsFromCList(viewModel.getMealInMealList(),
                                 mealToManage.getEntityId(),
                                 clickedSubMeal.getEntityId()) == StaticData.ITEM_NOT_FOUND){
@@ -183,7 +190,7 @@ public class AddMealCombins extends AppCompatActivity {
                     case SpecificData.SC_PARENTMEAL:
                         // Verbinding meal en parentmeal verbreken
                         // Parentmeal bepalen
-                        Meal clickedParentMeal = viewModel.getMealByID(mealCombins.get(position).getItemID());
+                        Meal clickedParentMeal = viewModel.getMealByID(mealNotCombins.get(position).getItemID());
                         if (viewModel.getIndexByIdsFromCList(viewModel.getMealInMealList(),
                                 clickedParentMeal.getEntityId(),
                                 mealToManage.getEntityId()) == StaticData.ITEM_NOT_FOUND){
@@ -195,43 +202,46 @@ public class AddMealCombins extends AppCompatActivity {
                         break;
                     default:
                 }
-                fillReusablelist();
+                fillMealCombins();
+                recycMealCombinsAdapter.setReusableList(mealCombins);
+                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+                //fillReusablelist();
             }
         });
     }
 
-    private void fillReusablelist(){
-        // Recyclerlists vullen afhankelijk van combinationType
+    private void fillMealCombins(){
+        // MealCombins vullen afhankelijk van combinationType
         switch (combinationType){
             case SpecificData.SC_PRODUCTSMEAL:
                 // Vullen met productsmeal
                 mealCombins.clear();
                 mealCombins.addAll(viewModel.getProductNamesByMeal(mealToManage));
-                recycMealCombinsAdapter.setReusableList(mealCombins);
+                //recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde producten
                 mealNotCombins.clear();
                 mealNotCombins.addAll(getMissingProducts(mealCombins));
-                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+                //recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             case SpecificData.SC_SUBMEAL:
                 // Vullen met submeals
                 mealCombins.clear();
                 mealCombins.addAll(viewModel.getChildMealNamesByMeal(mealToManage));
-                recycMealCombinsAdapter.setReusableList(mealCombins);
+                //recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde submeals
                 mealNotCombins.clear();
                 mealNotCombins.addAll(getMissingMeals(mealCombins, mealToManage));
-                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+                //recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             case SpecificData.SC_PARENTMEAL:
                 // Vullen met parentmeals
                 mealCombins.clear();
                 mealCombins.addAll(viewModel.getParentMealNamesByMeal(mealToManage));
-                recycMealCombinsAdapter.setReusableList(mealCombins);
+                //recycMealCombinsAdapter.setReusableList(mealCombins);
                 // Vullen met nog niet gekoppelde parentmeals
                 mealNotCombins.clear();
                 mealNotCombins.addAll(getMissingMeals(mealCombins, mealToManage));
-                recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
+                //recycMealNotCombinsAdapter.setReusableList(mealNotCombins);
                 break;
             default:
         }
