@@ -1031,6 +1031,22 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productsForMeal;
     }
 
+    public boolean isMeal1ParentOfMeal2(Meal inMeal1, Meal inMeal2){
+        // Is meal1 parent of meal2 in eerste graad
+        // Bepaal de parents of meal2
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getSecondID().getId() ==
+            inMeal2.getEntityId().getId()){
+                if (mealInMealList.get(i).getFirstID().getId() ==
+                inMeal1.getEntityId().getId()){
+                    // Meal1 is parent in eerstelijn
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public Meal getMealByID(IDNumber inMealID){
         return mealList.get(getIndexById(mealList, inMealID));
     }
