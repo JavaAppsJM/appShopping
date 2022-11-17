@@ -32,10 +32,6 @@ public class BackUpToExternal extends AppCompatActivity {
         ReturnInfo viewModelStatus = viewModel.initializeViewModel(intBaseDir);
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(BackUpToExternal.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(BackUpToExternal.this,
                     "Ophalen data is mislukt",

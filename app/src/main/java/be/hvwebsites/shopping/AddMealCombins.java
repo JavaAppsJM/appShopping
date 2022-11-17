@@ -61,10 +61,6 @@ public class AddMealCombins extends AppCompatActivity {
             // Baseswitch in viewmodel zetten is echt nodig voor de creatie ve entity
             // bij toevoegen in de fragmenten
             viewModel.setBaseSwitch(fileBaseService.getFileBase());
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(AddMealCombins.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(AddMealCombins.this,
                     "Ophalen data is mislukt",

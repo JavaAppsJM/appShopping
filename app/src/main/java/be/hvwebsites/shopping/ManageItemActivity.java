@@ -45,10 +45,6 @@ public class ManageItemActivity extends AppCompatActivity  {
             // Baseswitch in viewmodel zetten is echt nodig voor de creatie ve entity
             // bij toevoegen in de fragmenten
             viewModel.setBaseSwitch(fileBaseService.getFileBase());
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(ManageItemActivity.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(ManageItemActivity.this,
                     "Ophalen data is mislukt",

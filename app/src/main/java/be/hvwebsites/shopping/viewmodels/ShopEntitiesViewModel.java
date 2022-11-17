@@ -83,6 +83,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Ophalen Winkels
         repository = new FlexiRepository(shopFile);
         shopList.addAll(getShopsFromDataList(repository.getDataList()));
+        // TODO: mag weg
         if (shopList.size() == 0){
             returnInfo.setReturnCode(100);
             returnInfo.setReturnMessage("Er zijn nog geen winkels !");
@@ -90,6 +91,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Ophalen produkten
         repository = new FlexiRepository(productFile);
         productList.addAll(getProductsFromDataList(repository.getDataList()));
+        // TODO: mag weg
         if (productList.size() == 0){
             returnInfo.setReturnCode(100);
             returnInfo.setReturnMessage("Er zijn nog geen artikels !");
@@ -103,6 +105,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Ophalen gerechten
         repository = new FlexiRepository(mealFile);
         mealList.addAll(getMealsFromDataList(repository.getDataList()));
+        // TODO: mag weg
         if (mealList.size() == 0){
             returnInfo.setReturnCode(100);
             returnInfo.setReturnMessage("Er zijn nog geen gerechten !");

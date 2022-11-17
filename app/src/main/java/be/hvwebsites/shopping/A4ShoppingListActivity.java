@@ -55,8 +55,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private String shopFilterString = "";
     private Shop shopFilter;
     private ChckbxListAdapter cbListAdapter;
-    private ArrayAdapter<String> shopFilterAdapter;
-    private ArrayAdapter<ListItemHelper> shopItemAdapter;
     private Switch switchV;
 
 
@@ -96,10 +94,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseService.getFileBaseDir());
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(A4ShoppingListActivity.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(A4ShoppingListActivity.this,
                     "Ophalen data is mislukt",
@@ -110,7 +104,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // ShopFilter Spinner
         Spinner shopFilterSpinner = (Spinner) findViewById(R.id.spinnerShopFilter);
         // Adapter voor de ShopFilter Spinner
-        shopFilterAdapter = new ArrayAdapter(this,
+        ArrayAdapter<String> shopFilterAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
         shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
@@ -118,7 +112,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 SpecificData.DISPLAY_SMALL));
         shopFilterAdapter.add(SpecificData.NO_FILTER);
         // Adapter obv ListItemHelper
-        shopItemAdapter = new ArrayAdapter(this,
+        ArrayAdapter<ListItemHelper> shopItemAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
         shopItemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Adapter vullen met shops
@@ -313,7 +307,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                     switchV.isChecked()));
         }
         if (productsMatchingShopfilter.size() == 0 && prodinShopMatchingShopFilter.size() == 0){
-            // TODO: Als er geen produkten voldoen aan de filter, worden geen produkten getoond ?
+            // Als er geen produkten voldoen aan de filter, wordt enkel een toast getoond
             Toast.makeText(A4ShoppingListActivity.this,
                     "Geen artikels gevonden !",
                     Toast.LENGTH_LONG).show();

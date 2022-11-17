@@ -27,6 +27,11 @@ public class SpecificData {
     public static final String HEAD_LIST_ACTIVITY_T2 = "Lijst met artikels";
     public static final String HEAD_LIST_ACTIVITY_T3 = "Lijst met gerechten";
 
+    // Toastmeldingen
+    public static final String TOAST_NO_SHOPS = "Er zijn nog geen winkels";
+    public static final String TOAST_NO_PRODUCTS = "Er zijn nog geen artikels";
+    public static final String TOAST_NO_MEALS = "Er zijn nog geen gerechten";
+
     public static final String SHOP_FILTER = "shopfilter";
     public static final String NO_FILTER = "Alle artikels";
 

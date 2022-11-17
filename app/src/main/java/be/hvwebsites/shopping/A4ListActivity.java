@@ -44,22 +44,6 @@ public class A4ListActivity extends AppCompatActivity {
         baseSwitch = fileBaseService.getFileBase();
         filebaseDir = fileBaseService.getFileBaseDir();
 
-/*
-        baseSwitch = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-        if (listIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR)){
-            fileBaseDir = listIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
-        }else {
-            if (baseSwitch == null){
-                baseSwitch = SpecificData.BASE_DEFAULT;
-            }
-            if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
-                fileBaseDir = getBaseContext().getFilesDir().getAbsolutePath();
-            }else {
-                fileBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
-            }
-        }
-*/
-
         Toast.makeText(A4ListActivity.this,
                 "filebase is " + baseSwitch,
                 Toast.LENGTH_SHORT).show();
@@ -74,10 +58,6 @@ public class A4ListActivity extends AppCompatActivity {
             // Baseswitch in viewmodel zetten is echt nodig voor de creatie ve entity
             // bij toevoegen in de fragmenten
             viewModel.setBaseSwitch(baseSwitch);
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(A4ListActivity.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(A4ListActivity.this,
                     "Ophalen data is mislukt",
@@ -142,12 +122,27 @@ public class A4ListActivity extends AppCompatActivity {
         switch (listType) {
             case SpecificData.LIST_TYPE_1:
                 setTitle(SpecificData.TITLE_LIST_ACTIVITY_T1);
+                if (viewModel.getShopList().size() == 0){
+                    Toast.makeText(A4ListActivity.this,
+                            SpecificData.TOAST_NO_SHOPS,
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case SpecificData.LIST_TYPE_2:
                 setTitle(SpecificData.TITLE_LIST_ACTIVITY_T2);
+                if (viewModel.getProductList().size() == 0) {
+                    Toast.makeText(A4ListActivity.this,
+                            SpecificData.TOAST_NO_PRODUCTS,
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case SpecificData.LIST_TYPE_3:
                 setTitle(SpecificData.TITLE_LIST_ACTIVITY_T3);
+                if (viewModel.getMealList().size() == 0) {
+                    Toast.makeText(A4ListActivity.this,
+                            SpecificData.TOAST_NO_MEALS,
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + listType);

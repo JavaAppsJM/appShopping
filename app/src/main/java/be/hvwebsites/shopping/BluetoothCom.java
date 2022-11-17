@@ -148,10 +148,6 @@ public class BluetoothCom extends AppCompatActivity {
             // Files gelezen
             viewModel.setBaseSwitch(baseSwitch);
             statusBar.setText("Data opgehaald uit " + baseSwitch);
-        } else if (viewModelStatus.getReturnCode() == 100) {
-            Toast.makeText(BluetoothCom.this,
-                    viewModelStatus.getReturnMessage(),
-                    Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(BluetoothCom.this,
                     "Ophalen data is mislukt",
