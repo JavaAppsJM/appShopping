@@ -39,6 +39,7 @@ public class AddMealCombins extends AppCompatActivity {
     private Meal mealToManage;
     private List<ListItemHelper> mealCombins = new ArrayList<>();
     private List<ListItemHelper> mealNotCombins = new ArrayList<>();
+    private List<Meal> remainingMeals = new ArrayList<>();
     //private SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
     //private SmartTextItemListAdapter recycMealNotCombinsAdapter = new SmartTextItemListAdapter(this);
 
@@ -259,17 +260,71 @@ public class AddMealCombins extends AppCompatActivity {
 
     private List<ListItemHelper> getMissingMeals(List<ListItemHelper> inList, Meal excludeMeal){
         List<ListItemHelper> missingMeals = new ArrayList<>();
+        remainingMeals.clear();
 
         for (int i = 0; i < viewModel.getMealList().size(); i++) {
             // Elk meal dat niet in de inList zit is een missing meal
             Meal tempMeal = viewModel.getMealList().get(i);
             if (notExistIdInList(tempMeal.getEntityId().getId(), inList) &&
                     (tempMeal.getEntityId().getId() != excludeMeal.getEntityId().getId())){
-                missingMeals.add(new ListItemHelper(tempMeal.getEntityName(), "",
-                        tempMeal.getEntityId()));
+                remainingMeals.add(tempMeal);
+                //missingMeals.add(new ListItemHelper(tempMeal.getEntityName(), "", tempMeal.getEntityId()));
             }
         }
+        // Corrigeer remainingmeals voor parents vn parents
+        correctRemainingMealsParents(excludeMeal.getEntityId().getId());
+
+        // Corrigeer missingmeals voor children vn children
+        correctRemainingMealsChildren(excludeMeal.getEntityId().getId());
+
         return missingMeals;
+    }
+
+    private List<ListItemHelper> convertRemMealsInMissing(){
+        List<ListItemHelper> missingRemMeals = new ArrayList<>();
+
+        for (int i = 0; i < remainingMeals.size(); i++) {
+            missingRemMeals.add(new ListItemHelper(remainingMeals.get(i).getEntityName(),
+                    "",
+                    remainingMeals.get(i).getEntityId()));
+        }
+        return missingRemMeals;
+    }
+
+    private void correctRemainingMealsParents(int inMealId){
+        List<Integer> parentsId = new ArrayList<>();
+        // Bepaal parents vn inMeal
+        parentsId.addAll(viewModel.getFirstIdsBySecondId(viewModel.getMealInMealList(), inMealId));
+
+        for (int i = 0; i < parentsId.size(); i++) {
+            // Verwijder parent uit remaininglist
+            remainingMeals.remove(getIndexInRemListForMeal(parentsId.get(i)));
+            correctRemainingMealsParents(parentsId.get(i));
+        }
+
+    }
+
+    private int getIndexInRemListForMeal(int inMealId){
+        // Bepaal index vn inMeal in remaininglist
+        for (int i = 0; i < remainingMeals.size(); i++) {
+            if (remainingMeals.get(i).getEntityId().getId() == inMealId){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+
+    private void correctRemainingMealsChildren(int inMealId){
+        List<Integer> childrenId = new ArrayList<>();
+        // Bepaal children vn inMeal
+        childrenId.addAll(viewModel.getSecondIdsByFirstId(viewModel.getMealInMealList(), inMealId));
+
+        for (int i = 0; i < childrenId.size(); i++) {
+            // Verwijder child uit remaininglist
+            remainingMeals.remove(getIndexInRemListForMeal(childrenId.get(i)));
+            correctRemainingMealsChildren(childrenId.get(i));
+        }
+
     }
 
     private boolean notExistIdInList(int inId, List<ListItemHelper> inList){
