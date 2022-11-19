@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.shopping.adapters.ChckbxListAdapter;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Meal;
@@ -76,6 +73,27 @@ public class AddMealCombins extends AppCompatActivity {
         mealToManage = viewModel.getMealByID(new IDNumber(mealId));
 
         // Schermviews definieren
+        TextView instAddMealCombin = findViewById(R.id.instCombinItems);
+        TextView labelAddMealCombin = findViewById(R.id.labelCombinItems);
+        TextView labelAddMealNotCombin = findViewById(R.id.labelNotCombinItems);
+        switch (combinationType){
+            case SpecificData.SC_PRODUCTSMEAL:
+                instAddMealCombin.setText(SpecificData.INSTRUCTION_ADDMEALCOMBIN_T1);
+                labelAddMealCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_COMBINS_T1);
+                labelAddMealNotCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_NOTCOMBINS_T1);
+                break;
+            case SpecificData.SC_SUBMEAL:
+                instAddMealCombin.setText(SpecificData.INSTRUCTION_ADDMEALCOMBIN_T2);
+                labelAddMealCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_COMBINS_T2_3);
+                labelAddMealNotCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_NOTCOMBINS_T2_3);
+                break;
+            case SpecificData.SC_PARENTMEAL:
+                instAddMealCombin.setText(SpecificData.INSTRUCTION_ADDMEALCOMBIN_T3);
+                labelAddMealCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_COMBINS_T2_3);
+                labelAddMealNotCombin.setText(SpecificData.HEAD_ADDMEALCOMBIN_NOTCOMBINS_T2_3);
+                break;
+            default:
+        }
         RecyclerView recycMealCombins = findViewById(R.id.recycMealCombins);
         SmartTextItemListAdapter recycMealCombinsAdapter = new SmartTextItemListAdapter(this);
         recycMealCombins.setAdapter(recycMealCombinsAdapter);
@@ -277,6 +295,9 @@ public class AddMealCombins extends AppCompatActivity {
         // Corrigeer missingmeals voor children vn children
         correctRemainingMealsChildren(excludeMeal.getEntityId().getId());
 
+        // Zet remainingmeals om nr listitemhelpers
+        missingMeals = convertRemMealsInMissing();
+
         return missingMeals;
     }
 
@@ -284,7 +305,8 @@ public class AddMealCombins extends AppCompatActivity {
         List<ListItemHelper> missingRemMeals = new ArrayList<>();
 
         for (int i = 0; i < remainingMeals.size(); i++) {
-            missingRemMeals.add(new ListItemHelper(remainingMeals.get(i).getEntityName(),
+            missingRemMeals.add(new ListItemHelper(
+                    remainingMeals.get(i).getEntityName(),
                     "",
                     remainingMeals.get(i).getEntityId()));
         }
@@ -324,7 +346,6 @@ public class AddMealCombins extends AppCompatActivity {
             remainingMeals.remove(getIndexInRemListForMeal(childrenId.get(i)));
             correctRemainingMealsChildren(childrenId.get(i));
         }
-
     }
 
     private boolean notExistIdInList(int inId, List<ListItemHelper> inList){

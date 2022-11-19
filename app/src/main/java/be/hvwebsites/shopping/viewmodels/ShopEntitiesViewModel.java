@@ -79,24 +79,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         mealFile = new File(basedir, MEAL_FILE);
         productInMealFile = new File(basedir, PRODUCTMEAL_FILE);
         mealInMealFile = new File(basedir, MEALMEAL_FILE);
+
         // Data ophalen
         // Ophalen Winkels
         repository = new FlexiRepository(shopFile);
         shopList.addAll(getShopsFromDataList(repository.getDataList()));
-        // TODO: mag weg
-        if (shopList.size() == 0){
-            returnInfo.setReturnCode(100);
-            returnInfo.setReturnMessage("Er zijn nog geen winkels !");
-        }
-        // Ophalen produkten
+
+        // Ophalen artikels
         repository = new FlexiRepository(productFile);
         productList.addAll(getProductsFromDataList(repository.getDataList()));
-        // TODO: mag weg
-        if (productList.size() == 0){
-            returnInfo.setReturnCode(100);
-            returnInfo.setReturnMessage("Er zijn nog geen artikels !");
-        }
-        // Ophalen produkt in winkel combinaties
+
+        // Ophalen artikel in winkel combinaties
         repository = new FlexiRepository(productInShopFile);
         productInShopList.addAll(getProdInShopsFromDataList(repository.getDataList()));
         // eenmalig om prodinshop op te kiusen
@@ -105,12 +98,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Ophalen gerechten
         repository = new FlexiRepository(mealFile);
         mealList.addAll(getMealsFromDataList(repository.getDataList()));
-        // TODO: mag weg
-        if (mealList.size() == 0){
-            returnInfo.setReturnCode(100);
-            returnInfo.setReturnMessage("Er zijn nog geen gerechten !");
-        }
-        // Ophalen produkt in gerecht combinaties
+
+        // Ophalen artikel in gerecht combinaties
         repository = new FlexiRepository(productInMealFile);
         productInMealList.addAll(getProdInMealFromDataList(repository.getDataList()));
 
@@ -145,13 +134,14 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         cookieRepository.registerCookie(Meal.MEAL_LATEST_ID,
                 String.valueOf(determineHighestID(mealList)));
 
-        repository.storeData(productInMealFile, convertProdMealListinDataList(productInMealList));
-        repository.storeData(mealInMealFile, convertMealMealListinDataList(mealInMealList));
+        repository.storeData(productInMealFile, convertCombinListinDataList(productInMealList));
+        repository.storeData(mealInMealFile, convertCombinListinDataList(mealInMealList));
 
         return returnInfo;
     }
 
     public void forceBtData(String basedir){
+        // Bluetooth data accepteren
         if (shopListBt.size() > 0){
             // Er zijn shops te accepteren
             shopList.clear();
@@ -388,7 +378,82 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    private List<Shop> getShopsFromDataList(List<String> dataList){
+        // Converteert een datalist met shops in een shoplist
+        List<Shop> shops = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            shops.add(new Shop(dataList.get(j)));
+        }
+        return shops;
+    }
+
+    /** Productlist methodes */
+
+    public Product getProductByID(IDNumber inProductID){
+        // Bepaalt het produkt voor een opgegeven IDNumber
+        int indexInProductList = getIndexById(productList, inProductID);
+        if (indexInProductList != StaticData.ITEM_NOT_FOUND){
+            return productList.get(indexInProductList);
+        }else {
+            return null; // Product niet gevonden
+        }
+/*
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getEntityId().getId() == inProductID.getId()){
+                return productList.get(i);
+            }
+        }
+        return null; // geen product gevonden met ID
+*/
+    }
+
+    public List<Product> getProductsByPrefShop(Shop inPrefShop){
+        // Bepaalt de produkten voor een opgegeven preferred shop
+        List<Product> productsForShop = new ArrayList<>();
+        if (inPrefShop != null){
+            for (int i = 0; i < productList.size(); i++) {
+                if (productList.get(i).getPreferredShopId().getId() == inPrefShop.getEntityId().getId()){
+                    productsForShop.add(productList.get(i));
+                }
+            }
+        }
+        return productsForShop;
+    }
+
+    private List<Product> getProductsFromDataList(List<String> dataList){
+        // Converteert een datalist met produkten in een produktlist
+        List<Product> products = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            products.add(new Product(dataList.get(j)));
+        }
+        return products;
+    }
+
+    /** Meallist methodes */
+
+    public Meal getMealByID(IDNumber inMealID){
+        return mealList.get(getIndexById(mealList, inMealID));
+    }
+
+    private List<Meal> getMealsFromDataList(List<String> dataList){
+        // Converteert een datalist met gerechten in een meallist
+        List<Meal> meals = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            meals.add(new Meal(dataList.get(j)));
+        }
+        return meals;
+    }
+
     /** Produkt-Shoplist methodes */
+
+    private List<ProductInShop> getProdInShopsFromDataList(List<String> dataList){
+        // Converteert een datalist met prodinshops in een prodinshoplist
+        List<ProductInShop> productInShopList = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            productInShopList.add(new ProductInShop(dataList.get(j)));
+        }
+        return productInShopList;
+    }
 
     public List<String> getShopNamesByProduct(Product inProduct){
         // Bepaalt de shops namen die een combinatie hebben met het opgegeven produkten
@@ -446,6 +511,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             if (productInShopList.get(i).getFirstID().getId() == inShop.getEntityId().getId()){
                 // Shop gevonden in productinshoplist
                 if(getProductByID(productInShopList.get(i).getSecondID()) != null){
+                    // Product gevonden
                     productForShops.add(getProductByID(productInShopList.get(i).getSecondID()));
                 }else {
                     //productInShopList.remove(i);
@@ -456,37 +522,88 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productForShops;
     }
 
-    /** Productlist methodes */
+    /** Produkt-Meal list methodes */
 
-    public Product getProductByID(IDNumber inProductID){
-        // Bepaalt het produkt voor een opgegeven IDNumber
-        int indexInProductList = getIndexById(productList, inProductID);
-        if (indexInProductList != StaticData.ITEM_NOT_FOUND){
-            return productList.get(indexInProductList);
-        }else {
-            return null; // Product niet gevonden
+    private List<ProductInMeal> getProdInMealFromDataList(List<String> dataList){
+        // Converteert een datalist met prodinmeal in een prodinmeallist
+        List<ProductInMeal> productsInMeal = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            productsInMeal.add(new ProductInMeal(dataList.get(j)));
         }
-/*
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getEntityId().getId() == inProductID.getId()){
-                return productList.get(i);
-            }
-        }
-        return null; // geen product gevonden met ID
-*/
+        return productsInMeal;
     }
 
-    public List<Product> getProductsByPrefShop(Shop inPrefShop){
-        // Bepaalt de produkten voor een opgegeven preferred shop
-        List<Product> productsForShop = new ArrayList<>();
-        if (inPrefShop != null){
-            for (int i = 0; i < productList.size(); i++) {
-                if (productList.get(i).getPreferredShopId().getId() == inPrefShop.getEntityId().getId()){
-                    productsForShop.add(productList.get(i));
+    public List<ListItemHelper> getProductNamesByMeal(Meal inMeal){
+        List<ListItemHelper> productNames = new ArrayList<>();
+        List<Product> productsInMeal = getProductsByMeal(inMeal);
+        for (int i = 0; i < productsInMeal.size(); i++) {
+            ListItemHelper itemHelper = new ListItemHelper(
+                    productsInMeal.get(i).getEntityName(),
+                    "",
+                    productsInMeal.get(i).getEntityId());
+            productNames.add(itemHelper);
+        }
+        return productNames;
+    }
+
+    public List<Product> getProductsByMeal(Meal inMeal){
+        // Bepaalt de produkten die een combinatie hebben met het opgegeven gerecht
+        List<Product> productsForMeal = new ArrayList<>();
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                if(getProductByID(productInMealList.get(i).getSecondID()) != null){
+                    productsForMeal.add(getProductByID(productInMealList.get(i).getSecondID()));
                 }
             }
         }
-        return productsForShop;
+        return productsForMeal;
+    }
+
+    /** Meal-Meal list methodes */
+
+    private List<MealInMeal> getMealInMealFromDataList(List<String> dataList){
+        // Converteert een datalist met mealinmeal in een mealinmeallist
+        List<MealInMeal> mealInMeals = new ArrayList<>();
+        for (int j = 0; j < dataList.size(); j++) {
+            mealInMeals.add(new MealInMeal(dataList.get(j)));
+        }
+        return mealInMeals;
+    }
+
+    public List<ListItemHelper> getParentMealNamesByMeal(Meal inMeal){
+        List<ListItemHelper> parentMealNames = new ArrayList<>();
+        // Bepaalt de parentgerechten die een combinatie hebben met het opgegeven gerecht
+        List<Meal> childMeals = new ArrayList<>();
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
+                    ListItemHelper itemHelper = new ListItemHelper(
+                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
+                            "",
+                            mealInMealList.get(i).getSecondID());
+                    parentMealNames.add(itemHelper);
+                }
+            }
+        }
+        return parentMealNames;
+    }
+
+    public List<ListItemHelper> getChildMealNamesByMeal(Meal inMeal){
+        List<ListItemHelper> childMealNames = new ArrayList<>();
+        // Bepaalt de deelgerechten die een combinatie hebben met het opgegeven gerecht
+        List<Meal> childMeals = new ArrayList<>();
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
+                    ListItemHelper itemHelper = new ListItemHelper(
+                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
+                            "",
+                            mealInMealList.get(i).getSecondID());
+                    childMealNames.add(itemHelper);
+                }
+            }
+        }
+        return childMealNames;
     }
 
     /** Store methodes */
@@ -494,21 +611,21 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public ReturnInfo storeProdInShop(){
         // Bewaart de produktInShopList
         ReturnInfo returnInfo = new ReturnInfo(0);
-        repository.storeData(productInShopFile, convertProdShopListinDataList(productInShopList));
+        repository.storeData(productInShopFile, convertCombinListinDataList(productInShopList));
         return returnInfo;
     }
 
     public ReturnInfo storeProdsInMeal(){
         // Bewaart de produktInMealList
         ReturnInfo returnInfo = new ReturnInfo(0);
-        repository.storeData(productInMealFile, convertProdMealListinDataList(productInMealList));
+        repository.storeData(productInMealFile, convertCombinListinDataList(productInMealList));
         return returnInfo;
     }
 
     public ReturnInfo storeMealInMeal(){
         // Bewaart de mealInMealList
         ReturnInfo returnInfo = new ReturnInfo(0);
-        repository.storeData(mealInMealFile, convertMealMealListinDataList(mealInMealList));
+        repository.storeData(mealInMealFile, convertCombinListinDataList(mealInMealList));
         return returnInfo;
     }
 
@@ -566,7 +683,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         deleteCombinById(productInMealList,
                 productList.get(position).getEntityId(),
                 false);
-        deleteMealByProduct(productList.get(position));
+        //deleteMealByProduct(productList.get(position));
         storeProdsInMeal();
         // en tenslotte mag het produkt gedelete worden
         productList.remove(position);
@@ -590,140 +707,12 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         deleteCombinById(mealInMealList,
                 mealList.get(position).getEntityId(),
                 false);
-        deleteMealMeal(mealList.get(position));
+        //deleteMealMeal(mealList.get(position));
         storeMealInMeal();
         // en tenslotte mag het gerecht gedelete worden
         mealList.remove(position);
         storeMeals();
         return returnInfo;
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private void deleteProductsByShop(ShoppingEntity inShop){
-        // Verwijdert de prodinshop combinaties voor een opgegeven shop
-        deleteCombinById(productInShopList, inShop.getEntityId(), true);
-/*
-        int position = getFirstProductInshopByShop(inShop);
-        while (position != StaticData.ITEM_NOT_FOUND){
-            productInShopList.remove(position);
-            position = getFirstProductInshopByShop(inShop);
-        }
-*/
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInshopByShop(ShoppingEntity inShop){
-        // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
-        // opgegeven shop
-        for (int i = 0; i < productInShopList.size(); i++) {
-            if (productInShopList.get(i).getFirstID().getId() == inShop.getEntityId().getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private void deleteShopsByProduct(Product inProduct){
-        // Verwijdert de prodinshop combinaties voor een opgegeven produkt
-        int position = getFirstProductInshopByProduct(inProduct);
-        while (position != StaticData.ITEM_NOT_FOUND){
-            productInShopList.remove(position);
-            position = getFirstProductInshopByProduct(inProduct);
-        }
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInshopByProduct(Product inProduct){
-        // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
-        // opgegeven produkt
-        return getFirstPartnerIndexfromId(productInShopList, inProduct.getEntityId(), false);
-/*
-        for (int i = 0; i < productInShopList.size(); i++) {
-            if (productInShopList.get(i).getSecondID().getId() == inProduct.getEntityId().getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-*/
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteMealByProduct(Product inProduct){
-        // Verwijdert de prodinmeal combinaties voor een opgegeven produkt
-        int position = getFirstProductInMealByProduct(inProduct);
-        while (position != StaticData.ITEM_NOT_FOUND){
-            productInMealList.remove(position);
-            position = getFirstProductInMealByProduct(inProduct);
-        }
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInMealByProduct(Product inProduct){
-        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
-        // opgegeven produkt
-        for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getSecondID().getId() == inProduct.getEntityId().getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteProductsByMeal(ShoppingEntity inMeal){
-        // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
-        int position = getFirstProductInMealByMeal(inMeal);
-        while (position != StaticData.ITEM_NOT_FOUND){
-            productInMealList.remove(position);
-            position = getFirstProductInMealByMeal(inMeal);
-        }
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstProductInMealByMeal(ShoppingEntity inMeal){
-        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
-        // opgegeven gerecht
-        for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteMealMeal(Meal inMeal){
-        // Verwijdert de mealinmeal combinaties voor een opgegeven meal
-        int position = getFirstMealInMealByMeal(inMeal);
-        while (position != StaticData.ITEM_NOT_FOUND){
-            productInMealList.remove(position);
-            position = getFirstMealInMealByMeal(inMeal);
-        }
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteChildMealinMeal(Meal inChildMeal){
-
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    public void deleteParentMealinMeal(Meal inChildMeal){
-
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private int getFirstMealInMealByMeal(Meal inMeal){
-        // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
-        // opgegeven meal
-        for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
-                return i;
-            }else if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
     }
 
     /** Sort methodes */
@@ -772,98 +761,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private List<String> convertProdShopListinDataList(List<ProductInShop> itemList){
-        // Converteert een prodinshoplist in een datalist voor bewaard te worden in een bestand
-        return convertCombinListinDataList(itemList);
-/*
-        List<String> lineList = new ArrayList<>();
-        for (int i = 0; i < itemList.size(); i++) {
-            lineList.add(itemList.get(i).convertCombinInFileLine());
-        }
-        return lineList;
-*/
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private List<String> convertProdMealListinDataList(List<ProductInMeal> itemList){
-        // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
-        return convertCombinListinDataList(itemList);
-/*
-        List<String> lineList = new ArrayList<>();
-        for (int i = 0; i < itemList.size(); i++) {
-            lineList.add(itemList.get(i).convertCombinInFileLine());
-        }
-        return lineList;
-*/
-    }
-
-    // TODO: Kan vervangen worden door FlexiListHandler
-    private List<String> convertMealMealListinDataList(List<MealInMeal> itemList){
-        // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
-        return convertCombinListinDataList(itemList);
-/*
-        List<String> lineList = new ArrayList<>();
-        for (int i = 0; i < itemList.size(); i++) {
-            lineList.add(itemList.get(i).convertCombinInFileLine());
-        }
-        return lineList;
-*/
-    }
-
-    private List<Shop> getShopsFromDataList(List<String> dataList){
-        // Converteert een datalist met shops in een shoplist
-        List<Shop> shops = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            shops.add(new Shop(dataList.get(j)));
-        }
-        return shops;
-    }
-
-    private List<Product> getProductsFromDataList(List<String> dataList){
-        // Converteert een datalist met produkten in een produktlist
-        List<Product> products = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            products.add(new Product(dataList.get(j)));
-        }
-        return products;
-    }
-
-    private List<ProductInShop> getProdInShopsFromDataList(List<String> dataList){
-        // Converteert een datalist met prodinshops in een prodinshoplist
-        List<ProductInShop> productInShopList = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            productInShopList.add(new ProductInShop(dataList.get(j)));
-        }
-        return productInShopList;
-    }
-
-    private List<Meal> getMealsFromDataList(List<String> dataList){
-        // Converteert een datalist met gerechten in een meallist
-        List<Meal> meals = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            meals.add(new Meal(dataList.get(j)));
-        }
-        return meals;
-    }
-
-    private List<ProductInMeal> getProdInMealFromDataList(List<String> dataList){
-        // Converteert een datalist met prodinmeal in een prodinmeallist
-        List<ProductInMeal> productsInMeal = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            productsInMeal.add(new ProductInMeal(dataList.get(j)));
-        }
-        return productsInMeal;
-    }
-
-    private List<MealInMeal> getMealInMealFromDataList(List<String> dataList){
-        // Converteert een datalist met mealinmeal in een mealinmeallist
-        List<MealInMeal> mealInMeals = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            mealInMeals.add(new MealInMeal(dataList.get(j)));
-        }
-        return mealInMeals;
-    }
+    // TODO: nog te evalueren methodes
 
     public List<CheckboxHelper> convertProductsToCheckboxs(List<Product> prodList,
                                                            int inDisplayType,
@@ -913,6 +811,22 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productDisplayLine;
     }
 
+    public List<CheckboxHelper> convertMealsToCheckboxs(List<Meal> mealList,
+                                                        boolean onlyChecked){
+        // Converteert een lijst met gerechten in een checkboxList
+        List<CheckboxHelper> checkboxList = new ArrayList<>();
+        for (int i = 0; i < mealList.size(); i++) {
+            // Controle only checked
+            if ((mealList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
+                checkboxList.add(new CheckboxHelper(
+                        mealList.get(i).getDisplayLine(),
+                        mealList.get(i).isToBuy(),SpecificData.STYLE_DEFAULT,
+                        mealList.get(i).getEntityId()));
+            }
+        }
+        return checkboxList;
+    }
+
     public IDNumber determineShopBySpinnerSelection(){
         // Bepaalt de IDNumber vd shop obv de spinnerselection
         boolean shopFound = false;
@@ -936,122 +850,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         storeProdInShop();
     }
 
-    public List<CheckboxHelper> convertMealsToCheckboxs(List<Meal> mealList,
-                                                           boolean onlyChecked){
-        // Converteert een lijst met gerechten in een checkboxList
-        List<CheckboxHelper> checkboxList = new ArrayList<>();
-        for (int i = 0; i < mealList.size(); i++) {
-            // Controle only checked
-            if ((mealList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
-                checkboxList.add(new CheckboxHelper(
-                        mealList.get(i).getDisplayLine(),
-                        mealList.get(i).isToBuy(),SpecificData.STYLE_DEFAULT,
-                        mealList.get(i).getEntityId()));
-            }
-        }
-        return checkboxList;
-    }
-
     public void clearAllProductInMeal(){
         // Verwijdert alle prodinmeal combinaties
         productInMealList.clear();
         storeProdInShop();
-    }
-
-    public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
-        // Bepaalt de index vd produkt-shop combinatie als die bestaat
-        return getIndexByIdsFromCList(productInMealList, inMealID, inProductID);
-/*
-        for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getSecondID().getId() == inProductID.getId() &&
-                    productInMealList.get(i).getFirstID().getId() == inMealID.getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-*/
-    }
-
-    public List<ListItemHelper> getParentMealNamesByMeal(Meal inMeal){
-        List<ListItemHelper> parentMealNames = new ArrayList<>();
-        // Bepaalt de parentgerechten die een combinatie hebben met het opgegeven gerecht
-        List<Meal> childMeals = new ArrayList<>();
-        for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
-                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
-                    ListItemHelper itemHelper = new ListItemHelper(
-                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
-                            "",
-                            mealInMealList.get(i).getSecondID());
-                    parentMealNames.add(itemHelper);
-                }
-            }
-        }
-        return parentMealNames;
-    }
-
-    public List<ListItemHelper> getChildMealNamesByMeal(Meal inMeal){
-        List<ListItemHelper> childMealNames = new ArrayList<>();
-        // Bepaalt de deelgerechten die een combinatie hebben met het opgegeven gerecht
-        List<Meal> childMeals = new ArrayList<>();
-        for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
-                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
-                    ListItemHelper itemHelper = new ListItemHelper(
-                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
-                            "",
-                            mealInMealList.get(i).getSecondID());
-                    childMealNames.add(itemHelper);
-                }
-            }
-        }
-        return childMealNames;
-    }
-
-    public List<ListItemHelper> getProductNamesByMeal(Meal inMeal){
-        List<ListItemHelper> productNames = new ArrayList<>();
-        List<Product> productsInMeal = getProductsByMeal(inMeal);
-        for (int i = 0; i < productsInMeal.size(); i++) {
-            ListItemHelper itemHelper = new ListItemHelper(
-                    productsInMeal.get(i).getEntityName(),
-                    "",
-                    productsInMeal.get(i).getEntityId());
-            productNames.add(itemHelper);
-        }
-        return productNames;
-    }
-
-    public List<Product> getProductsByMeal(Meal inMeal){
-        // Bepaalt de produkten die een combinatie hebben met het opgegeven gerecht
-        List<Product> productsForMeal = new ArrayList<>();
-        for (int i = 0; i < productInMealList.size(); i++) {
-            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
-                if(getProductByID(productInMealList.get(i).getSecondID()) != null){
-                    productsForMeal.add(getProductByID(productInMealList.get(i).getSecondID()));
-                }
-            }
-        }
-        return productsForMeal;
-    }
-
-    public boolean isMeal1ParentOfMeal2(Meal inMeal1, Meal inMeal2){
-        // Is meal1 parent of meal2 in eerste graad
-        // Bepaal de parents of meal2
-        for (int i = 0; i < mealInMealList.size(); i++) {
-            if (mealInMealList.get(i).getSecondID().getId() ==
-            inMeal2.getEntityId().getId()){
-                if (mealInMealList.get(i).getFirstID().getId() ==
-                inMeal1.getEntityId().getId()){
-                    // Meal1 is parent in eerstelijn
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public Meal getMealByID(IDNumber inMealID){
-        return mealList.get(getIndexById(mealList, inMealID));
     }
 
     public void setSpinnerSelection(String spinnerSelection) {
@@ -1109,4 +911,156 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public List<MealInMeal> getMealInMealList() {
         return mealInMealList;
     }
+
+    // TODO: mag weg
+/*
+    public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
+        // Bepaalt de index vd produkt-shop combinatie als die bestaat
+        return getIndexByIdsFromCList(productInMealList, inMealID, inProductID);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private void deleteProductsByShop(ShoppingEntity inShop){
+        // Verwijdert de prodinshop combinaties voor een opgegeven shop
+        deleteCombinById(productInShopList, inShop.getEntityId(), true);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private int getFirstProductInshopByShop(ShoppingEntity inShop){
+        // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
+        // opgegeven shop
+        for (int i = 0; i < productInShopList.size(); i++) {
+            if (productInShopList.get(i).getFirstID().getId() == inShop.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private void deleteShopsByProduct(Product inProduct){
+        // Verwijdert de prodinshop combinaties voor een opgegeven produkt
+        int position = getFirstProductInshopByProduct(inProduct);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInShopList.remove(position);
+            position = getFirstProductInshopByProduct(inProduct);
+        }
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private int getFirstProductInshopByProduct(Product inProduct){
+        // Bepaalt de eerste index vd produktinshop combinatie die gevonden wordt, voor een
+        // opgegeven produkt
+        return getFirstPartnerIndexfromId(productInShopList, inProduct.getEntityId(), false);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    public void deleteMealByProduct(Product inProduct){
+        // Verwijdert de prodinmeal combinaties voor een opgegeven produkt
+        deleteCombinById(productInMealList, inProduct.getEntityId(), false);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private int getFirstProductInMealByProduct(Product inProduct){
+        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
+        // opgegeven produkt
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getSecondID().getId() == inProduct.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    public void deleteProductsByMeal(ShoppingEntity inMeal){
+        // Verwijdert de prodinmeal combinaties voor een opgegeven gerecht
+        int position = getFirstProductInMealByMeal(inMeal);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInMealList.remove(position);
+            position = getFirstProductInMealByMeal(inMeal);
+        }
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private int getFirstProductInMealByMeal(ShoppingEntity inMeal){
+        // Bepaalt de eerste index vd produktinmeal combinatie die gevonden wordt, voor een
+        // opgegeven gerecht
+        for (int i = 0; i < productInMealList.size(); i++) {
+            if (productInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    public void deleteMealMeal(Meal inMeal){
+        // Verwijdert de mealinmeal combinaties voor een opgegeven meal
+        int position = getFirstMealInMealByMeal(inMeal);
+        while (position != StaticData.ITEM_NOT_FOUND){
+            productInMealList.remove(position);
+            position = getFirstMealInMealByMeal(inMeal);
+        }
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private int getFirstMealInMealByMeal(Meal inMeal){
+        // Bepaalt de eerste index vd mealinmeal combinatie parent or child die gevonden wordt, voor een
+        // opgegeven meal
+        for (int i = 0; i < mealInMealList.size(); i++) {
+            if (mealInMealList.get(i).getFirstID().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }else if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
+                return i;
+            }
+        }
+        return StaticData.ITEM_NOT_FOUND;
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private List<String> convertProdShopListinDataList(List<ProductInShop> itemList){
+        // Converteert een prodinshoplist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private List<String> convertProdMealListinDataList(List<ProductInMeal> itemList){
+        // Converteert een prodinmeallist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+    }
+*/
+
+/*
+    // Is vervangen worden door FlexiListHandler
+    private List<String> convertMealMealListinDataList(List<MealInMeal> itemList){
+        // Converteert een mealinmeallist in een datalist voor bewaard te worden in een bestand
+        return convertCombinListinDataList(itemList);
+    }
+*/
+
 }

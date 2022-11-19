@@ -27,6 +27,16 @@ public class SpecificData {
     public static final String HEAD_LIST_ACTIVITY_T2 = "Lijst met artikels";
     public static final String HEAD_LIST_ACTIVITY_T3 = "Lijst met gerechten";
 
+    public static final String INSTRUCTION_ADDMEALCOMBIN_T1 = "Koppel of ontkoppel artikels door er op te klikken";
+    public static final String INSTRUCTION_ADDMEALCOMBIN_T2 = "Koppel of ontkoppel deelgerechten door er op te klikken";
+    public static final String INSTRUCTION_ADDMEALCOMBIN_T3 = "Koppel of ontkoppel hoofdgerechten door er op te klikken";
+
+    public static final String HEAD_ADDMEALCOMBIN_COMBINS_T1 = "Gekoppelde artikels";
+    public static final String HEAD_ADDMEALCOMBIN_COMBINS_T2_3 = "Gekoppelde gerechten";
+    public static final String HEAD_ADDMEALCOMBIN_NOTCOMBINS_T1 = "Niet gekoppelde artikels";
+    public static final String HEAD_ADDMEALCOMBIN_NOTCOMBINS_T2_3 = "Niet gekoppelde gerechten";
+
+
     // Toastmeldingen
     public static final String TOAST_NO_SHOPS = "Er zijn nog geen winkels";
     public static final String TOAST_NO_PRODUCTS = "Er zijn nog geen artikels";

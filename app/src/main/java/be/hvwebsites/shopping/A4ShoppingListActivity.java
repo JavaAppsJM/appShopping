@@ -69,32 +69,12 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Creer een filebase service (bevat file base en file base directory) obv device en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
 
-/*
-        // Basis directory definitie
-        String fileBaseDir = "";
-        String baseSwitch = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE);
-        if (sListIntent.hasExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR)){
-            fileBaseDir = sListIntent.getStringExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR);
-        }else {
-            if (baseSwitch == null){
-                baseSwitch = SpecificData.BASE_DEFAULT;
-            }
-            if (baseSwitch.equals(SpecificData.BASE_INTERNAL)){
-                fileBaseDir = getBaseContext().getFilesDir().getAbsolutePath();
-            }else {
-                fileBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
-            }
-        }
-*/
-
         /** Data ophalen */
         // Get a viewmodel from the viewmodelproviders
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Initialize viewmodel mt basis directory (data wordt opgehaald in viewmodel)
         ReturnInfo viewModelStatus = viewModel.initializeViewModel(fileBaseService.getFileBaseDir());
-        if (viewModelStatus.getReturnCode() == 0) {
-            // Files gelezen
-        } else {
+        if (viewModelStatus.getReturnCode() != 0) {
             Toast.makeText(A4ShoppingListActivity.this,
                     "Ophalen data is mislukt",
                     Toast.LENGTH_LONG).show();
@@ -269,7 +249,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     private void composeCheckboxList(){
