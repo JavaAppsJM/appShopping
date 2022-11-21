@@ -76,6 +76,9 @@ public class SpecificData {
     public static final String COOKIE_RETURN_UPDATE_INDEX = "returnindex";
 
     // Activity Names
+    public static final String CALLING_ACTIVITY = "callingactivity";
+    public static final String ACTIVITY_A4LIST = "a4list";
+    public static final String ACTIVITY_A4SHOPPINGLIST = "a4shoppinglist";
     public static final String ACTIVITY_ADDMEALCOMBINS = "addmealcombins";
 
 }

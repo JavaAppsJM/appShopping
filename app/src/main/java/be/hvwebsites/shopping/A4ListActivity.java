@@ -86,6 +86,7 @@ public class A4ListActivity extends AppCompatActivity {
         // Bundle voorbereiden om mee te geven aan fragment
         Bundle fragmentBundle = new Bundle();
         fragmentBundle.putString(SpecificData.LIST_TYPE, listType);
+        fragmentBundle.putString(SpecificData.CALLING_ACTIVITY, SpecificData.ACTIVITY_A4LIST);
 
         // Creeer fragment vr gepaste recyclerview
         if (savedInstanceState == null ){

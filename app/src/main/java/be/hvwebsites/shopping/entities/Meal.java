@@ -4,6 +4,7 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
 public class Meal extends ShoppingEntity {
     private boolean toBuy;
+    private boolean previousToBuy;
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     public static final String MEAL_LATEST_ID = "meal";
 
@@ -89,6 +90,12 @@ public class Meal extends ShoppingEntity {
         return listDisplay;
     }
 
+    public void setToBuyRemember(boolean mealToBuy){
+        // vooraleer to buy te wijzigen wordt deze onthouden in previous to buy
+        this.previousToBuy = this.toBuy;
+        this.toBuy = mealToBuy;
+    }
+
     public String getToBuyAsString(){
         return convertBooleanToString(toBuy);
     }
@@ -111,6 +118,14 @@ public class Meal extends ShoppingEntity {
 
     public void setToBuy(boolean toBuy) {
         this.toBuy = toBuy;
+    }
+
+    public boolean isPreviousToBuy() {
+        return previousToBuy;
+    }
+
+    public void setPreviousToBuy(boolean previousToBuy) {
+        this.previousToBuy = previousToBuy;
     }
 
     public String getMealAttributesForBtMsg(){

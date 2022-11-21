@@ -94,7 +94,7 @@ public class MealFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Toevoegen van een productmeal of een childmeal of een parentmeal
+                // Toevoegen van een productmeal of een childmeal of een parentmeal
                 Intent intent = new Intent(getContext(),
                         AddMealCombins.class);
                 // Meal Id en combinationType meegeven

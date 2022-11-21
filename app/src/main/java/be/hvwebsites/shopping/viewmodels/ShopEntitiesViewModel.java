@@ -761,7 +761,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    // TODO: nog te evalueren methodes
+    /** Convert to checkboxes */
 
     public List<CheckboxHelper> convertProductsToCheckboxs(List<Product> prodList,
                                                            int inDisplayType,
@@ -827,6 +827,8 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return checkboxList;
     }
 
+    /** Allerlei */
+
     public IDNumber determineShopBySpinnerSelection(){
         // Bepaalt de IDNumber vd shop obv de spinnerselection
         boolean shopFound = false;
@@ -853,7 +855,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public void clearAllProductInMeal(){
         // Verwijdert alle prodinmeal combinaties
         productInMealList.clear();
-        storeProdInShop();
+        storeProdsInMeal();
     }
 
     public void setSpinnerSelection(String spinnerSelection) {

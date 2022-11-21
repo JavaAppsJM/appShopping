@@ -91,7 +91,7 @@ public class ProductListFragment extends Fragment{
                                 SpecificData.PRODUCT_DISPLAY_LARGE,
                                 false));
                         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
-                        cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+                        //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                         cbListAdapter.setCheckboxList(checkboxList);
                     }
                 });
@@ -99,7 +99,7 @@ public class ProductListFragment extends Fragment{
 
         // Invullen adapter
         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
-        cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+        //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
         cbListAdapter.setCheckboxList(checkboxList);
 
         // Als er geclicked is op een checkbox, kan ik dat hier capteren ?
@@ -108,7 +108,7 @@ public class ProductListFragment extends Fragment{
             public void onItemClicked(int position, View v, boolean checked) {
                 viewModel.getProductList().get(position).setToBuy(checked);
                 viewModel.storeProducts();
-                cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
+                //cbListAdapter.setBaseSwitch(viewModel.getBaseSwitch());
                 cbListAdapter.setCheckboxList(checkboxList);
                 boolean debug = true;
             }

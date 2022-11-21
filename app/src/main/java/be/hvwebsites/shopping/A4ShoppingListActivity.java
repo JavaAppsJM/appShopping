@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.view.textservice.SpellCheckerInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -160,10 +161,13 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
         // Recyclerview definieren
         RecyclerView recyclerView = findViewById(R.id.recyclerviewShoppingListProducts);
+        // TODO: ChckbxListAdapter kan vervangen worden door CheckBoxListAdapter !!
         cbListAdapter = new ChckbxListAdapter(this);
         recyclerView.setAdapter(cbListAdapter);
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(cbLineairLayoutManager);
+        // TODO: Indien CheckBoxListAdapter gekozen wordt, dan vlgnd statement geactiveerd worden !!
+        //cbListAdapter.setActivityMaster(SpecificData.ACTIVITY_A4SHOPPINGLIST);
 
         // Invullen adapter vd recyclerview met checkboxlist
         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);

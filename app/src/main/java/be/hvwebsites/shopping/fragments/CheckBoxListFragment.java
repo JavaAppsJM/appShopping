@@ -30,6 +30,7 @@ public class CheckBoxListFragment extends Fragment{
     private ShopEntitiesViewModel viewModel;
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
     private String entityName;
+    private String activityMaster;
 
     // Toegevoegd vanuit android tutorial
     public CheckBoxListFragment(){
@@ -56,21 +57,23 @@ public class CheckBoxListFragment extends Fragment{
         // apart door te geven
         viewModel = new ViewModelProvider(requireActivity()).get(ShopEntitiesViewModel.class);
 
+        // Wat zijn de argumenten die werden meegegeven entityName ? callingactivity ?
+        entityName = requireArguments().getString(SpecificData.LIST_TYPE);
+        activityMaster = requireArguments().getString(SpecificData.CALLING_ACTIVITY);
+
         // Recyclerview definieren
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewCheckBoxes);
         final CheckboxListAdapter cbListAdapter = new CheckboxListAdapter(this.getContext());
         recyclerView.setAdapter(cbListAdapter);
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(cbLineairLayoutManager);
+        cbListAdapter.setActivityMaster(activityMaster);
 
         // Kolom header definieren
         TextView labelColHead1 = view.findViewById(R.id.listColHeadCheckBoxes);
 
         // Checkboxlist clearen
         checkboxList.clear();
-
-        // Wat zijn de argumenten die werden meegegeven entityName ?
-        entityName = requireArguments().getString(SpecificData.LIST_TYPE);
 
         switch (entityName){
             case SpecificData.LIST_TYPE_1:
@@ -163,7 +166,10 @@ public class CheckBoxListFragment extends Fragment{
                         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
                         break;
                     case SpecificData.LIST_TYPE_3:
+                        // meal in kwestie toBuy wordt gewijzigd
                         viewModel.getMealList().get(position).setToBuy(checked);
+                        // TODO: eigen artikels moeten gewijzigd worden
+                        // TODO: deelgerechten moeten gewijzigd worden en ddelgerechten van deelgerechten enz..
                         viewModel.storeMeals();
                         checkboxList.addAll(viewModel.convertMealsToCheckboxs(
                                 viewModel.getMealList(),

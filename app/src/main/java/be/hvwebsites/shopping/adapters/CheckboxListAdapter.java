@@ -2,12 +2,14 @@ package be.hvwebsites.shopping.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.ManageItemActivity;
 import be.hvwebsites.shopping.R;
+import be.hvwebsites.shopping.constants.SpecificData;
 
 public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapter.CbListViewHolder> {
 
@@ -24,8 +27,9 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
     private Context mContext;
     private List<CheckboxHelper> checkboxList;
     private String reference;
-    private String baseSwitch;
     private ClickListener clickListener;
+    private String activityMaster;
+    private String baseSwitch;
 
     public CheckboxListAdapter(Context context) {
         this.mContext = context;
@@ -84,6 +88,14 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
         this.reference = reference;
     }
 
+    public String getActivityMaster() {
+        return activityMaster;
+    }
+
+    public void setActivityMaster(String activityMaster) {
+        this.activityMaster = activityMaster;
+    }
+
     @NonNull
     @Override
     public CbListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,24 +110,48 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
             holder.checkBoxView.setText(currentLine);
             holder.checkBoxView.setChecked(checkboxList.get(position).isChecked());
 
-            holder.checkBoxView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    // er is geclicked op een item, dit betekent dat er nr detail vd item vr evt update wordt gegaan
-                    int indexToUpdate = holder.getAdapterPosition();
-                    //String currentLine = checkboxList.get(indexToUpdate).getName();
+            if (activityMaster.equals(SpecificData.ACTIVITY_A4LIST)){
+                holder.checkBoxView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        // er is geclicked op een item, dit betekent dat er nr detail vd item vr evt update wordt gegaan
+                        int indexToUpdate = holder.getAdapterPosition();
+                        //String currentLine = checkboxList.get(indexToUpdate).getName();
 
-                    Intent intent = new Intent(mContext, ManageItemActivity.class);
-                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
-                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-                    // baseswitch doorgeven is niet nodig omdat ManageItemActivity zelf baseswitch
-                    // bepaald
-                    //intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
-                    intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
-                    mContext.startActivity(intent);
-                    return true;
+                        Intent intent = new Intent(mContext, ManageItemActivity.class);
+                        intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
+                        intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
+                        // baseswitch doorgeven is niet nodig omdat ManageItemActivity zelf baseswitch
+                        // bepaald
+                        //intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
+                        intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
+                        mContext.startActivity(intent);
+                        return true;
+                    }
+                });
+            } else if (activityMaster.equals(SpecificData.ACTIVITY_A4SHOPPINGLIST)){
+                switch (checkboxList.get(position).getStyle()){
+                    case StaticData.PURPLE_500:
+                        holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                                R.color.purple_500));
+                        break;
+                    case SpecificData.STYLE_COOLED_BOLD:
+                        holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                                R.color.cooling));
+                        holder.checkBoxView.setTypeface(null, Typeface.BOLD);
+                        break;
+                    case SpecificData.STYLE_COOLED:
+                        holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                                R.color.cooling));
+                        holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
+                        break;
+                    default:
+                        holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                                R.color.black));
+                        holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
                 }
-            });
+
+            }
         }else {
             holder.checkBoxView.setText("No data !");
         }

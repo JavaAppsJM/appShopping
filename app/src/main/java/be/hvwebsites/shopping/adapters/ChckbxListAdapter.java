@@ -19,6 +19,7 @@ import be.hvwebsites.shopping.R;
 import be.hvwebsites.shopping.constants.SpecificData;
 
 public class ChckbxListAdapter extends RecyclerView.Adapter<ChckbxListAdapter.CbListViewHolder> {
+    // TODO: Kan vervangen worden door CheckboxListAdapter in A4ShoppingList !!!
     private final LayoutInflater inflater;
     private Context mContext;
     private List<CheckboxHelper> checkboxList;
