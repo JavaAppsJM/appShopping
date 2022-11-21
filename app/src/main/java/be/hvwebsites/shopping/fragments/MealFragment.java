@@ -221,7 +221,12 @@ public class MealFragment extends Fragment {
                     mealToSave = newMeal;
                 }else { // Aanpassen
                     mealToSave.setEntityName(String.valueOf(mealNameView.getText()));
-                    mealToSave.setToBuy(toBuyView.isChecked());
+                    if (mealToSave.isToBuy() != toBuyView.isChecked()){
+                        // ToBuy is aangepast
+                        mealToSave.setToBuy(toBuyView.isChecked());
+                        // TODO: onderliggende artikels moeten aangepast worden
+                        // TODO: deelgerechten toBuy moeten aangepast worden
+                    }
                     viewModel.getMealList().set(indexToUpdate, mealToSave);
                 }
                 viewModel.sortMealList();

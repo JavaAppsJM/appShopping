@@ -168,14 +168,14 @@ public class CheckBoxListFragment extends Fragment{
                     case SpecificData.LIST_TYPE_3:
                         // meal in kwestie toBuy wordt gewijzigd
                         viewModel.getMealList().get(position).setToBuy(checked);
-                        // TODO: eigen artikels moeten gewijzigd worden
-                        // TODO: deelgerechten moeten gewijzigd worden en ddelgerechten van deelgerechten enz..
+                        // TODO: eigen artikels toBuy moeten gewijzigd worden
+                        // TODO: deelgerechten toBuy moeten gewijzigd worden en deelgerechten van
+                        //  deelgerechten enz..
                         viewModel.storeMeals();
                         checkboxList.addAll(viewModel.convertMealsToCheckboxs(
                                 viewModel.getMealList(),
                                 false));
                         cbListAdapter.setReference(SpecificData.LIST_TYPE_3);
-                        //TODO: als een meal to buy gezet wordt moeten alle onderliggende artikels ook to buy gezet worden !
                         break;
                     default:
                         break;
