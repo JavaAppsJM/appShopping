@@ -89,6 +89,7 @@ public class MealFragment extends Fragment {
                 new SmartTextItemListAdapter(this.getContext());
         recycVwMealDetails.setAdapter(recycMealDetailAdapter);
         recycVwMealDetails.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recycMealDetailAdapter.setClient(SpecificData.ACTIVITY_A4LIST);
 
         FloatingActionButton fab = view.findViewById(R.id.fab_edit_meal_detail);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -138,9 +139,9 @@ public class MealFragment extends Fragment {
                 public void onClick(View view) {
                     // Andere labels grey zetten
                     labelSubMeal.setTypeface(null, Typeface.NORMAL);
-                    labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     labelParentMeal.setTypeface(null, Typeface.NORMAL);
-                    labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     // Geselecteerd label in focus zetten
                     labelProductsMeal.setTypeface(null, Typeface.BOLD);
                     labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(),
@@ -154,15 +155,15 @@ public class MealFragment extends Fragment {
             });
             // andere labels grey zetten
             labelSubMeal.setTypeface(null, Typeface.NORMAL);
-            labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+            //labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
             labelSubMeal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Andere labels grey zetten
                     labelProductsMeal.setTypeface(null, Typeface.NORMAL);
-                    labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     labelParentMeal.setTypeface(null, Typeface.NORMAL);
-                    labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     // Geselecteerd label in focus zetten
                     labelSubMeal.setTypeface(null, Typeface.BOLD);
                     labelSubMeal.setTextColor(ContextCompat.getColor(getContext(),
@@ -175,15 +176,15 @@ public class MealFragment extends Fragment {
                 }
             });
             labelParentMeal.setTypeface(null, Typeface.NORMAL);
-            labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+            //labelParentMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
             labelParentMeal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Andere labels grey zetten
                     labelProductsMeal.setTypeface(null, Typeface.NORMAL);
-                    labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelProductsMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     labelSubMeal.setTypeface(null, Typeface.NORMAL);
-                    labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+                    //labelSubMeal.setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     // Geselecteerd label in focus zetten
                     labelParentMeal.setTypeface(null, Typeface.BOLD);
                     labelParentMeal.setTextColor(ContextCompat.getColor(getContext(),

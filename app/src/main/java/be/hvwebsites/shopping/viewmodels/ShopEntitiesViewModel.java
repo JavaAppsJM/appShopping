@@ -576,11 +576,11 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         List<Meal> childMeals = new ArrayList<>();
         for (int i = 0; i < mealInMealList.size(); i++) {
             if (mealInMealList.get(i).getSecondID().getId() == inMeal.getEntityId().getId()){
-                if(getMealByID(mealInMealList.get(i).getSecondID()) != null){
+                if(getMealByID(mealInMealList.get(i).getFirstID()) != null){
                     ListItemHelper itemHelper = new ListItemHelper(
-                            getMealByID(mealInMealList.get(i).getSecondID()).getEntityName(),
+                            getMealByID(mealInMealList.get(i).getFirstID()).getEntityName(),
                             "",
-                            mealInMealList.get(i).getSecondID());
+                            mealInMealList.get(i).getFirstID());
                     parentMealNames.add(itemHelper);
                 }
             }

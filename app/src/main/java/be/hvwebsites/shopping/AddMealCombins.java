@@ -157,7 +157,9 @@ public class AddMealCombins extends AppCompatActivity {
                                 clickedParentMeal.getEntityId(),
                                 mealToManage.getEntityId());
                         // Meal, submeal combinatie deleten
-                        viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        if (indexCombinToDelete != StaticData.ITEM_NOT_FOUND){
+                            viewModel.getMealInMealList().remove(indexCombinToDelete);
+                        }
                         viewModel.storeMealInMeal();
                         break;
                     default:
@@ -320,7 +322,10 @@ public class AddMealCombins extends AppCompatActivity {
 
         for (int i = 0; i < parentsId.size(); i++) {
             // Verwijder parent uit remaininglist
-            remainingMeals.remove(getIndexInRemListForMeal(parentsId.get(i)));
+            int indexRemList = getIndexInRemListForMeal(parentsId.get(i));
+            if (indexRemList != StaticData.ITEM_NOT_FOUND){
+                remainingMeals.remove(indexRemList);
+            }
             correctRemainingMealsParents(parentsId.get(i));
         }
 
@@ -343,7 +348,10 @@ public class AddMealCombins extends AppCompatActivity {
 
         for (int i = 0; i < childrenId.size(); i++) {
             // Verwijder child uit remaininglist
-            remainingMeals.remove(getIndexInRemListForMeal(childrenId.get(i)));
+            int indexRemList = getIndexInRemListForMeal(childrenId.get(i));
+            if (indexRemList != StaticData.ITEM_NOT_FOUND){
+                remainingMeals.remove(indexRemList);
+            }
             correctRemainingMealsChildren(childrenId.get(i));
         }
     }
