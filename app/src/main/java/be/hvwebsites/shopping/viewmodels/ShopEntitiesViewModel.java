@@ -846,6 +846,85 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    public void setToBuyForSubMeals(Meal inMeal, boolean inToBuy){
+        List<Integer> deelgerechtIds = new ArrayList<>();
+        deelgerechtIds = getSecondIdsByFirstId(mealInMealList, inMeal.getEntityId().getId());
+        if (deelgerechtIds.size() > 0){
+            setToBuyforMealByList(deelgerechtIds, inToBuy);
+            // Deelgerechten vn deelgerechten
+            for (int i = 0; i < deelgerechtIds.size(); i++) {
+                setToBuyForSubMeals(getMealByID(new IDNumber(deelgerechtIds.get(i))), inToBuy);
+            }
+        }
+    }
+
+    public void setToBuyForProducts(Meal inMeal, boolean inToBuy){
+        List<Integer> productIds = new ArrayList<>();
+        productIds = getSecondIdsByFirstId(productInMealList, inMeal.getEntityId().getId());
+        if (productIds.size() > 0){
+            setToBuyforProductByList(productIds, inToBuy);
+        }
+    }
+
+    private void setToBuyforProductByList(List<Integer> inListIds, boolean inToBuy){
+        // Zet voor een lijst vn ids, de artikelen op ToBuy of niet
+        boolean gerechtToBuy = false;
+        for (int i = 0; i < inListIds.size(); i++) {
+            // Indien toBuy moet afgezet worden, moet er eerst gecontrollerd worden of
+            // artikel niet behoort tot een gerecht waarvan toBuy opstaat !
+            if (!inToBuy){
+                // Bepaal gerechten waartoe artikel behoort
+                List<Integer> gerechtIds = new ArrayList<>();
+                gerechtIds = getFirstIdsBySecondId(
+                        productInMealList, inListIds.get(i));
+                // Is er een gerecht waarvan toBuy opstaat, dan gerechtToBuy = true
+                // Er wordt maar 1 parent laag gecontroleerd !
+                for (int j = 0; (j < gerechtIds.size() && !gerechtToBuy); j++) {
+                    if (getMealByID(new IDNumber(gerechtIds.get(i))).isToBuy()){
+                        gerechtToBuy = true;
+                    }
+                }
+            }
+            // Indien toBuy moet afgezet worden dan kan dit alleen als er geen gerechten zijn,
+            // waartoe artikel behoort, waarvan toBuy opstaat
+            if (inToBuy || !gerechtToBuy){
+                productList.get(getIndexById(
+                        productList,
+                        new IDNumber(inListIds.get(i)))).setToBuy(inToBuy);
+            }
+        }
+    }
+
+    private void setToBuyforMealByList(List<Integer> inListIds, boolean inToBuy){
+        // Zet voor een lijst vn ids, de gerechten op ToBuy of niet
+        boolean parentMealToBuy = false;
+        for (int i = 0; i < inListIds.size(); i++) {
+            // Indien toBuy moet afgezet worden, moet er eerst gecontrollerd worden of
+            // gerecht geen deelgerecht is van een gerecht waarvan toBuy opstaat !
+            if (!inToBuy){
+                // Bepaal gerechten waarvan het een deelgerecht is
+                List<Integer> parentMealIds = new ArrayList<>();
+                parentMealIds = getFirstIdsBySecondId(
+                        mealInMealList, inListIds.get(i));
+                // Is er een gerecht waarvan toBuy opstaat, dan parentMealToBuy = true
+                // Er wordt maar 1 parent laag gecontroleerd omdat deze methode in een
+                // recursive processing zit
+                for (int j = 0; (j < parentMealIds.size() && !parentMealToBuy); j++) {
+                    if (getMealByID(new IDNumber(parentMealIds.get(i))).isToBuy()){
+                        parentMealToBuy = true;
+                    }
+                }
+            }
+            // Indien toBuy moet afgezet worden dan kan dit alleen als er geen gerechten zijn,
+            // waarvan gerecht in kwestie deelgerecht is en waarvan toBuy opstaat
+            if (inToBuy || !parentMealToBuy){
+                mealList.get(getIndexById(
+                        mealList,
+                        new IDNumber(inListIds.get(i)))).setToBuy(inToBuy);
+            }
+        }
+    }
+
     public void clearAllProductInShop(){
         // Verwijdert alle prodinshop combinaties
         productInShopList.clear();

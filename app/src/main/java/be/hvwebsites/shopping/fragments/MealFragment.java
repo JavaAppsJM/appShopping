@@ -224,13 +224,16 @@ public class MealFragment extends Fragment {
                     if (mealToSave.isToBuy() != toBuyView.isChecked()){
                         // ToBuy is aangepast
                         mealToSave.setToBuy(toBuyView.isChecked());
-                        // TODO: onderliggende artikels moeten aangepast worden
-                        // TODO: deelgerechten toBuy moeten aangepast worden
+                        // Deelgerechten toBuy moeten aangepast worden
+                        viewModel.setToBuyForSubMeals(mealToSave, toBuyView.isChecked());
+                        // Onderliggende artikels moeten aangepast worden
+                        viewModel.setToBuyForProducts(mealToSave, toBuyView.isChecked());
                     }
                     viewModel.getMealList().set(indexToUpdate, mealToSave);
                 }
                 viewModel.sortMealList();
                 viewModel.storeMeals();
+                viewModel.storeProducts();
                 Intent replyIntent = new Intent(getContext(), A4ListActivity.class);
                 replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, SpecificData.LIST_TYPE_3);
                 //replyIntent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, viewModel.getBaseSwitch());

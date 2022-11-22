@@ -18,10 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
+import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.R;
 import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Meal;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class CheckBoxListFragment extends Fragment{
@@ -168,10 +170,13 @@ public class CheckBoxListFragment extends Fragment{
                     case SpecificData.LIST_TYPE_3:
                         // meal in kwestie toBuy wordt gewijzigd
                         viewModel.getMealList().get(position).setToBuy(checked);
-                        // TODO: eigen artikels toBuy moeten gewijzigd worden
-                        // TODO: deelgerechten toBuy moeten gewijzigd worden en deelgerechten van
-                        //  deelgerechten enz..
+                        // Deelgerechten toBuy moeten gewijzigd worden en deelgerechten van
+                        // deelgerechten enz..
+                        viewModel.setToBuyForSubMeals(viewModel.getMealList().get(position), checked);
+                        // Eigen artikels toBuy moeten gewijzigd worden
+                        viewModel.setToBuyForProducts(viewModel.getMealList().get(position), checked);
                         viewModel.storeMeals();
+                        viewModel.storeProducts();
                         checkboxList.addAll(viewModel.convertMealsToCheckboxs(
                                 viewModel.getMealList(),
                                 false));

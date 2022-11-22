@@ -7,7 +7,7 @@ public class Product extends ShoppingEntity {
     private IDNumber preferredShopId;
     public static final int NO_PREFERRED_SHOP = StaticData.ITEM_NOT_FOUND;
     private boolean toBuy;
-    private boolean previousToBuy;
+    private boolean previousToBuy; // TODO: is waarschijnlijk niet nodig
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     private boolean cooled;
     public static final String PRODUCT_LATEST_ID = "product";

@@ -4,7 +4,7 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 
 public class Meal extends ShoppingEntity {
     private boolean toBuy;
-    private boolean previousToBuy;
+    private boolean previousToBuy; // TODO: is waarschijnlijk niet nodig
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     public static final String MEAL_LATEST_ID = "meal";
 
