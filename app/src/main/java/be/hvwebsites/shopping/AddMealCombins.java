@@ -73,6 +73,7 @@ public class AddMealCombins extends AppCompatActivity {
         mealToManage = viewModel.getMealByID(new IDNumber(mealId));
 
         // Schermviews definieren
+        setTitle("Koppel " + mealToManage.getEntityName() + " aan ...");
         TextView instAddMealCombin = findViewById(R.id.instCombinItems);
         TextView labelAddMealCombin = findViewById(R.id.labelCombinItems);
         TextView labelAddMealNotCombin = findViewById(R.id.labelNotCombinItems);

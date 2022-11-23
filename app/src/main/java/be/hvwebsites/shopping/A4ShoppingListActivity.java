@@ -1,43 +1,36 @@
 package be.hvwebsites.shopping;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.view.textservice.SpellCheckerInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
-import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
-import be.hvwebsites.shopping.adapters.ChckbxListAdapter;
+import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.entities.Shop;
@@ -55,7 +48,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
     private String shopFilterString = "";
     private Shop shopFilter;
-    private ChckbxListAdapter cbListAdapter;
+    private CheckboxListAdapter cbListAdapter;
     private Switch switchV;
 
 
@@ -162,12 +155,12 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Recyclerview definieren
         RecyclerView recyclerView = findViewById(R.id.recyclerviewShoppingListProducts);
         // TODO: ChckbxListAdapter kan vervangen worden door CheckBoxListAdapter !!
-        cbListAdapter = new ChckbxListAdapter(this);
+        cbListAdapter = new CheckboxListAdapter(this);
         recyclerView.setAdapter(cbListAdapter);
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(cbLineairLayoutManager);
         // TODO: Indien CheckBoxListAdapter gekozen wordt, dan vlgnd statement geactiveerd worden !!
-        //cbListAdapter.setActivityMaster(SpecificData.ACTIVITY_A4SHOPPINGLIST);
+        cbListAdapter.setActivityMaster(SpecificData.ACTIVITY_A4SHOPPINGLIST);
 
         // Invullen adapter vd recyclerview met checkboxlist
         cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
@@ -183,7 +176,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         }
 
         // Als er geclicked is op een checkbox, wordt dat hier gecapteerd ?
-        cbListAdapter.setOnItemClickListener(new ChckbxListAdapter.ClickListener() {
+        cbListAdapter.setOnItemClickListener(new CheckboxListAdapter.ClickListener() {
             @Override
             public void onItemClicked(int position, View v, boolean checked) {
                 // via het itemID vd checkboxhelper het juiste produkt bepalen en de toBuy zetten

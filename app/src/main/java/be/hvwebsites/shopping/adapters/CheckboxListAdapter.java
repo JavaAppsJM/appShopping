@@ -22,7 +22,6 @@ import be.hvwebsites.shopping.constants.SpecificData;
 
 public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapter.CbListViewHolder> {
 
-    // TODO: Kan deze niet vervangen worden door ChckbxListAdapter
     private final LayoutInflater inflater;
     private Context mContext;
     private List<CheckboxHelper> checkboxList;

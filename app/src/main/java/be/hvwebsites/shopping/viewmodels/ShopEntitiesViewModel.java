@@ -432,7 +432,12 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     /** Meallist methodes */
 
     public Meal getMealByID(IDNumber inMealID){
-        return mealList.get(getIndexById(mealList, inMealID));
+        int indexInMeallist = getIndexById(mealList, inMealID);
+        if (indexInMeallist != StaticData.ITEM_NOT_FOUND){
+            return mealList.get(indexInMeallist);
+        }else {
+            return null;
+        }
     }
 
     private List<Meal> getMealsFromDataList(List<String> dataList){
@@ -819,7 +824,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             // Controle only checked
             if ((mealList.get(i).isToBuy() && onlyChecked) || (!onlyChecked)){
                 checkboxList.add(new CheckboxHelper(
-                        mealList.get(i).getDisplayLine(),
+                        mealList.get(i).getEntityName(),
                         mealList.get(i).isToBuy(),SpecificData.STYLE_DEFAULT,
                         mealList.get(i).getEntityId()));
             }
@@ -880,7 +885,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
                 // Is er een gerecht waarvan toBuy opstaat, dan gerechtToBuy = true
                 // Er wordt maar 1 parent laag gecontroleerd !
                 for (int j = 0; (j < gerechtIds.size() && !gerechtToBuy); j++) {
-                    if (getMealByID(new IDNumber(gerechtIds.get(i))).isToBuy()){
+                    if (getMealByID(new IDNumber(gerechtIds.get(j))).isToBuy()){
                         gerechtToBuy = true;
                     }
                 }
@@ -888,9 +893,29 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             // Indien toBuy moet afgezet worden dan kan dit alleen als er geen gerechten zijn,
             // waartoe artikel behoort, waarvan toBuy opstaat
             if (inToBuy || !gerechtToBuy){
+                // Bepaal artikel
+                Product tewijzigenProduct = productList.get(getIndexById(productList, new IDNumber(inListIds.get(i))));
+
+                if (inToBuy){
+                    // Als toBuy voor een artikel moet opgezet worden vanuit een meal
+                    // dan moet toBuy van het artikel eerst bewaard worden
+                    tewijzigenProduct.setPreviousToBuy(tewijzigenProduct.isToBuy());
+                    tewijzigenProduct.setToBuy(inToBuy);
+                    boolean debug = true;
+                }else {
+                    // Als toBuy voor een artikel moet afgezet worden (er zijn dan geen meals meer
+                    // waarvoor het op moet staan) vanuit een meal
+                    // dan moet previoustoBuy van het artikel teruggezet worden
+                    tewijzigenProduct.setToBuy(tewijzigenProduct.isPreviousToBuy());
+                    boolean debug = true;
+                    debug = false;
+                }
+/*
                 productList.get(getIndexById(
                         productList,
                         new IDNumber(inListIds.get(i)))).setToBuy(inToBuy);
+*/
+                boolean debug = true;
             }
         }
     }
