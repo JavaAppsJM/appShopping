@@ -83,7 +83,7 @@ public class ManageItemActivity extends AppCompatActivity  {
         }
         fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_ACTION, action);
         fragmentBundle.putInt(StaticData.EXTRA_INTENT_KEY_INDEX, index);
-        // TODO: is dit nodig want gans het viewmodel wordt gerecupereerd in het fragment ?
+        // Dit is niet nodig want gans het viewmodel wordt gerecupereerd in het fragment ?
         //fragmentBundle.putString(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, fileBaseService.getFileBaseDir());
 
         // Bewaar terugkeerkruimels als cookies
@@ -127,7 +127,6 @@ public class ManageItemActivity extends AppCompatActivity  {
                     setTitle(SpecificData.TITLE_UPDATE_ACTIVITY_T3);
                 }
                 // Creeer fragment_meal
-                // TODO: ga naar mealfragment als het klaar is
                 if (savedInstanceState == null){
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)

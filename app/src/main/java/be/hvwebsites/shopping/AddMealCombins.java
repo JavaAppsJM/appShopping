@@ -177,7 +177,7 @@ public class AddMealCombins extends AppCompatActivity {
             public void onItemClicked(int position, View v) {
                 // via het itemID vd listitemhelper het juiste item bepalen en de combinatie
                 // met mealToManage toevoegen
-                // TODO: Verwerken afhankelijk vn combinatieType
+                // Verwerken afhankelijk vn combinatieType
                 switch (combinationType){
                     case SpecificData.SC_PRODUCTSMEAL:
                         // Verbinding meal en product toevoegen

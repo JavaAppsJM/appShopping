@@ -25,6 +25,7 @@ import java.util.List;
 
 import be.hvwebsites.libraryandroid4.adapters.NothingSelectedSpinnerAdapter;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
+import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
@@ -85,7 +86,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(),
                 SpecificData.DISPLAY_SMALL));
         shopFilterAdapter.add(SpecificData.NO_FILTER);
-        // Adapter obv ListItemHelper
+        // TODO: ShopfilterAdapter obv ListItemHelper
         ArrayAdapter<ListItemHelper> shopItemAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
         shopItemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,12 +118,19 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Is er al een ShopFilter in de cookie repo ?
         cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
         shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
+        // TODO: volgend stuk moet aangepast worden vr de nieuwe shopfilteradapter
         if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
             // er is nog geen shopfilter
             // nothing selected spinner definieren
             shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                     shopFilterAdapter, R.layout.contact_spinner_row_nothing_selected, this
             ));
+/*
+            // TODO: vr de nieuwe shopfilteradapter
+            shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
+                    shopItemAdapter, R.layout.contact_spinner_row_nothing_selected, this
+            ));
+*/
             // Alle producten ophalen ongefilterd en de checkboxlist steken
             checkboxList.clear();
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
@@ -135,6 +143,21 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             if (!shopFilterString.equals(SpecificData.NO_FILTER)){
                 shopFilter = viewModel.getShopByShopName(shopFilterString);
             }
+            // TODO: In de nieuwe versie shopfilteradapter, is de shopfilterstring cookie
+            //  een shopId en moet deze omgezet worden naar een shop
+/*
+            int shopfilterId = Integer.parseInt(shopFilterString);
+            if (shopfilterId != StaticData.ITEM_NOT_FOUND){
+                int indexShopFilter = viewModel.getIndexById(viewModel.getShopList(),
+                        new IDNumber(shopfilterId));
+                if (indexShopFilter != StaticData.ITEM_NOT_FOUND){
+                    // Nu kan shop bepaald worden
+                    shopFilter = viewModel.getShopList().get(indexShopFilter);
+                    shopFilterString = shopFilter.getEntityName();
+                }
+            }
+*/
+
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
             composeCheckboxList();
             // spinner met selectie gebruiken
@@ -146,7 +169,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 int positionAA = shopItemAdapter.getCount()-1;
                 shopFilterSpinner.setSelection(positionAA, false);
             }else {
-                shopFilterSpinner.setSelection(viewModel.getIndexById(viewModel.getShopList(), shopFilter.getEntityId()), false);
+                shopFilterSpinner.setSelection(viewModel.getIndexById(viewModel.getShopList(),
+                        shopFilter.getEntityId()), false);
             }
         }
         // selection listener activeren, moet gebueren nadat de adapter gekoppeld is aan de spinner !!
@@ -154,12 +178,12 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
         // Recyclerview definieren
         RecyclerView recyclerView = findViewById(R.id.recyclerviewShoppingListProducts);
-        // TODO: ChckbxListAdapter kan vervangen worden door CheckBoxListAdapter !!
+        // ChckbxListAdapter kan vervangen worden door CheckBoxListAdapter !!
         cbListAdapter = new CheckboxListAdapter(this);
         recyclerView.setAdapter(cbListAdapter);
         LinearLayoutManager cbLineairLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(cbLineairLayoutManager);
-        // TODO: Indien CheckBoxListAdapter gekozen wordt, dan vlgnd statement geactiveerd worden !!
+        // Indien CheckBoxListAdapter gekozen wordt, dan vlgnd statement geactiveerd worden !!
         cbListAdapter.setActivityMaster(SpecificData.ACTIVITY_A4SHOPPINGLIST);
 
         // Invullen adapter vd recyclerview met checkboxlist
@@ -225,7 +249,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 shopFilterString = shopFilter.getEntityName();
             }
             //shopFilterString = String.valueOf(parent.getItemAtPosition(position));
-            // Shopfilter bewaren als Cookie
+            // TODO: Shopfilter bewaren als Cookie ; de shopfilterId moet bewaard worden
             cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
 /*
             // bepaal shop voor herbepalen checkboxlist

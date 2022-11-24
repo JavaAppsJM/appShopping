@@ -58,7 +58,7 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
         public void onClick(View v) {
             // Er is geclicked op een item
             if (client.equals(SpecificData.ACTIVITY_ADDMEALCOMBINS)){
-                // TODO: verwerking vn click vr addmealcombins
+                // Verwerking vn click vr addmealcombins
                 // clicklistener mt properties doorgeven nr activity
                 clickListener.onItemClicked(getAdapterPosition(), v);
 

@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Creer een filebase service (bevat file base en file base directory) obv device en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
         filebaseDir = fileBaseService.getFileBaseDir();
+        fileBase = fileBaseService.getFileBase();
 
         // Restore SMS status via cookie
         cookieRepository = new CookieRepository(filebaseDir);
