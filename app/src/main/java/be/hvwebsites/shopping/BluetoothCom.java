@@ -429,16 +429,17 @@ public class BluetoothCom extends AppCompatActivity {
                 // Er volgt een product uit de productlist
                 Product productReceived = new Product();
 /*
-                // TODO: nog testen vooraleer te activeren
+                // TODO: nog testen vooraleer te activeren en Gitte dit heeft
                 productReceived.setBtContent(btLineContent[i+2], btLineContent[i+3], btLineContent[i+4],
-                        btLineContent[i+5], btLineContent[i+6], btLineContent[i+7]);
+                        btLineContent[i+5], btLineContent[i+6], btLineContent[i+7], btLineContent[i+8]);
 */
                 productReceived.setEntityId(new IDNumber(btLineContent[i+2].replace(">", "")));
                 productReceived.setEntityName(btLineContent[i+3].replace(">",""));
                 productReceived.setPreferredShopId(new IDNumber(btLineContent[i+4].replace(">", "")));
                 productReceived.setToBuy(productReceived.convertFileContentToBoolean(btLineContent[i+5].replace(">","")));
                 productReceived.setWanted(productReceived.convertFileContentToBoolean(btLineContent[i+6].replace(">","")));
-                productReceived.setCooled(productReceived.convertFileContentToBoolean(btLineContent[i+7].replace(">","")));
+                // TODO: Let op gitte heeft dit nog niet !!
+                // productReceived.setCooled(productReceived.convertFileContentToBoolean(btLineContent[i+7].replace(">","")));
                 // Toevoegen aan de locale productlist
                 viewModel.getProductListBt().add(productReceived);
                 // Versturen van productlist ontvangen

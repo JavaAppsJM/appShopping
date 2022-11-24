@@ -7,7 +7,7 @@ public class Product extends ShoppingEntity {
     private IDNumber preferredShopId;
     public static final int NO_PREFERRED_SHOP = StaticData.ITEM_NOT_FOUND;
     private boolean toBuy;
-    private boolean previousToBuy; // TODO: is waarschijnlijk niet nodig
+    private boolean previousToBuy;
     private boolean wanted; // wel of niet meer gewenst, kan tijdelijk zijn !
     private boolean cooled;
     public static final String PRODUCT_LATEST_ID = "product";
@@ -19,13 +19,14 @@ public class Product extends ShoppingEntity {
         super(basedir, PRODUCT_LATEST_ID);
         preferredShopId = new IDNumber(NO_PREFERRED_SHOP);
         toBuy = false;
+        previousToBuy = false;
         wanted = true;
         cooled = false;
     }
 
     public Product(String fileLine){
         // Maakt een product obv een fileline - format:
-        // <key><521><product><azerty><prefshop><123><tobuy><0><wanted><1>
+        // <key><521><product><azerty><prefshop><123><tobuy><0><prevtobuy><0><wanted><1><cooled><0>
         // fileLine splitsen in argumenten
         super();
         // Cooled default op false zetten, wordt wel overschreven als het in de file zit
@@ -45,6 +46,9 @@ public class Product extends ShoppingEntity {
             if (fileLineContent[i].matches("tobuy.*")){
                 this.toBuy = convertFileContentToBoolean(fileLineContent[i+1].replace(">",""));
             }
+            if (fileLineContent[i].matches("prevtobuy.*")){
+                this.previousToBuy = convertFileContentToBoolean(fileLineContent[i+1].replace(">",""));
+            }
             if (fileLineContent[i].matches("wanted.*")){
                 this.wanted = convertFileContentToBoolean(fileLineContent[i+1].replace(">",""));
             }
@@ -58,6 +62,7 @@ public class Product extends ShoppingEntity {
         super.setShopEntity(inProdukt);
         setPreferredShopId(inProdukt.getPreferredShopId());
         setToBuy(inProdukt.isToBuy());
+        setPreviousToBuy(inProdukt.isPreviousToBuy());
         setWanted(inProdukt.isWanted());
         setCooled(inProdukt.isCooled());
     }
@@ -66,6 +71,7 @@ public class Product extends ShoppingEntity {
         setShopEntity(inProduct);
         setPreferredShopId(inProduct.getPreferredShopId());
         setToBuy(inProduct.isToBuy());
+        setPreviousToBuy(inProduct.isPreviousToBuy());
         setWanted(inProduct.isWanted());
         setCooled(inProduct.isCooled());
     }
@@ -73,10 +79,11 @@ public class Product extends ShoppingEntity {
     public String convertToFileLine(){
         String fileLine = "<key><" + getEntityId().getIdString()
                 + "><product><" + getEntityName()
-        + "><prefshop><" + this.preferredShopId.getIdString()
-        + "><tobuy><" + convertBooleanToString(toBuy)
-        + "><wanted><" + convertBooleanToString(wanted)
-        + "><cooled><" + convertBooleanToString(cooled) + ">";
+                + "><prefshop><" + this.preferredShopId.getIdString()
+                + "><tobuy><" + convertBooleanToString(toBuy)
+                + "><prevtobuy><" + convertBooleanToString(previousToBuy)
+                + "><wanted><" + convertBooleanToString(wanted)
+                + "><cooled><" + convertBooleanToString(cooled) + ">";
         return fileLine;
     }
 
@@ -132,14 +139,12 @@ public class Product extends ShoppingEntity {
         return smsLine;
     }
 
-    public void setToBuyRemember(boolean mealToBuy){
-        // vooraleer to buy te wijzigen wordt deze onthouden in previous to buy
-        this.previousToBuy = this.toBuy;
-        this.toBuy = mealToBuy;
-    }
-
     public String getToBuyAsString(){
         return convertBooleanToString(toBuy);
+    }
+
+    public String getPrevToBuyAsString(){
+        return convertBooleanToString(previousToBuy);
     }
 
     public String getWantedAsString(){
@@ -192,6 +197,8 @@ public class Product extends ShoppingEntity {
         bTMsg = bTMsg.concat("><");
         bTMsg = bTMsg.concat(getToBuyAsString());
         bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getPrevToBuyAsString());
+        bTMsg = bTMsg.concat("><");
         bTMsg = bTMsg.concat(getWantedAsString());
         bTMsg = bTMsg.concat("><");
         bTMsg = bTMsg.concat(getCooledAsString());
@@ -199,12 +206,14 @@ public class Product extends ShoppingEntity {
         return bTMsg;
     }
 
-    public void setBtContent(String bt2, String bt3, String bt4, String bt5, String bt6, String bt7){
+    public void setBtContent(String bt2, String bt3, String bt4, String bt5, String bt6, String bt7,
+                             String bt8){
         setEntityId(new IDNumber(bt2.replace(">", "")));
         setEntityName(bt3.replace(">",""));
         setPreferredShopId(new IDNumber(bt4.replace(">", "")));
         setToBuy(convertFileContentToBoolean(bt5.replace(">","")));
-        setWanted(convertFileContentToBoolean(bt6.replace(">","")));
-        setCooled(convertFileContentToBoolean(bt7.replace(">","")));
+        setPreviousToBuy(convertFileContentToBoolean(bt6.replace(">","")));
+        setWanted(convertFileContentToBoolean(bt7.replace(">","")));
+        setCooled(convertFileContentToBoolean(bt8.replace(">","")));
     }
 }
