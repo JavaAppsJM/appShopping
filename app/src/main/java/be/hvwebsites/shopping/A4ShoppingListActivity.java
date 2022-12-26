@@ -312,6 +312,21 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                     "Geen artikels gevonden !",
                     Toast.LENGTH_LONG).show();
         }
+
+        // Sorteren op cooling van achter zetten
+        CheckboxHelper temphelper = new CheckboxHelper();
+        for (int i = checkboxList.size() ; i > 0; i--) {
+            for (int j = 1; j < i ; j++) {
+                if (((checkboxList.get(j-1).getStyle() == SpecificData.STYLE_COOLED) ||
+                        (checkboxList.get(j-1).getStyle() == SpecificData.STYLE_COOLED_BOLD)) &&
+                                ((checkboxList.get(j).getStyle() != SpecificData.STYLE_COOLED) &&
+                                        (checkboxList.get(j).getStyle() != SpecificData.STYLE_COOLED_BOLD))){
+                    temphelper.setCBHelper(checkboxList.get(j));
+                    checkboxList.get(j).setCBHelper(checkboxList.get(j-1));
+                    checkboxList.get(j-1).setCBHelper(temphelper);
+                }
+            }
+        }
     }
 
     private void removeDoubleProducts(){
