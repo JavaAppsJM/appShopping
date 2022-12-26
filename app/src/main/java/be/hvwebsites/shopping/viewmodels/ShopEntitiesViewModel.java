@@ -12,6 +12,7 @@ import java.util.List;
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
+import be.hvwebsites.libraryandroid4.repositories.Cookie;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.repositories.FlexiRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
@@ -173,10 +174,35 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             mealInMealList.addAll(mealInMealListBt);
         }
         saveInBaseDir(basedir);
+
+        // Hoogste ID's in cookies aanpassen
+        correctHighestID(Shop.SHOP_LATEST_ID, shopList);
+        correctHighestID(Product.PRODUCT_LATEST_ID, productList);
+        correctHighestID(Meal.MEAL_LATEST_ID, mealList);
         boolean debug = true;
     }
 
     /** Flexi methodes */
+
+    private void correctHighestID(String entity,
+                                  List<? extends ShoppingEntity> inList){
+        CookieRepository cookieRepository = new CookieRepository(basedir);
+        // Highest Id cookie corrigeren indien nodig
+        // Wat is de cookie
+        int cookieId = 0;
+        if (cookieRepository.bestaatCookie(entity) != CookieRepository.COOKIE_NOT_FOUND){
+            cookieId = Integer.parseInt(cookieRepository.getCookieValueFromLabel(entity));
+        }
+        // Wat is de echte hoogste Id
+        int highestId = determineHighestID(inList);
+
+        // Als de echte > cookie, cookie aanpassen
+        if (highestId > cookieId){
+            Cookie highestIdCookie = new Cookie(entity, String.valueOf(highestId));
+            cookieRepository.deleteCookie(entity);
+            cookieRepository.addCookie(highestIdCookie);
+        }
+    }
 
     public int determineHighestID(List<? extends ShoppingEntity> inList){
         int highestID = 0;
