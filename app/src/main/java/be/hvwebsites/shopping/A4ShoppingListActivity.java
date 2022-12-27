@@ -78,6 +78,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         /** Scherm voorbereidingen */
         // ShopFilter Spinner
         Spinner shopFilterSpinner = (Spinner) findViewById(R.id.spinnerShopFilter);
+/*
         // Adapter voor de ShopFilter Spinner
         ArrayAdapter<String> shopFilterAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
@@ -86,7 +87,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(),
                 SpecificData.DISPLAY_SMALL));
         shopFilterAdapter.add(SpecificData.NO_FILTER);
-        // TODO: ShopfilterAdapter obv ListItemHelper
+*/
+        // ShopfilterAdapter obv ListItemHelper
         ArrayAdapter<ListItemHelper> shopItemAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
         shopItemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -118,19 +120,19 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Is er al een ShopFilter in de cookie repo ?
         cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
         shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
-        // TODO: volgend stuk moet aangepast worden vr de nieuwe shopfilteradapter
+        // TODO: opkuisen shopfilteradapter
         if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
             // er is nog geen shopfilter
             // nothing selected spinner definieren
+/*
             shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                     shopFilterAdapter, R.layout.contact_spinner_row_nothing_selected, this
             ));
-/*
-            // TODO: vr de nieuwe shopfilteradapter
+*/
+            // vr de nieuwe shopfilteradapter
             shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                     shopItemAdapter, R.layout.contact_spinner_row_nothing_selected, this
             ));
-*/
             // Alle producten ophalen ongefilterd en de checkboxlist steken
             checkboxList.clear();
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(

@@ -864,12 +864,12 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         // Bepaalt de IDNumber vd shop obv de spinnerselection
         boolean shopFound = false;
         int i = 0;
-        do {
+        while (!shopFound && i < shopList.size()) {
             if (shopList.get(i).getEntityName().equals(this.spinnerSelection)){
                 shopFound = true;
             }
             i++;
-        } while (!shopFound && i < shopList.size());
+        }
         if (shopFound){
             return shopList.get(i - 1).getEntityId();
         }else {

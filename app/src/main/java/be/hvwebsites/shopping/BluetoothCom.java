@@ -478,6 +478,7 @@ public class BluetoothCom extends AppCompatActivity {
                 // Versturen van send endshopprod ontvangen
                 sendMessage("<rec><endshopprod>");
             }
+            // TODO: ontvangen van meals en prodinmeals en mealinmeals
             if (sendReceived && sendMsgProcessStatus.equals(SEND_STATUS_START) && btLineContent[i].matches("end.*")){
                 sendMsgProcessStatus = SEND_STATUS_END;
                 sendReceived = false;
@@ -616,6 +617,7 @@ public class BluetoothCom extends AppCompatActivity {
                 String msg = "<send><end>";
                 sendMessage(msg);
             }
+            // TODO: zenden van meals en prodinmeals en mealinmeals
             if (recReceived && receiveMsgProcessStatus.equals(REC_STATUS_START) &&
                     btLineContent[i].matches("end.*")){
                 receiveMsgProcessStatus = REC_STATUS_END;
