@@ -138,11 +138,15 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                                 R.color.cooling));
                         holder.checkBoxView.setTypeface(null, Typeface.BOLD);
+//                        holder.checkBoxView.set(ContextCompat.getColor(mContext,
+//                                R.color.brown));
                         break;
                     case SpecificData.STYLE_COOLED:
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                                 R.color.cooling));
                         holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
+                        holder.checkBoxView.setDrawingCacheBackgroundColor(ContextCompat.getColor(mContext,
+                                R.color.brown));
                         break;
                     default:
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,

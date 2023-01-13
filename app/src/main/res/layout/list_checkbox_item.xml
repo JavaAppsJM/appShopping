@@ -7,6 +7,7 @@
 
     <CheckBox
         android:id="@+id/a4ListCheckboxItem"
+        style="@style/CB_Meal_Checked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"

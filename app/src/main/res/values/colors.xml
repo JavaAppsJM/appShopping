@@ -8,7 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#17E0F7FA</color>
-    <color name="red">#FA1302</color>
-    <color name="cooling">#59A0F6</color>
+    <color name="red">#FFFA1302</color>
+    <color name="cooling">#FF59A0F6</color>
+    <color name="brown">#FF641E07</color>
+    <color name="meal_cb">#FF79270C</color>
     <color name="background_white">#FFFFFFFF</color>
 </resources>

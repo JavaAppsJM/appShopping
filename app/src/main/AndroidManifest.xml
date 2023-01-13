@@ -47,6 +47,7 @@
         <activity
             android:name=".ManageItemActivity"
             android:label="@string/title_activity_new_item"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".A4ListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

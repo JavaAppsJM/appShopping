@@ -14,4 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="colorOnTertiary">@color/grey</item>
     </style>
+    <style name="Checkboxes" parent="Theme.Shopping">
+    </style>
+    <style name="CB_Meal_Checked" parent="Checkboxes">
+        <item name="android:colorBackground">@color/meal_cb</item>
+    </style>
+
 </resources>
