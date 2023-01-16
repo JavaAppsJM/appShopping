@@ -30,4 +30,9 @@
         android:title="Set sms on or off"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_finish"
+        android:title="Exit app"
+        app:showAsAction="never"/>
+
 </menu>

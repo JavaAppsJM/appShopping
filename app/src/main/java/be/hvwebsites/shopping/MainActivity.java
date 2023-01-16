@@ -196,6 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 cookieRepository.registerCookie(StaticData.SMS_LABEL, smsStatus);
                 smsMenuV.setText(smsStatus);
                 return true;
+            case R.id.menu_finish:
+                // Stop app
+                finish();
             default:
                 // Do nothing
         }
