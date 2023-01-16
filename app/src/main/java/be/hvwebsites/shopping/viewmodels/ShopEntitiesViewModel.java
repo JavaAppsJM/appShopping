@@ -976,6 +976,28 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    public void correctToBuyMeals(){
+        // Voor alle Meals, met ToBuy op
+        boolean correctToBuy = true;
+        for (int i = 0; i < mealList.size(); i++) {
+            if (mealList.get(i).isToBuy()){
+                for (int j = 0; ((j < productInMealList.size()) && (correctToBuy)); j++) {
+                    if (productInMealList.get(j).getFirstID().getId() ==
+                            mealList.get(i).getEntityId().getId()){
+                        // Haal product op
+                        if(getProductByID(productInMealList.get(j).getSecondID()).isToBuy()){
+                            // Indien er een product toBuy staat, geen correctie nodig
+                            correctToBuy = false;
+                        }
+                    }
+                }
+                if (correctToBuy){
+                    mealList.get(i).setToBuy(false);
+                }
+            }
+        }
+    }
+
     public void clearAllProductInShop(){
         // Verwijdert alle prodinshop combinaties
         productInShopList.clear();
@@ -1044,7 +1066,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return mealInMealList;
     }
 
+
     // TODO: mag weg
+
+    // obv afklikken product, voor alle gerechten waartoe product behoort, controleren of de
+    // andere producten ook afgeklikt staan, indien het geval, het gerecht ook afklikken
+/*
+    public void clearToBuyForMealByProduct(){
+
+    }
+*/
+
 /*
     public int getProductMealCombinIndex(IDNumber inProductID, IDNumber inMealID){
         // Bepaalt de index vd produkt-shop combinatie als die bestaat

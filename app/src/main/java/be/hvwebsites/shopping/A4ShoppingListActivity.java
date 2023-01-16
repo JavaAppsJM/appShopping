@@ -208,7 +208,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 // via het itemID vd checkboxhelper het juiste produkt bepalen en de toBuy zetten
                 Product clickedProduct = viewModel.getProductByID(checkboxList.get(position).getItemID());
                 clickedProduct.setToBuy(checked);
-//                viewModel.getProductByID(checkboxList.get(position).getItemID()).setToBuy(checked);
                 viewModel.storeProducts();
                 composeCheckboxList();
                 cbListAdapter.setCheckboxList(checkboxList);

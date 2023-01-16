@@ -92,6 +92,8 @@ public class CheckBoxListFragment extends Fragment{
                 break;
             case SpecificData.LIST_TYPE_3:
                 labelColHead1.setText(SpecificData.HEAD_LIST_ACTIVITY_T3);
+                // Gerechten corrigeren op toBuy
+                viewModel.correctToBuyMeals();
                 checkboxList.addAll(viewModel.convertMealsToCheckboxs(
                         viewModel.getMealList(),
                         false));
