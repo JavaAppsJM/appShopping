@@ -41,7 +41,7 @@ public class SmallItemListAdapter extends RecyclerView.Adapter<SmallItemListAdap
         @Override
         public void onClick(View v) {
             // er is geclicked op een item, het geselecteerd item moet teruggeven worden
-            // TODO: vorig item background op wit zetten
+            // Vorig item background op wit zetten
             if (previousView != null){
                 previousView.setBackgroundColor(ContextCompat.getColor(mContext,
                         R.color.background_white));

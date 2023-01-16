@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -205,7 +206,10 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                     recycUnSelShopsadapter.setReusableList(viewModel.getUnselectedShopNamesByProduct(productToSave));
                     recycUnSelShopsadapter.clearPrevViewBackground();
                 }else {
-                    // TODO: er is geen shop geselecteerd, een boodschap laten zien
+                    // Er is geen shop gevonden vr de selectie, een boodschap laten zien
+                    Toast.makeText(ProductFragment.super.getContext(),
+                            "Geen winkel gevonden ! ",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -234,7 +238,10 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                     recycUnSelShopsadapter.setReference(SpecificData.LIST_TYPE_2);
                     recycUnSelShopsadapter.setReusableList(viewModel.getUnselectedShopNamesByProduct(productToSave));
                 }else {
-                    // TODO: er is geen shop geselecteerd, een boodschap laten zien
+                    // Er is geen shop gevonden vr de selectie, een boodschap laten zien
+                    Toast.makeText(ProductFragment.super.getContext(),
+                            "Geen winkel gevonden ! ",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

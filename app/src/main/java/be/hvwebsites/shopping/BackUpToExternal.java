@@ -22,7 +22,6 @@ public class BackUpToExternal extends AppCompatActivity {
         String intBaseDir = getBaseContext().getFilesDir().getAbsolutePath();
 
         // External basis directory definitie
-        // TODO: Testen of extBaseDir gelukt is
         String extBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
 
         // Internal Data ophalen
