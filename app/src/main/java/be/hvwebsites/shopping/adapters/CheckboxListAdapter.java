@@ -2,7 +2,9 @@ package be.hvwebsites.shopping.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,7 @@ import be.hvwebsites.shopping.constants.SpecificData;
 public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapter.CbListViewHolder> {
 
     private final LayoutInflater inflater;
-    private Context mContext;
+    private final Context mContext;
     private List<CheckboxHelper> checkboxList;
     private String reference;
     private ClickListener clickListener;
@@ -138,15 +140,16 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                                 R.color.cooling));
                         holder.checkBoxView.setTypeface(null, Typeface.BOLD);
-//                        holder.checkBoxView.set(ContextCompat.getColor(mContext,
-//                                R.color.brown));
+                        // Om checkbox andere tint te geven, werkt niet bij An
+//                        ColorStateList tint = holder.checkBoxView.getResources().getColorStateList(R.color.cbstatecolorlist);
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                            holder.checkBoxView.setButtonTintList(tint);
+//                        }
                         break;
                     case SpecificData.STYLE_COOLED:
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                                 R.color.cooling));
                         holder.checkBoxView.setTypeface(null, Typeface.NORMAL);
-                        holder.checkBoxView.setDrawingCacheBackgroundColor(ContextCompat.getColor(mContext,
-                                R.color.brown));
                         break;
                     default:
                         holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
