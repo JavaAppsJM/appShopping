@@ -123,13 +123,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // TODO: opkuisen shopfilteradapter
         if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
             // er is nog geen shopfilter
-            // nothing selected spinner definieren
-/*
-            shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
-                    shopFilterAdapter, R.layout.contact_spinner_row_nothing_selected, this
-            ));
-*/
-            // vr de nieuwe shopfilteradapter
             shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                     shopItemAdapter, R.layout.contact_spinner_row_nothing_selected, this
             ));
@@ -141,8 +134,12 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                     switchV.isChecked()));
         }else {
             // er is een shopfilter
+
             // bepaal shop
             if (!shopFilterString.equals(SpecificData.NO_FILTER)){
+                // TODO: indien shopFilterString een value is
+//                int shopFilterInt = Integer.parseInt(shopFilterString);
+//                shopFilter = viewModel.getShopByID(new IDNumber(shopFilterInt));
                 shopFilter = viewModel.getShopByShopName(shopFilterString);
             }
             // TODO: In de nieuwe versie shopfilteradapter, is de shopfilterstring cookie

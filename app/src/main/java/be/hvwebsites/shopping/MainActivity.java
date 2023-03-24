@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_initiate_bt:
                 // Initiate bluetooth communication
                 Intent mainIntent = new Intent(MainActivity.this, BluetoothCom.class);
+                mainIntent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
                 startActivity(mainIntent);
                 return true;
             case R.id.menu_sms_on_off:
