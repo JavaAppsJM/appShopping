@@ -48,6 +48,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private List<Product> prodinShopMatchingShopFilter = new ArrayList<>();
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
     private String shopFilterString = "";
+    private int shopFilterInt = SpecificData.NO_FILTER_INT;
     private Shop shopFilter;
     private CheckboxListAdapter cbListAdapter;
     private Switch switchV;
@@ -78,30 +79,24 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         /** Scherm voorbereidingen */
         // ShopFilter Spinner
         Spinner shopFilterSpinner = (Spinner) findViewById(R.id.spinnerShopFilter);
-/*
-        // Adapter voor de ShopFilter Spinner
-        ArrayAdapter<String> shopFilterAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item);
-        shopFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Adapter vullen met shops
-        shopFilterAdapter.addAll(viewModel.getNameListFromList(viewModel.getShopList(),
-                SpecificData.DISPLAY_SMALL));
-        shopFilterAdapter.add(SpecificData.NO_FILTER);
-*/
+
         // ShopfilterAdapter obv ListItemHelper
         ArrayAdapter<ListItemHelper> shopItemAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item);
         shopItemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Adapter vullen met shops
+
+        // Adapter vullen met shops als listitemhelpers
         shopItemAdapter.addAll(viewModel.getItemsFromList(viewModel.getShopList()));
         shopItemAdapter.add(new ListItemHelper(SpecificData.NO_FILTER,
                 "",
-                StaticData.IDNUMBER_NOT_FOUND));
+                new IDNumber(SpecificData.NO_FILTER_INT)));
 
         // Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
+
         // Zet switch default af
         switchV.setChecked(false);
+
         // Detecteer verandering
         switchV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -120,51 +115,47 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Is er al een ShopFilter in de cookie repo ?
         cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
         shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
-        // TODO: opkuisen shopfilteradapter
-        if (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND))){
-            // er is nog geen shopfilter
+
+        if ((shopFilterString.equals(SpecificData.NO_FILTER))
+                || (viewModel.getShopByShopName(shopFilterString) != null)
+                || (shopFilterString.equals(String.valueOf(SpecificData.NO_FILTER_INT)))
+                || (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND)))
+                || (viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString))) == null)) {
+            // Geen geldige shopfilter ! ==>
+            shopFilterInt = SpecificData.NO_FILTER_INT;
+            shopFilterString = SpecificData.NO_FILTER;
+
+            // wegschrijven als cookie
+            cookieRepository.registerCookie(SpecificData.SHOP_FILTER, String.valueOf(SpecificData.NO_FILTER_INT));
+
+            // nothing selected adapter kiezen
             shopFilterSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                     shopItemAdapter, R.layout.contact_spinner_row_nothing_selected, this
             ));
+
             // Alle producten ophalen ongefilterd en de checkboxlist steken
+            // TODO: kan je hier ook composecheckbox gebruiken ?
+            // composeCheckboxList();
             checkboxList.clear();
             checkboxList.addAll(viewModel.convertProductsToCheckboxs(
                     viewModel.getProductList(),
                     SpecificData.PRODUCT_DISPLAY_SMALL,
                     switchV.isChecked()));
-        }else {
-            // er is een shopfilter
+        } else {
+            // Er is een geldige shopfilterID in cookie
+            shopFilterInt = Integer.parseInt(shopFilterString);
 
-            // bepaal shop
-            if (!shopFilterString.equals(SpecificData.NO_FILTER)){
-                // TODO: indien shopFilterString een value is
-//                int shopFilterInt = Integer.parseInt(shopFilterString);
-//                shopFilter = viewModel.getShopByID(new IDNumber(shopFilterInt));
-                shopFilter = viewModel.getShopByShopName(shopFilterString);
-            }
-            // TODO: In de nieuwe versie shopfilteradapter, is de shopfilterstring cookie
-            //  een shopId en moet deze omgezet worden naar een shop
-/*
-            int shopfilterId = Integer.parseInt(shopFilterString);
-            if (shopfilterId != StaticData.ITEM_NOT_FOUND){
-                int indexShopFilter = viewModel.getIndexById(viewModel.getShopList(),
-                        new IDNumber(shopfilterId));
-                if (indexShopFilter != StaticData.ITEM_NOT_FOUND){
-                    // Nu kan shop bepaald worden
-                    shopFilter = viewModel.getShopList().get(indexShopFilter);
-                    shopFilterString = shopFilter.getEntityName();
-                }
-            }
-*/
+            // bepaal shopfilter
+            shopFilter = viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString)));
+            shopFilterString = shopFilter.getEntityName();
 
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
             composeCheckboxList();
             // spinner met selectie gebruiken
-            //shopFilterSpinner.setAdapter(shopFilterAdapter);
             shopFilterSpinner.setAdapter(shopItemAdapter);
             // animate parameter moet false staan om het onnodig afvuren vd spinner tegen te gaan
             if (shopFilterString.equals(SpecificData.NO_FILTER)){
-                //int positionAA = shopFilterAdapter.getCount()-1;
+                // TODO: mag weg want Shopfilterstring zou niet NO_FILTER mogen bevatten op dit moment
                 int positionAA = shopItemAdapter.getCount()-1;
                 shopFilterSpinner.setSelection(positionAA, false);
             }else {
@@ -172,6 +163,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                         shopFilter.getEntityId()), false);
             }
         }
+
         // selection listener activeren, moet gebueren nadat de adapter gekoppeld is aan de spinner !!
         shopFilterSpinner.setOnItemSelectedListener(this);
 
@@ -206,6 +198,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 Product clickedProduct = viewModel.getProductByID(checkboxList.get(position).getItemID());
                 clickedProduct.setToBuy(checked);
                 viewModel.storeProducts();
+
+                // Checkboxlist terug bepalen
                 composeCheckboxList();
                 cbListAdapter.setCheckboxList(checkboxList);
 
@@ -237,30 +231,24 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                     Toast.LENGTH_LONG).show();
             // Bepalen wat geselecteerd is
             ListItemHelper selecShop = (ListItemHelper) parent.getItemAtPosition(position);
-            if (selecShop.getItemID().getId() == StaticData.IDNUMBER_NOT_FOUND.getId()){
+            if (selecShop.getItemID().getId() == SpecificData.NO_FILTER_INT){
                 // Alle artikels
                 shopFilterString = SpecificData.NO_FILTER;
+                shopFilterInt = SpecificData.NO_FILTER_INT;
                 shopFilter = null;
+                // Bewaren dat er geen shopfilter is als cookie
+                cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(SpecificData.NO_FILTER_INT)));
             }else {
                 // Bepaal Shop om te filteren ==> nieuwe shopfilter
                 shopFilter = viewModel.getShopByID(selecShop.getItemID());
+                shopFilterInt = shopFilter.getEntityId().getId();
                 shopFilterString = shopFilter.getEntityName();
+                // Shopfilter bewaren als Cookie ; de shopfilterId moet bewaard worden
+                cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(shopFilter.getEntityId().getId())));
+                // cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
             }
-            //shopFilterString = String.valueOf(parent.getItemAtPosition(position));
-            // TODO: Shopfilter bewaren als Cookie ; de shopfilterId moet bewaard worden
-            cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
-/*
-            // bepaal shop voor herbepalen checkboxlist
-            if (!shopFilterString.equals(SpecificData.NO_FILTER)){
-                shopFilter = viewModel.getShopByShopName(shopFilterString);
-            }else {
-                shopFilter = null;
-            }
-*/
-            // spinner refreshen hoeft niet
-//            parent.setAdapter(shopFilterAdapter);
-//            parent.setSelection(viewModel.getShopIndexById(shopFilter.getEntityId()));
-            // Refresh recyclerview met aangepaste checkboxlist
+
+            // Checkboxlist terug herbepalen
             composeCheckboxList();
             cbListAdapter.setCheckboxList(checkboxList);
         }
@@ -278,7 +266,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         checkboxList.clear();
         // selectief producten ophalen
         // eerst de producten met de shopfilter als prefShop
-        if (shopFilterString.equals(SpecificData.NO_FILTER)){
+        if (shopFilter == null){
+            // Als er niet moet gefilterd worden
             prodinShopMatchingShopFilter.addAll(viewModel.getProductList());
         }else {
             productsMatchingShopfilter.addAll(viewModel.getProductsByPrefShop(shopFilter));

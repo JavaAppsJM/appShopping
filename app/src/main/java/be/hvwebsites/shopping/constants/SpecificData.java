@@ -23,27 +23,28 @@ public class SpecificData {
 
     public static final String TITLE_SHOPPING_LIST = "Shopping List";
 
-    public static final String HEAD_LIST_ACTIVITY_T1 = "Lijst met winkels";
-    public static final String HEAD_LIST_ACTIVITY_T2 = "Lijst met artikels";
-    public static final String HEAD_LIST_ACTIVITY_T3 = "Lijst met gerechten";
-
     public static final String INSTRUCTION_ADDMEALCOMBIN_T1 = "Koppel of ontkoppel artikels door er op te klikken";
     public static final String INSTRUCTION_ADDMEALCOMBIN_T2 = "Koppel of ontkoppel deelgerechten door er op te klikken";
     public static final String INSTRUCTION_ADDMEALCOMBIN_T3 = "Koppel of ontkoppel hoofdgerechten door er op te klikken";
+
+    public static final String HEAD_LIST_ACTIVITY_T1 = "Lijst met winkels";
+    public static final String HEAD_LIST_ACTIVITY_T2 = "Lijst met artikels";
+    public static final String HEAD_LIST_ACTIVITY_T3 = "Lijst met gerechten";
 
     public static final String HEAD_ADDMEALCOMBIN_COMBINS_T1 = "Gekoppelde artikels";
     public static final String HEAD_ADDMEALCOMBIN_COMBINS_T2_3 = "Gekoppelde gerechten";
     public static final String HEAD_ADDMEALCOMBIN_NOTCOMBINS_T1 = "Niet gekoppelde artikels";
     public static final String HEAD_ADDMEALCOMBIN_NOTCOMBINS_T2_3 = "Niet gekoppelde gerechten";
 
-
     // Toastmeldingen
     public static final String TOAST_NO_SHOPS = "Er zijn nog geen winkels";
     public static final String TOAST_NO_PRODUCTS = "Er zijn nog geen artikels";
     public static final String TOAST_NO_MEALS = "Er zijn nog geen gerechten";
 
+    // Shopfilter
     public static final String SHOP_FILTER = "shopfilter";
     public static final String NO_FILTER = "Alle artikels";
+    public static final int NO_FILTER_INT = 99998;
 
     // Base constants ; BASE_DEFAULT is used by app
     public static final String BASE_DEFAULT = "base_external";
