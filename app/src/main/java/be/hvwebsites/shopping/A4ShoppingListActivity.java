@@ -47,8 +47,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
     private List<Product> productsMatchingShopfilter = new ArrayList<>();
     private List<Product> prodinShopMatchingShopFilter = new ArrayList<>();
     private List<CheckboxHelper> checkboxList = new ArrayList<>();
-    private String shopFilterString = "";
-    private int shopFilterInt = SpecificData.NO_FILTER_INT;
     private Shop shopFilter;
     private CheckboxListAdapter cbListAdapter;
     private Switch switchV;
@@ -78,7 +76,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
         /** Scherm voorbereidingen */
         // ShopFilter Spinner
-        Spinner shopFilterSpinner = (Spinner) findViewById(R.id.spinnerShopFilter);
+        Spinner shopFilterSpinner = findViewById(R.id.spinnerShopFilter);
 
         // ShopfilterAdapter obv ListItemHelper
         ArrayAdapter<ListItemHelper> shopItemAdapter = new ArrayAdapter(this,
@@ -101,11 +99,7 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         switchV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
-                    switchV.setChecked(true);
-                }else {
-                    switchV.setChecked(false);
-                }
+                switchV.setChecked(isChecked);
                 composeCheckboxList();
                 cbListAdapter.setCheckboxList(checkboxList);
                 boolean debug = true;
@@ -114,17 +108,15 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
 
         // Is er al een ShopFilter in de cookie repo ?
         cookieRepository = new CookieRepository(fileBaseService.getFileBaseDir());
-        shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
+        String shopFilterString = cookieRepository.getCookieValueFromLabel(SpecificData.SHOP_FILTER);
 
         if ((shopFilterString.equals(SpecificData.NO_FILTER))
                 || (viewModel.getShopByShopName(shopFilterString) != null)
                 || (shopFilterString.equals(String.valueOf(SpecificData.NO_FILTER_INT)))
                 || (shopFilterString.equals(String.valueOf(CookieRepository.COOKIE_NOT_FOUND)))
                 || (viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString))) == null)) {
-            // Geen geldige shopfilter ! ==>
-            shopFilterInt = SpecificData.NO_FILTER_INT;
-            shopFilterString = SpecificData.NO_FILTER;
-
+            // Geen geldige shopfilter ! ==> No_FILTER
+            shopFilter = null;
             // wegschrijven als cookie
             cookieRepository.registerCookie(SpecificData.SHOP_FILTER, String.valueOf(SpecificData.NO_FILTER_INT));
 
@@ -134,17 +126,9 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             ));
 
             // Alle producten ophalen ongefilterd en de checkboxlist steken
-            // TODO: kan je hier ook composecheckbox gebruiken ?
-            // composeCheckboxList();
-            checkboxList.clear();
-            checkboxList.addAll(viewModel.convertProductsToCheckboxs(
-                    viewModel.getProductList(),
-                    SpecificData.PRODUCT_DISPLAY_SMALL,
-                    switchV.isChecked()));
+            composeCheckboxList();
         } else {
             // Er is een geldige shopfilterID in cookie
-            shopFilterInt = Integer.parseInt(shopFilterString);
-
             // bepaal shopfilter
             shopFilter = viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString)));
             shopFilterString = shopFilter.getEntityName();
@@ -233,19 +217,14 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             ListItemHelper selecShop = (ListItemHelper) parent.getItemAtPosition(position);
             if (selecShop.getItemID().getId() == SpecificData.NO_FILTER_INT){
                 // Alle artikels
-                shopFilterString = SpecificData.NO_FILTER;
-                shopFilterInt = SpecificData.NO_FILTER_INT;
                 shopFilter = null;
                 // Bewaren dat er geen shopfilter is als cookie
                 cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(SpecificData.NO_FILTER_INT)));
             }else {
                 // Bepaal Shop om te filteren ==> nieuwe shopfilter
                 shopFilter = viewModel.getShopByID(selecShop.getItemID());
-                shopFilterInt = shopFilter.getEntityId().getId();
-                shopFilterString = shopFilter.getEntityName();
                 // Shopfilter bewaren als Cookie ; de shopfilterId moet bewaard worden
                 cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(shopFilter.getEntityId().getId())));
-                // cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, shopFilterString));
             }
 
             // Checkboxlist terug herbepalen
@@ -304,10 +283,10 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         CheckboxHelper temphelper = new CheckboxHelper();
         for (int i = checkboxList.size() ; i > 0; i--) {
             for (int j = 1; j < i ; j++) {
-                if (((checkboxList.get(j-1).getStyle() == SpecificData.STYLE_COOLED) ||
-                        (checkboxList.get(j-1).getStyle() == SpecificData.STYLE_COOLED_BOLD)) &&
-                                ((checkboxList.get(j).getStyle() != SpecificData.STYLE_COOLED) &&
-                                        (checkboxList.get(j).getStyle() != SpecificData.STYLE_COOLED_BOLD))){
+                if (((checkboxList.get(j - 1).getStyle().equals(SpecificData.STYLE_COOLED)) ||
+                        (checkboxList.get(j - 1).getStyle().equals(SpecificData.STYLE_COOLED_BOLD))) &&
+                                ((!checkboxList.get(j).getStyle().equals(SpecificData.STYLE_COOLED)) &&
+                                        (!checkboxList.get(j).getStyle().equals(SpecificData.STYLE_COOLED_BOLD)))){
                     temphelper.setCBHelper(checkboxList.get(j));
                     checkboxList.get(j).setCBHelper(checkboxList.get(j-1));
                     checkboxList.get(j-1).setCBHelper(temphelper);
