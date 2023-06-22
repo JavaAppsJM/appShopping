@@ -81,5 +81,6 @@ public class SpecificData {
     public static final String ACTIVITY_A4LIST = "a4list";
     public static final String ACTIVITY_A4SHOPPINGLIST = "a4shoppinglist";
     public static final String ACTIVITY_ADDMEALCOMBINS = "addmealcombins";
+    public static final String ACTIVITY_A4SHOPCOMPETITION = "a4shopcompet";
 
 }

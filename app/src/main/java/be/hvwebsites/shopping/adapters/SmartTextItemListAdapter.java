@@ -49,6 +49,7 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
 
         private ListViewHolder(View itemView){
             super(itemView);
+            // list_text_item.xml gebruiken
             textItemView = itemView.findViewById(R.id.a4ListTextItem);
 
             itemView.setOnClickListener(this);
@@ -57,12 +58,27 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
         @Override
         public void onClick(View v) {
             // Er is geclicked op een item
+            switch (client){
+                case SpecificData.ACTIVITY_ADDMEALCOMBINS:
+                    // Verwerking vn click vr addmealcombins
+                    // clicklistener mt properties doorgeven nr activity
+                    clickListener.onItemClicked(getAdapterPosition(), v);
+                    break;
+                case SpecificData.ACTIVITY_A4SHOPCOMPETITION:
+                    // Verwerking vn click vr activity A4ShopCompetitionList
+                    // clicklistener mt properties doorgeven nr activity
+                    clickListener.onItemClicked(getAdapterPosition(), v);
+                    break;
+                default:
+            }
+
+/*
             if (client.equals(SpecificData.ACTIVITY_ADDMEALCOMBINS)){
                 // Verwerking vn click vr addmealcombins
                 // clicklistener mt properties doorgeven nr activity
                 clickListener.onItemClicked(getAdapterPosition(), v);
-
             }
+*/
 
 
 /*
