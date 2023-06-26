@@ -486,6 +486,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return productInShopList;
     }
 
+    public List<Integer> getShopIdsForProductId(Integer inProductId){
+        return getFirstIdsBySecondId(productInShopList, inProductId);
+    }
+
     public List<String> getShopNamesByProduct(Product inProduct){
         // Bepaalt de shops namen die een combinatie hebben met het opgegeven produkten
         return getNamesByCombinEntityId(productInShopList, inProduct.getEntityId(), shopList);
