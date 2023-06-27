@@ -2,6 +2,7 @@ package be.hvwebsites.shopping.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,9 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
             textItemView = itemView.findViewById(R.id.a4ListTextItem);
 
             itemView.setOnClickListener(this);
+            if (client.equals(SpecificData.ACTIVITY_A4SHOPCOMPETITION)){
+                textItemView.setTypeface(Typeface.MONOSPACE);
+            }
         }
 
         @Override

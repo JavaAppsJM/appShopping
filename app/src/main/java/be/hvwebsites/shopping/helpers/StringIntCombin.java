@@ -2,10 +2,10 @@ package be.hvwebsites.shopping.helpers;
 
 public class StringIntCombin {
     private int textID;
-    private String Text;
+    private String text;
     private int teller1;
     private int teller2;
-    private double procent;
+    private float procent;
 
     public StringIntCombin() {
         teller1 = 0;
@@ -22,11 +22,11 @@ public class StringIntCombin {
     }
 
     public String getText() {
-        return Text;
+        return text;
     }
 
     public void setText(String text) {
-        Text = text;
+        this.text = text;
     }
 
     public int getTeller1() {
@@ -45,21 +45,30 @@ public class StringIntCombin {
         this.teller2 = teller2;
     }
 
-    public double getProcent() {
+    public float getProcent() {
         return procent;
     }
 
-    public void setProcent(double procent) {
+    public void setProcent(float procent) {
         this.procent = procent;
     }
 
     public String getFormattedString() {
-        return this.Text
-                .concat(" ")
+        String fillString = "                                           ";
+        String shopName = this.text;
+
+        // Beperken vn winkelnaam
+        if (shopName.length() > 21){
+            shopName = shopName.substring(0,20);
+        }
+
+        return shopName
+                .concat(fillString.substring(0, (21 - shopName.length())))
+                .concat(fillString.substring(0, (3 - String.valueOf(this.teller1).length())))
                 .concat(String.valueOf(this.teller1))
-                .concat(" ")
+                .concat(fillString.substring(0, (4 - String.valueOf(this.teller2).length())))
                 .concat(String.valueOf(this.teller2))
-                .concat(" ")
+                .concat(fillString.substring(0, (7 - String.valueOf(this.procent).length())))
                 .concat(String.valueOf(this.procent))
                 .concat(" %");
     }

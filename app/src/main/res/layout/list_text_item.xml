@@ -9,8 +9,8 @@
         android:id="@+id/a4ListTextItem"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="placeholder text" />
 
