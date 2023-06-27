@@ -18,6 +18,7 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.helpers.ListItemHelper;
 import be.hvwebsites.libraryandroid4.repositories.CookieRepository;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
+import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Product;
@@ -101,21 +102,26 @@ public class A4ShopCompetitionList extends AppCompatActivity {
     private void composeCompetitionList(){
         competitionList.clear();
         preCompetitionList.clear();
+
         // Bepalen en tellen alle toBuy Artikelen
         for (int i = 0; i < viewModel.getProductList().size(); i++) {
             Product tempProduct = viewModel.getProductList().get(i);
-            if (tempProduct.isToBuy()){
 
+            // Enkel benodigde artikelen komen in aanmerking
+            if (tempProduct.isToBuy()){
                 // Teller totaal aantal artikelen tobuy verhogen
                 totaalArtikelenToBuy++;
 
                 // preCompetitionlist opvullen, de shop kan al in de precompetitionlist zitten
                 // vanuit een ander produkt !!!
-                processShopInCompetition(tempProduct.getPreferredShopId().getId(), 1);
+                if (tempProduct.getPreferredShopId().getId() != StaticData.ITEM_NOT_FOUND){
+                    // Enkel als het product een voorkeurwinkel heeft, wordt de voorkeurwinkel geteld
+                    processShopInCompetition(tempProduct.getPreferredShopId().getId(), 1);
+                }
 
                 // Bepalen en tellen in welke andere winkels het product ook nog kan gekocht worden
                 for (int j = 0; j < viewModel.getShopIdsForProductId(tempProduct.getEntityId().getId()).size(); j++) {
-                    int shopId = viewModel.getShopIdsForProductId(tempProduct.getEntityId().getId()).get(i);
+                    int shopId = viewModel.getShopIdsForProductId(tempProduct.getEntityId().getId()).get(j);
                     if (shopId != tempProduct.getPreferredShopId().getId()){
                         // Nog een winkel gevonden waar het produkt kan gekocht worden
                         processShopInCompetition(shopId, 2);
@@ -123,6 +129,18 @@ public class A4ShopCompetitionList extends AppCompatActivity {
                 }
             }
         }
+        // precompetionlist sorteren vlgns aantal artikelen descending
+        StringIntCombin sortHelper = new StringIntCombin();
+        for (int i = preCompetitionList.size() ; i > 0 ; i--) {
+            for (int j = 1; j < i ; j++) {
+                if (preCompetitionList.get(j).getTeller2() > preCompetitionList.get(j-1).getTeller2()){
+                    sortHelper.setCombin(preCompetitionList.get(j));
+                    preCompetitionList.get(j).setCombin(preCompetitionList.get(j-1));
+                    preCompetitionList.get(j-1).setCombin(sortHelper);
+                }
+            }
+        }
+
         // precompetionlist omzetten naar competitionlist
         for (int i = 0; i < preCompetitionList.size(); i++) {
             // Bepaal shopCompetitor
@@ -140,9 +158,12 @@ public class A4ShopCompetitionList extends AppCompatActivity {
     }
 
     private void processShopInCompetition(Integer inShopId, int whichTeller){
+        boolean inCompetition = false;
+
         // Controleert of de winkel reeds in de precompetition zit en zo ja verhoog teller1
         for (int j = 0; j < preCompetitionList.size(); j++) {
             if (inShopId == preCompetitionList.get(j).getTextID()){
+                inCompetition = true;
                 // Verhoog totaal aantal artikels voor de shop in kwestie
                 preCompetitionList.get(j).setTeller2(preCompetitionList.get(j).getTeller2()+1);
                 if (whichTeller == 1){
@@ -151,15 +172,17 @@ public class A4ShopCompetitionList extends AppCompatActivity {
                 }
             }
         }
-        // Indien winkel nog niet in precompetition, toevoegen
-        StringIntCombin tempCompEntry = new StringIntCombin();
-        tempCompEntry.setTextID(inShopId);
-        tempCompEntry.setText(viewModel.getShopByID(new IDNumber(inShopId)).getEntityName());
-        // Tellers invullen
-        tempCompEntry.setTeller2(tempCompEntry.getTeller2()+1);
-        if (whichTeller == 1){
-            tempCompEntry.setTeller1(tempCompEntry.getTeller1()+1);
+        if (!inCompetition){
+            // Indien winkel nog niet in precompetition, toevoegen
+            StringIntCombin tempCompEntry = new StringIntCombin();
+            tempCompEntry.setTextID(inShopId);
+            tempCompEntry.setText(viewModel.getShopByID(new IDNumber(inShopId)).getEntityName());
+            // Tellers invullen
+            tempCompEntry.setTeller2(tempCompEntry.getTeller2()+1);
+            if (whichTeller == 1){
+                tempCompEntry.setTeller1(tempCompEntry.getTeller1()+1);
+            }
+            preCompetitionList.add(tempCompEntry);
         }
-        preCompetitionList.add(tempCompEntry);
     }
 }

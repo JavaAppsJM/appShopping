@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         buttonShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, A4ShoppingListActivity.class);
+                Intent intent = new Intent(MainActivity.this, A4ShopCompetitionList.class);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
                 intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);

@@ -22,10 +22,11 @@
         tools:targetApi="31">
         <activity
             android:name=".A4ShopCompetitionList"
-            android:exported="false">
+            android:label="Shops Competition List"
+            android:parentActivityName=".MainActivity">
             <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".BluetoothCom"
@@ -71,10 +72,10 @@
         <activity
             android:name=".A4ShoppingListActivity"
             android:label="@string/title_activity_a4_shoppinglist"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".A4ShopCompetitionList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".A4ShopCompetitionList" />
         </activity>
         <activity
             android:name=".BackUpToExternal"

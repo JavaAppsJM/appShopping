@@ -6,7 +6,6 @@ public class StringIntCombin {
     private int teller1;
     private int teller2;
     private double procent;
-    private String formattedString;
 
     public StringIntCombin() {
         teller1 = 0;
@@ -55,13 +54,21 @@ public class StringIntCombin {
     }
 
     public String getFormattedString() {
-        this.formattedString = this.Text;
-        return this.formattedString.substring(0, 25)
+        return this.Text
                 .concat(" ")
                 .concat(String.valueOf(this.teller1))
                 .concat(" ")
                 .concat(String.valueOf(this.teller2))
                 .concat(" ")
-                .concat(String.valueOf(this.procent));
+                .concat(String.valueOf(this.procent))
+                .concat(" %");
+    }
+
+    public void setCombin(StringIntCombin inCombin){
+        setTextID(inCombin.getTextID());
+        setText(inCombin.getText());
+        setTeller1(inCombin.getTeller1());
+        setTeller2(inCombin.getTeller2());
+        setProcent(inCombin.getProcent());
     }
 }
