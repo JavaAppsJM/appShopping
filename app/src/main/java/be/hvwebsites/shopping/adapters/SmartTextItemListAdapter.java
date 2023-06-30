@@ -26,8 +26,8 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
     private List<ListItemHelper> reusableList;
     private String reference;
     private String client;
+    private String device;
     private ClickListener clickListener;
-//    private String baseSwitch;
 
     public SmartTextItemListAdapter(Context context) {
         this.mContext = context;
@@ -54,6 +54,12 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
             textItemView = itemView.findViewById(R.id.a4ListTextItem);
 
             itemView.setOnClickListener(this);
+
+/*
+            if (device.equals("GT-I9100")){
+                textItemView.setTextSize(10); //10sp
+            }
+*/
             if (client.equals(SpecificData.ACTIVITY_A4SHOPCOMPETITION)){
                 textItemView.setTypeface(Typeface.MONOSPACE);
             }
@@ -75,24 +81,6 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
                     break;
                 default:
             }
-
-/*
-            if (client.equals(SpecificData.ACTIVITY_ADDMEALCOMBINS)){
-                // Verwerking vn click vr addmealcombins
-                // clicklistener mt properties doorgeven nr activity
-                clickListener.onItemClicked(getAdapterPosition(), v);
-            }
-*/
-
-
-/*
-            Intent intent = new Intent(mContext, ManageItemActivity.class);
-            intent.putExtra(StaticData.EXTRA_INTENT_KEY_TYPE, reference);
-            intent.putExtra(StaticData.EXTRA_INTENT_KEY_ACTION, StaticData.ACTION_UPDATE);
-//            intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
-            intent.putExtra(StaticData.EXTRA_INTENT_KEY_INDEX, indexToUpdate);
-            mContext.startActivity(intent);
-*/
         }
     }
 
@@ -119,6 +107,14 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     @NonNull

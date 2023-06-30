@@ -70,6 +70,7 @@ public class A4ShopCompetitionList extends AppCompatActivity {
         // Activity doorgeven aan adapter
         listAdapter.setClient(SpecificData.ACTIVITY_A4SHOPCOMPETITION);
         listAdapter.setReference(SpecificData.LIST_TYPE_1);
+        listAdapter.setDevice(deviceModel);
         // Invullen adapter vd recyclerview met competitionlist
         composeCompetitionList();
         listAdapter.setReusableList(competitionList);
@@ -142,6 +143,11 @@ public class A4ShopCompetitionList extends AppCompatActivity {
         }
 
         // precompetionlist omzetten naar competitionlist
+        // Bepalen shopNameMaxLength afhankelijk vn device
+        int shopNameMaxL = 21; // A3
+        if (deviceModel.equals("GT-I9100")){
+            shopNameMaxL = 18;
+        }
         for (int i = 0; i < preCompetitionList.size(); i++) {
             // Bepaal shopCompetitor
             StringIntCombin shopCompetitor = preCompetitionList.get(i);
@@ -149,7 +155,7 @@ public class A4ShopCompetitionList extends AppCompatActivity {
             shopCompetitor.setProcent((shopCompetitor.getTeller2() * 100)/ totaalArtikelenToBuy);
             // Bepaal listItemHelper
             ListItemHelper shopItem = new ListItemHelper(
-                    shopCompetitor.getFormattedString()
+                    shopCompetitor.getFormattedString(shopNameMaxL)
                     , " "
                     , new IDNumber(shopCompetitor.getTextID()));
             // voeg shop in competitionlist

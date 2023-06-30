@@ -53,22 +53,25 @@ public class StringIntCombin {
         this.procent = procent;
     }
 
-    public String getFormattedString() {
+    public String getFormattedString(int inShopNameMaxLength) {
         String fillString = "                                           ";
         String shopName = this.text;
+        int teller1Length = 3;
+        int teller2Length = 4;
+        int procenLength = 7;
 
         // Beperken vn winkelnaam
-        if (shopName.length() > 21){
-            shopName = shopName.substring(0,20);
+        if (shopName.length() > inShopNameMaxLength){
+            shopName = shopName.substring(0, (inShopNameMaxLength - 1));
         }
 
         return shopName
-                .concat(fillString.substring(0, (21 - shopName.length())))
-                .concat(fillString.substring(0, (3 - String.valueOf(this.teller1).length())))
+                .concat(fillString.substring(0, (inShopNameMaxLength - shopName.length())))
+                .concat(fillString.substring(0, (teller1Length - String.valueOf(this.teller1).length())))
                 .concat(String.valueOf(this.teller1))
-                .concat(fillString.substring(0, (4 - String.valueOf(this.teller2).length())))
+                .concat(fillString.substring(0, (teller2Length - String.valueOf(this.teller2).length())))
                 .concat(String.valueOf(this.teller2))
-                .concat(fillString.substring(0, (7 - String.valueOf(this.procent).length())))
+                .concat(fillString.substring(0, (procenLength - String.valueOf(this.procent).length())))
                 .concat(String.valueOf(this.procent))
                 .concat(" %");
     }
