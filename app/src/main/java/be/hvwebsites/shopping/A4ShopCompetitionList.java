@@ -180,15 +180,22 @@ public class A4ShopCompetitionList extends AppCompatActivity {
         }
         if (!inCompetition){
             // Indien winkel nog niet in precompetition, toevoegen
-            StringIntCombin tempCompEntry = new StringIntCombin();
-            tempCompEntry.setTextID(inShopId);
-            tempCompEntry.setText(viewModel.getShopByID(new IDNumber(inShopId)).getEntityName());
-            // Tellers invullen
-            tempCompEntry.setTeller2(tempCompEntry.getTeller2()+1);
-            if (whichTeller == 1){
-                tempCompEntry.setTeller1(tempCompEntry.getTeller1()+1);
+            // Eerst kijken of winkel bestaat, enkel indien winkel bestaat toevoegen !
+            Shop addShop = viewModel.getShopByID(new IDNumber(inShopId));
+            if (addShop != null){
+                StringIntCombin tempCompEntry = new StringIntCombin();
+                tempCompEntry.setTextID(inShopId);
+                tempCompEntry.setText(addShop.getEntityName());
+                // Tellers invullen
+                tempCompEntry.setTeller2(tempCompEntry.getTeller2()+1);
+                if (whichTeller == 1){
+                    tempCompEntry.setTeller1(tempCompEntry.getTeller1()+1);
+                }
+                preCompetitionList.add(tempCompEntry);
+            }else {
+                // Shop niet gevonden
+                boolean debug = true;
             }
-            preCompetitionList.add(tempCompEntry);
         }
     }
 }

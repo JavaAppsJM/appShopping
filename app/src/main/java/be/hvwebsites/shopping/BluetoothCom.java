@@ -428,18 +428,20 @@ public class BluetoothCom extends AppCompatActivity {
                 sendMsgProcessStatus = SEND_STATUS_SENDING;
                 // Er volgt een product uit de productlist
                 Product productReceived = new Product();
-/*
-                // TODO: nog testen vooraleer te activeren en Gitte dit heeft
+
+                // nog testen vooraleer te activeren en Gitte dit heeft
                 productReceived.setBtContent(btLineContent[i+2], btLineContent[i+3], btLineContent[i+4],
                         btLineContent[i+5], btLineContent[i+6], btLineContent[i+7], btLineContent[i+8]);
-*/
+
+/*
                 productReceived.setEntityId(new IDNumber(btLineContent[i+2].replace(">", "")));
                 productReceived.setEntityName(btLineContent[i+3].replace(">",""));
                 productReceived.setPreferredShopId(new IDNumber(btLineContent[i+4].replace(">", "")));
                 productReceived.setToBuy(productReceived.convertFileContentToBoolean(btLineContent[i+5].replace(">","")));
                 productReceived.setWanted(productReceived.convertFileContentToBoolean(btLineContent[i+6].replace(">","")));
-                // TODO: Let op gitte heeft dit nog niet !!
-                // productReceived.setCooled(productReceived.convertFileContentToBoolean(btLineContent[i+7].replace(">","")));
+                // Let op gitte heeft dit mss nog niet !!
+                productReceived.setCooled(productReceived.convertFileContentToBoolean(btLineContent[i+7].replace(">","")));
+*/
                 // Toevoegen aan de locale productlist
                 viewModel.getProductListBt().add(productReceived);
                 // Versturen van productlist ontvangen
@@ -460,8 +462,8 @@ public class BluetoothCom extends AppCompatActivity {
             if (sendReceived && btLineContent[i].matches("shopprod.*")){
                 sendMsgProcessStatus = SEND_STATUS_SENDING;
                 ProductInShop productInShopRec = new ProductInShop(
-                        new IDNumber(btLineContent[i+2].replace(">", "")),
-                        new IDNumber(btLineContent[i+3].replace(">", ""))
+                        new IDNumber(btLineContent[i+3].replace(">", "")),
+                        new IDNumber(btLineContent[i+2].replace(">", ""))
                 );
                 // Toevoegen aan de locale prodshoplist
                 viewModel.getProductInShopListBt().add(productInShopRec);
@@ -533,7 +535,8 @@ public class BluetoothCom extends AppCompatActivity {
                 // Patroon4 verstuur: <send><prodlist><0><productID><productnaam><preferredshopID><toBuy><wanted><cooled>
                 String msg = "<send><prodlist><0><";
                 // TODO: nog te testen alvorens te activeren
-//                msg = msg.concat(viewModel.getProductList().get(0).getProductAttributesForBtMsg());
+                msg = msg.concat(viewModel.getProductList().get(0).getProductAttributesForBtMsg());
+/*
                 msg = msg.concat(viewModel.getProductList().get(0).getEntityId().getIdString());
                 msg = msg.concat("><");
                 msg = msg.concat(viewModel.getProductList().get(0).getEntityName());
@@ -546,6 +549,7 @@ public class BluetoothCom extends AppCompatActivity {
                 msg = msg.concat("><");
                 msg = msg.concat(viewModel.getProductList().get(0).getCooledAsString());
                 msg = msg.concat(">");
+*/
                 sendMessage(msg);
             }
             if (recReceived && btLineContent[i].matches("prodlist.*")){
@@ -560,7 +564,8 @@ public class BluetoothCom extends AppCompatActivity {
                     msg = msg.concat(vlgndIndex);
                     msg = msg.concat("><");
                     // TODO: nog te testen alvorens te activeren
-//                msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getProductAttributesForBtMsg());
+                msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getProductAttributesForBtMsg());
+/*
                     msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getEntityId().getIdString());
                     msg = msg.concat("><");
                     msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getEntityName());
@@ -573,6 +578,7 @@ public class BluetoothCom extends AppCompatActivity {
                     msg = msg.concat("><");
                     msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getCooledAsString());
                     msg = msg.concat(">");
+*/
                 }else {
                     //Einde vd prodlist Patroon5 verstuur: <send><endprodlist>
                     msg = msg.concat("endprodlist>");
