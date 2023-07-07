@@ -14,9 +14,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ import be.hvwebsites.shopping.adapters.CheckboxListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.entities.Shop;
+import be.hvwebsites.shopping.fragments.TextItemListFragment;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
@@ -204,6 +207,32 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 boolean debug = true;
             }
         });
+        // Swippen toelaten om item tijdelijk uit lijst te halen
+        // om te kunnen swipen in de recyclerview ; swippen == tijdelijk deleten
+        ItemTouchHelper helper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView,
+                                          @NonNull RecyclerView.ViewHolder viewHolder,
+                                          @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        int position = viewHolder.getAdapterPosition();
+                        Toast.makeText(A4ShoppingListActivity.this,
+                                "Item wordt tijdelijk verwijderd... ",
+                                Toast.LENGTH_LONG).show();
+                        // Refresh recyclerview
+                        checkboxList.remove(position);
+                        cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
+                        cbListAdapter.setCheckboxList(checkboxList);
+                    }
+                });
+        helper.attachToRecyclerView(recyclerView);
     }
 
     // Als er een shop geselecteerd is in de spinner

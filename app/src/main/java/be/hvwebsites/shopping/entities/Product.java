@@ -169,6 +169,9 @@ public class Product extends ShoppingEntity {
 
     public void setWanted(boolean wanted) {
         this.wanted = wanted;
+        if (!wanted){
+            this.toBuy = false;
+        }
     }
 
     public void setToBuy(boolean toBuy) {
