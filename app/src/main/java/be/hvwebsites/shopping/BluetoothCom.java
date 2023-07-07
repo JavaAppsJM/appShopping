@@ -174,6 +174,7 @@ public class BluetoothCom extends AppCompatActivity {
             startActivity(enableBtIntent);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             */
+            // TODO: Permission checken om BluetoothAdapter te enablen
             if (mBluetoothAdapter.enable()) {
                 // Bluetooth enabled
             } else {
@@ -433,15 +434,6 @@ public class BluetoothCom extends AppCompatActivity {
                 productReceived.setBtContent(btLineContent[i+2], btLineContent[i+3], btLineContent[i+4],
                         btLineContent[i+5], btLineContent[i+6], btLineContent[i+7], btLineContent[i+8]);
 
-/*
-                productReceived.setEntityId(new IDNumber(btLineContent[i+2].replace(">", "")));
-                productReceived.setEntityName(btLineContent[i+3].replace(">",""));
-                productReceived.setPreferredShopId(new IDNumber(btLineContent[i+4].replace(">", "")));
-                productReceived.setToBuy(productReceived.convertFileContentToBoolean(btLineContent[i+5].replace(">","")));
-                productReceived.setWanted(productReceived.convertFileContentToBoolean(btLineContent[i+6].replace(">","")));
-                // Let op gitte heeft dit mss nog niet !!
-                productReceived.setCooled(productReceived.convertFileContentToBoolean(btLineContent[i+7].replace(">","")));
-*/
                 // Toevoegen aan de locale productlist
                 viewModel.getProductListBt().add(productReceived);
                 // Versturen van productlist ontvangen
@@ -461,6 +453,8 @@ public class BluetoothCom extends AppCompatActivity {
             }
             if (sendReceived && btLineContent[i].matches("shopprod.*")){
                 sendMsgProcessStatus = SEND_STATUS_SENDING;
+                // Let op doordat de constructor vn ProductInShop eerst de productID verwacht
+                // en dan de ShopID, moet btLineContent3 voor 2 meegegeven worden
                 ProductInShop productInShopRec = new ProductInShop(
                         new IDNumber(btLineContent[i+3].replace(">", "")),
                         new IDNumber(btLineContent[i+2].replace(">", ""))
@@ -480,7 +474,7 @@ public class BluetoothCom extends AppCompatActivity {
                 // Versturen van send endshopprod ontvangen
                 sendMessage("<rec><endshopprod>");
             }
-            // TODO: ontvangen van meals en prodinmeals en mealinmeals
+            // TODO: ontvangen van meals en prodinmeals en mealinmeals is nog niet ok
             if (sendReceived && sendMsgProcessStatus.equals(SEND_STATUS_START) && btLineContent[i].matches("end.*")){
                 sendMsgProcessStatus = SEND_STATUS_END;
                 sendReceived = false;
@@ -534,22 +528,8 @@ public class BluetoothCom extends AppCompatActivity {
                 // de eerste uit prodlist mag gestuurd worden
                 // Patroon4 verstuur: <send><prodlist><0><productID><productnaam><preferredshopID><toBuy><wanted><cooled>
                 String msg = "<send><prodlist><0><";
-                // TODO: nog te testen alvorens te activeren
+                // Message wordt samengesteld door een method vn Product: getProductAttributesForBtMsg
                 msg = msg.concat(viewModel.getProductList().get(0).getProductAttributesForBtMsg());
-/*
-                msg = msg.concat(viewModel.getProductList().get(0).getEntityId().getIdString());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductList().get(0).getEntityName());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductList().get(0).getPreferredShopId().getIdString());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductList().get(0).getToBuyAsString());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductList().get(0).getWantedAsString());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getProductList().get(0).getCooledAsString());
-                msg = msg.concat(">");
-*/
                 sendMessage(msg);
             }
             if (recReceived && btLineContent[i].matches("prodlist.*")){
@@ -563,22 +543,8 @@ public class BluetoothCom extends AppCompatActivity {
                     msg = msg.concat("prodlist><");
                     msg = msg.concat(vlgndIndex);
                     msg = msg.concat("><");
-                    // TODO: nog te testen alvorens te activeren
+                    // Message wordt samengesteld door een method vn Product: getProductAttributesForBtMsg
                 msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getProductAttributesForBtMsg());
-/*
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getEntityId().getIdString());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getEntityName());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getPreferredShopId().getIdString());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getToBuyAsString());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getWantedAsString());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getProductList().get(volgendeIndex).getCooledAsString());
-                    msg = msg.concat(">");
-*/
                 }else {
                     //Einde vd prodlist Patroon5 verstuur: <send><endprodlist>
                     msg = msg.concat("endprodlist>");
@@ -623,7 +589,7 @@ public class BluetoothCom extends AppCompatActivity {
                 String msg = "<send><end>";
                 sendMessage(msg);
             }
-            // TODO: zenden van meals en prodinmeals en mealinmeals
+            // TODO: zenden van meals en prodinmeals en mealinmeals is nog niet ok
             if (recReceived && receiveMsgProcessStatus.equals(REC_STATUS_START) &&
                     btLineContent[i].matches("end.*")){
                 receiveMsgProcessStatus = REC_STATUS_END;

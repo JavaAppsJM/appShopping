@@ -423,14 +423,6 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }else {
             return null; // Product niet gevonden
         }
-/*
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getEntityId().getId() == inProductID.getId()){
-                return productList.get(i);
-            }
-        }
-        return null; // geen product gevonden met ID
-*/
     }
 
     public List<Product> getProductsByPrefShop(Shop inPrefShop){
@@ -493,20 +485,6 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public List<String> getShopNamesByProduct(Product inProduct){
         // Bepaalt de shops namen die een combinatie hebben met het opgegeven produkten
         return getNamesByCombinEntityId(productInShopList, inProduct.getEntityId(), shopList);
-/*
-        List<String> shopsForProduct = new ArrayList<>();
-        List<Integer> shopIds = getFirstIdsBySecondId(productInShopList, inProduct.getEntityId().getId());
-
-        for (int i = 0; i < shopIds.size(); i++) {
-            // opvangen indien shop id niet bestaat
-            Shop foundShop = new Shop();
-            foundShop.setShopEntity(getShopByID(new IDNumber(shopIds.get(i))));
-            if (foundShop != null){
-                shopsForProduct.add(foundShop.getDisplayLine());
-            }
-        }
-        return shopsForProduct;
-*/
     }
 
     public List<String> getUnselectedShopNamesByProduct(Product inProduct){
@@ -527,15 +505,6 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     public int getProductShopCombinIndex(IDNumber inProductID, IDNumber inShopID){
         // Bepaalt de index vd produkt-shop combinatie als die bestaat
         return getIndexByIdsFromCList(productInShopList, inShopID, inProductID);
-/*
-        for (int i = 0; i < productInShopList.size(); i++) {
-            if (productInShopList.get(i).getSecondID().getId() == inProductID.getId() &&
-                    productInShopList.get(i).getFirstID().getId() == inShopID.getId()){
-                return i;
-            }
-        }
-        return StaticData.ITEM_NOT_FOUND;
-*/
     }
 
     public List<Product> getProductsByShop(Shop inShop){
