@@ -187,7 +187,14 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 viewModel.storeProducts();
 
                 // Checkboxlist terug bepalen
-                composeCheckboxList();
+                //composeCheckboxList();
+                //cbListAdapter.setCheckboxList(checkboxList);
+                if (!checked && switchV.isChecked()){
+                    checkboxList.remove(position);
+                }else if (!switchV.isChecked()){
+                    composeCheckboxList();
+                }
+                cbListAdapter.setReference(SpecificData.LIST_TYPE_2);
                 cbListAdapter.setCheckboxList(checkboxList);
 
                 // Voorbereiden SMS msg indien sms on
