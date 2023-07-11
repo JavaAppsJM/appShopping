@@ -60,9 +60,6 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a4_shopping_list);
 
-        // Intent definieren
-        Intent sListIntent = getIntent();
-
         // Creer een filebase service (bevat file base en file base directory) obv device en package name
         FileBaseService fileBaseService = new FileBaseService(deviceModel, getPackageName());
 
@@ -187,11 +184,12 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
                 viewModel.storeProducts();
 
                 // Checkboxlist terug bepalen
-                //composeCheckboxList();
-                //cbListAdapter.setCheckboxList(checkboxList);
                 if (!checked && switchV.isChecked()){
+                    // Indien enkel benodigde artikelen getoond worden en artikel wordt niet meer
+                    // nodig dan wordt het artikel uit de checkboxlist verwijderd
                     checkboxList.remove(position);
                 }else if (!switchV.isChecked()){
+                    // Indien alle artikels mogen getoond worden, wordt de checkboxlist terug samengesteld
                     composeCheckboxList();
                 }
                 cbListAdapter.setReference(SpecificData.LIST_TYPE_2);

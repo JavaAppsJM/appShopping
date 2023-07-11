@@ -86,13 +86,13 @@ public class TextItemListFragment extends Fragment {
                         lineList.clear();
                         lineList.addAll(viewModel.getNameListFromList(viewModel.getShopList(), SpecificData.DISPLAY_SMALL));
                         adapter.setReference(SpecificData.LIST_TYPE_1);
-                        adapter.setBaseSwitch(viewModel.getBaseSwitch());
+                        //adapter.setBaseSwitch(viewModel.getBaseSwitch());
                         adapter.setReusableList(lineList);
                     }
                 });
         helper.attachToRecyclerView(recyclerView);
         adapter.setReference(SpecificData.LIST_TYPE_1);
-        adapter.setBaseSwitch(viewModel.getBaseSwitch());
+        //adapter.setBaseSwitch(viewModel.getBaseSwitch());
         adapter.setReusableList(lineList);
     }
 }

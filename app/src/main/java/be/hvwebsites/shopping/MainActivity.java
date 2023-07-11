@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     // Device
     private final String deviceModel = Build.MODEL;
     // Basis Directory waar de bestanden worden bewaard op het toestel: internal of external
-    private String fileBase = StaticData.FILE_BASE_EXTERNAL;
+    private String fileBase;
     private String filebaseDir = "";
     private String smsStatus = StaticData.SMS_VALUE_OFF;
     private CookieRepository cookieRepository;
@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Intent definieren voor terugkoppeling gegevens
-        Intent newItemIntent = getIntent();
 
 /*
         We gaan de file base of de file directory niet meer bijhouden als cookie omdat voor de cookies
@@ -98,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, A4ShopCompetitionList.class);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, fileBase);
-                intent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE_DIR, filebaseDir);
                 startActivity(intent);
             }
         });
@@ -139,9 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Welke menu optie is er gekozen ?
         switch (item.getItemId()) {
+/*
             case R.id.menu_bu:
                 // Maak een copy vn je internal files nr external files (werkt niet voor oud model !)
-                if (!deviceModel.equals("GT-I9100")){
+                if (!deviceModel.equals(FileBaseService.SAMSUNG_GTI9100)
+                &&(fileBase.equals(FileBaseService.FILE_BASE_INTERNAL))){
                     Intent mainIntent = new Intent(MainActivity.this, BackUpToExternal.class);
                     startActivity(mainIntent);
                 } else {
@@ -150,10 +147,11 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 return true;
+*/
             case R.id.menu_set_base_switch_external:
                 // Zet BASE_SWITCH to external
-                if (!deviceModel.equals("GT-I9100")) {
-                    fileBase = SpecificData.BASE_EXTERNAL;
+                if (!deviceModel.equals(FileBaseService.SAMSUNG_GTI9100)) {
+                    fileBase = FileBaseService.FILE_BASE_EXTERNAL;
                     basisSwitchView.setText(fileBase);
                     Toast.makeText(MainActivity.this,
                             "External files geactiveerd !",
@@ -166,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_set_base_switch_internal:
                 // Zet BASE_SWITCH to internal
-                fileBase = SpecificData.BASE_INTERNAL;
+                fileBase = FileBaseService.FILE_BASE_INTERNAL;
                 basisSwitchView.setText(fileBase);
-                if (!deviceModel.equals("GT-I9100")) {
+                if (!deviceModel.equals(FileBaseService.SAMSUNG_GTI9100)) {
                     Toast.makeText(MainActivity.this,
                             "Internal files geactiveerd !",
                             Toast.LENGTH_LONG).show();

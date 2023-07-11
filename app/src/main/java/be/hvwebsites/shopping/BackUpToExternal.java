@@ -24,6 +24,7 @@ public class BackUpToExternal extends AppCompatActivity {
         // External basis directory definitie
         String extBaseDir = getBaseContext().getExternalFilesDir(null).getAbsolutePath();
 
+/*
         // Internal Data ophalen
         // Get a viewmodel from the viewmodelproviders
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
@@ -46,6 +47,7 @@ public class BackUpToExternal extends AppCompatActivity {
         Toast.makeText(BackUpToExternal.this,
                 "Back up van internal data is afgelopen !",
                 Toast.LENGTH_LONG).show();
+*/
 
 
     }

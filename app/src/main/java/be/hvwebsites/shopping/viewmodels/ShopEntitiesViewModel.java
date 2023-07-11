@@ -39,9 +39,11 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
     File productInMealFile;
     File mealInMealFile;
     // File declaraties voor copy int nr ext
+/*
     File shopExtFile;
     File productExtFile;
     File productInShopExtFile;
+*/
     // File names constants
     public static final String SHOP_FILE = "shop.txt";
     public static final String PRODUCT_FILE = "product.txt";
@@ -110,37 +112,6 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return returnInfo;
     }
 
-    public ReturnInfo saveInBaseDir(String basedir){
-        ReturnInfo returnInfo = new ReturnInfo(0);
-        // Filedefinities vr copy int nr ext
-        shopExtFile = new File(basedir, SHOP_FILE);
-        productExtFile = new File(basedir, PRODUCT_FILE);
-        productInShopExtFile = new File(basedir, PRODUCTSHOP_FILE);
-        CookieRepository cookieRepository = new CookieRepository(basedir);
-
-        repository.storeData(shopExtFile, convertEntityListinDataList(shopList));
-        // Zet hoogste ID in Cookie
-        cookieRepository.registerCookie(Shop.SHOP_LATEST_ID,
-                String.valueOf(determineHighestID(shopList)));
-
-        repository.storeData(productExtFile, convertEntityListinDataList(productList));
-        // Zet hoogste ID in Cookie
-        cookieRepository.registerCookie(Product.PRODUCT_LATEST_ID,
-                String.valueOf(determineHighestID(productList)));
-
-        repository.storeData(productInShopExtFile, convertCombinListinDataList(productInShopList));
-
-        repository.storeData(mealFile, convertEntityListinDataList(mealList));
-        // Zet hoogste ID in Cookie
-        cookieRepository.registerCookie(Meal.MEAL_LATEST_ID,
-                String.valueOf(determineHighestID(mealList)));
-
-        repository.storeData(productInMealFile, convertCombinListinDataList(productInMealList));
-        repository.storeData(mealInMealFile, convertCombinListinDataList(mealInMealList));
-
-        return returnInfo;
-    }
-
     public void forceBtData(String basedir){
         // Bluetooth data accepteren
         if (shopListBt.size() > 0){
@@ -173,7 +144,14 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
             mealInMealList.clear();
             mealInMealList.addAll(mealInMealListBt);
         }
-        saveInBaseDir(basedir);
+        // Gegevens geheugen in bestanden steken
+        storeShops();
+        storeProducts();
+        storeMeals();
+        storeProdInShop();
+        storeProdsInMeal();
+        storeMealInMeal();
+        //saveInBaseDir(basedir);
 
         // Hoogste ID's in cookies aanpassen
         correctHighestID(Shop.SHOP_LATEST_ID, shopList);
@@ -983,6 +961,79 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         storeProdsInMeal();
     }
 
+    /** Fill lists */
+
+    public void fillShopListWithOtherShopList(List<Shop> inList){
+        shopList.clear();
+        shopList.addAll(inList);
+        storeShops();
+        correctHighestID(Shop.SHOP_LATEST_ID, shopList);
+    }
+
+    public void fillProdListWithOtherProdList(List<Product> inList){
+        productList.clear();
+        productList.addAll(inList);
+        storeProducts();
+        correctHighestID(Product.PRODUCT_LATEST_ID, productList);
+    }
+
+    public void fillProdInShopListWithOtherList(List<ProductInShop> inList){
+        productInShopList.clear();
+        productInShopList.addAll(inList);
+        storeProdInShop();
+    }
+
+    public void fillMealListWithOtherMealList(List<Meal> inList){
+        mealList.clear();
+        mealList.addAll(inList);
+        storeMeals();
+        correctHighestID(Meal.MEAL_LATEST_ID, mealList);
+    }
+
+    public void fillProdInMealListWithOtherList(List<ProductInMeal> inList){
+        productInMealList.clear();
+        productInMealList.addAll(inList);
+        storeProdsInMeal();
+    }
+
+    public void fillMealInMealListWithOtherList(List<MealInMeal> inList){
+        mealInMealList.clear();
+        mealInMealList.addAll(inList);
+        storeMealInMeal();
+    }
+
+    /** Clear lists */
+
+    public void clearShops(){
+        // Verwijdert shops uit shoplist
+        shopList.clear();
+    }
+
+    public void clearProducts(){
+        // Verwijdert shops uit shoplist
+        productList.clear();
+    }
+
+    public void clearMeals(){
+        // Verwijdert shops uit shoplist
+        mealList.clear();
+    }
+
+    public void clearProdInShops(){
+        // Verwijdert shops uit shoplist
+        productInShopList.clear();
+    }
+
+    public void clearProdInMeals(){
+        // Verwijdert shops uit shoplist
+        productInMealList.clear();
+    }
+
+    public void clearMealInMeal(){
+        // Verwijdert shops uit shoplist
+        mealInMealList.clear();
+    }
+
     public void setSpinnerSelection(String spinnerSelection) {
         this.spinnerSelection = spinnerSelection;
     }
@@ -1039,6 +1090,41 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         return mealInMealList;
     }
 
+
+    // TODO: mag waarschijnlijk weg
+
+/*
+    public ReturnInfo saveInBaseDir(String basedir){
+        ReturnInfo returnInfo = new ReturnInfo(0);
+        // Filedefinities vr copy int nr ext
+        shopExtFile = new File(basedir, SHOP_FILE);
+        productExtFile = new File(basedir, PRODUCT_FILE);
+        productInShopExtFile = new File(basedir, PRODUCTSHOP_FILE);
+        CookieRepository cookieRepository = new CookieRepository(basedir);
+
+        repository.storeData(shopExtFile, convertEntityListinDataList(shopList));
+        // Zet hoogste ID in Cookie
+        cookieRepository.registerCookie(Shop.SHOP_LATEST_ID,
+                String.valueOf(determineHighestID(shopList)));
+
+        repository.storeData(productExtFile, convertEntityListinDataList(productList));
+        // Zet hoogste ID in Cookie
+        cookieRepository.registerCookie(Product.PRODUCT_LATEST_ID,
+                String.valueOf(determineHighestID(productList)));
+
+        repository.storeData(productInShopExtFile, convertCombinListinDataList(productInShopList));
+
+        repository.storeData(mealFile, convertEntityListinDataList(mealList));
+        // Zet hoogste ID in Cookie
+        cookieRepository.registerCookie(Meal.MEAL_LATEST_ID,
+                String.valueOf(determineHighestID(mealList)));
+
+        repository.storeData(productInMealFile, convertCombinListinDataList(productInMealList));
+        repository.storeData(mealInMealFile, convertCombinListinDataList(mealInMealList));
+
+        return returnInfo;
+    }
+*/
 
     // TODO: mag weg
 

@@ -22,7 +22,6 @@ public class TextItemListAdapter extends RecyclerView.Adapter<TextItemListAdapte
 
     private List<String> reusableList;
     private String reference;
-    private String baseSwitch;
 
     public TextItemListAdapter(Context context) {
         this.mContext = context;
@@ -86,14 +85,6 @@ public class TextItemListAdapter extends RecyclerView.Adapter<TextItemListAdapte
         }else {
             holder.textItemView.setText("No data !");
         }
-    }
-
-    public String getBaseSwitch() {
-        return baseSwitch;
-    }
-
-    public void setBaseSwitch(String baseSwitch) {
-        this.baseSwitch = baseSwitch;
     }
 
     @Override

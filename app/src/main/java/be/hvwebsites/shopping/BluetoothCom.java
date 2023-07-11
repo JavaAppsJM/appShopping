@@ -1,9 +1,11 @@
 package be.hvwebsites.shopping;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +22,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,16 +31,19 @@ import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.libraryandroid4.returninfo.ReturnInfo;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.constants.SpecificData;
+import be.hvwebsites.shopping.entities.Meal;
 import be.hvwebsites.shopping.entities.Product;
 import be.hvwebsites.shopping.entities.ProductInShop;
 import be.hvwebsites.shopping.entities.Shop;
 import be.hvwebsites.shopping.services.BluetoothService;
 import be.hvwebsites.shopping.services.BtDeviceListActivity;
+import be.hvwebsites.shopping.viewmodels.BlueToothViewModel;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
 public class BluetoothCom extends AppCompatActivity {
     private static final String TAG = "Bluetooth";
     private ShopEntitiesViewModel viewModel;
+    private BlueToothViewModel blueToothViewModel;
     private String baseDir;
     private String baseSwitch;
     private String sendMsgProcessStatus = SEND_STATUS_NONE;
@@ -123,7 +130,6 @@ public class BluetoothCom extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             // Indien bluetooth initiated mislukt is, ga terug nr mainActivity
             Intent returnintent = new Intent(BluetoothCom.this, MainActivity.class);
-            returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
             startActivity(returnintent);
         } else {
             Toast.makeText(BluetoothCom.this,
@@ -175,7 +181,16 @@ public class BluetoothCom extends AppCompatActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             */
             // TODO: Permission checken om BluetoothAdapter te enablen
-            if (mBluetoothAdapter.enable()) {
+            // Check permissions
+            String[] permissions = {
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADVERTISE
+            };
+            if (ContextCompat.checkSelfPermission(BluetoothCom.this, Manifest.permission.BLUETOOTH_ADVERTISE)
+                    == PackageManager.PERMISSION_DENIED){
+                // Permissions not yet ok, request permissions
+                ActivityCompat.requestPermissions(this, permissions, 0);
+            }else  (mBluetoothAdapter.enable()) {
                 // Bluetooth enabled
             } else {
                 returnInfo.setReturnCode(StaticData.BLUETOOTH_ENABLE_FAILED);
@@ -238,7 +253,11 @@ public class BluetoothCom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Accepteer wat er in bluetooth data zit
+                // TODO: blueToothViewModel activeren
+                //acceptBtData();
+                // TODO: viewmodel hier verwijderen als blueToothViewmodel geactiveerd wordt
                 viewModel.forceBtData(baseDir);
+
                 statusBar.setText("Bestanden bewaard in " + baseSwitch);
                 mConversationArrayAdapter.add("Bluetooth data accepted & saved in " + baseSwitch);
             }
@@ -255,6 +274,35 @@ public class BluetoothCom extends AppCompatActivity {
         mBtService.start();
 
         return returnInfo;
+    }
+
+    public void acceptBtData(){
+        // Bluetooth data accepteren en stockeren in de bestanden
+        if (blueToothViewModel.getShopListBt().size() > 0){
+            // Er zijn shops te accepteren
+            viewModel.fillShopListWithOtherShopList(blueToothViewModel.getShopListBt());
+        }
+        if (blueToothViewModel.getProductListBt().size() > 0){
+            // Er zijn producten te accepteren
+            viewModel.fillProdListWithOtherProdList(blueToothViewModel.getProductListBt());
+        }
+        if (blueToothViewModel.getProductInShopListBt().size() > 0){
+            // Er zijn prodinshops te accepteren
+            viewModel.fillProdInShopListWithOtherList(blueToothViewModel.getProductInShopListBt());
+        }
+        if (blueToothViewModel.getMealListBt().size() > 0){
+            // Er zijn gerechten te accepteren
+            viewModel.fillMealListWithOtherMealList(blueToothViewModel.getMealListBt());
+        }
+        if (blueToothViewModel.getProductInMealListBt().size() > 0){
+            // Er zijn prodinmeals te accepteren
+            viewModel.fillProdInMealListWithOtherList(blueToothViewModel.getProductInMealListBt());
+        }
+        if (blueToothViewModel.getMealInMealListBt().size() > 0){
+            // Er zijn mealinmeals te accepteren
+            viewModel.fillMealInMealListWithOtherList(blueToothViewModel.getMealInMealListBt());
+        }
+        boolean debug = true;
     }
 
     /*** Makes this device discoverable for 300 seconds (5 minutes).*/
@@ -409,6 +457,9 @@ public class BluetoothCom extends AppCompatActivity {
                 shopreceived.setEntityId(new IDNumber(btLineContent[i+2].replace(">", "")));
                 shopreceived.setEntityName(btLineContent[i+3].replace(">",""));
                 // Toevoegen aan de bluetooth shoplist
+                // TODO: blueToothViewModel activeren
+                //blueToothViewModel.getShopListBt().add(shopreceived);
+                // TODO: viewmodel hier verwijderen als blueToothViewmodel geactiveerd wordt
                 viewModel.getShopListBt().add(shopreceived);
                 // Versturen van shops ontvangen <rec><shoplist><0: index in arraylist><shopnaam>
                 int index = Integer.parseInt(btLineContent[i+1].replace(">", ""));
@@ -435,6 +486,9 @@ public class BluetoothCom extends AppCompatActivity {
                         btLineContent[i+5], btLineContent[i+6], btLineContent[i+7], btLineContent[i+8]);
 
                 // Toevoegen aan de locale productlist
+                // TODO: blueToothViewModel activeren
+                //blueToothViewModel.getProductListBt().add(productReceived);
+                // TODO: viewmodel hier verwijderen als blueToothViewmodel geactiveerd wordt
                 viewModel.getProductListBt().add(productReceived);
                 // Versturen van productlist ontvangen
                 int index = Integer.parseInt(btLineContent[i+1].replace(">", ""));
@@ -460,6 +514,9 @@ public class BluetoothCom extends AppCompatActivity {
                         new IDNumber(btLineContent[i+2].replace(">", ""))
                 );
                 // Toevoegen aan de locale prodshoplist
+                // TODO: blueToothViewModel activeren
+                //blueToothViewModel.getProductInShopListBt().add(productInShopRec);
+                // TODO: viewmodel hier verwijderen als blueToothViewmodel geactiveerd wordt
                 viewModel.getProductInShopListBt().add(productInShopRec);
                 // Versturen van prodshops ontvangen
                 int index = Integer.parseInt(btLineContent[i+1].replace(">", ""));
@@ -474,7 +531,7 @@ public class BluetoothCom extends AppCompatActivity {
                 // Versturen van send endshopprod ontvangen
                 sendMessage("<rec><endshopprod>");
             }
-            // TODO: ontvangen van meals en prodinmeals en mealinmeals is nog niet ok
+            // TODO: ontvangen van meals en prodinmeals en mealinmeals is nog niet voorzien
             if (sendReceived && sendMsgProcessStatus.equals(SEND_STATUS_START) && btLineContent[i].matches("end.*")){
                 sendMsgProcessStatus = SEND_STATUS_END;
                 sendReceived = false;
