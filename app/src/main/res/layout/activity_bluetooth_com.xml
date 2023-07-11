@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.hvwebsites.winkelen.BluetoothCom">
+    tools:context="be.hvwebsites.shopping.BluetoothCom">
 
     <ListView
         android:id="@+id/in"

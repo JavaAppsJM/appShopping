@@ -73,6 +73,16 @@ public class BluetoothCom extends AppCompatActivity {
     private static final String REC_STATUS_PRODUCTS = "Receive status stap productlist";
     private static final String REC_STATUS_PRODSHOPS = "Receive status stap products in shops";
 
+    // Status bar Texts
+    private static final String STATUS_BAR_DATA_OPHALEN = "Data ophalen";
+    private static final String STATUS_BAR_DATA_OPGEHAALD = "Data opgehaald";
+    private static final String STATUS_BAR_BESTANDEN_VERSTUURD = "Bestanden worden verstuurd...";
+    private static final String STATUS_BAR_BESTANDEN_BEWAREN = "Bestanden worden bewaard...";
+    private static final String STATUS_BAR_BESTANDEN_ONTVANGEN = "Bestanden ontvangen";
+    private static final String STATUS_BAR_CONNECTED_TO = "Connected to";
+    private static final String STATUS_BAR_CONNECTING = "Connecting... ";
+    private static final String STATUS_BAR_NOT_CONNECTED = "Not connected";
+
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
@@ -139,7 +149,7 @@ public class BluetoothCom extends AppCompatActivity {
 
         // Bestanden ophalen
         // Get a viewmodel from the viewmodelproviders
-        statusBar.setText("Data ophalen");
+        statusBar.setText(STATUS_BAR_DATA_OPHALEN);
         viewModel = new ViewModelProvider(this).get(ShopEntitiesViewModel.class);
         // Basis directory definitie
         baseDir = "";
@@ -153,7 +163,7 @@ public class BluetoothCom extends AppCompatActivity {
         if (viewModelStatus.getReturnCode() == 0) {
             // Files gelezen
             viewModel.setBaseSwitch(baseSwitch);
-            statusBar.setText("Data opgehaald uit " + baseSwitch);
+            statusBar.setText(STATUS_BAR_DATA_OPGEHAALD);
         } else {
             Toast.makeText(BluetoothCom.this,
                     "Ophalen data is mislukt",
@@ -180,8 +190,7 @@ public class BluetoothCom extends AppCompatActivity {
             startActivity(enableBtIntent);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             */
-            // TODO: Permission checken om BluetoothAdapter te enablen
-            // Check permissions
+            // Permission checken om BluetoothAdapter te enablen
             String[] permissions = {
                     Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADVERTISE
@@ -190,7 +199,7 @@ public class BluetoothCom extends AppCompatActivity {
                     == PackageManager.PERMISSION_DENIED){
                 // Permissions not yet ok, request permissions
                 ActivityCompat.requestPermissions(this, permissions, 0);
-            }else  (mBluetoothAdapter.enable()) {
+            }else  if(mBluetoothAdapter.enable()) {
                 // Bluetooth enabled
             } else {
                 returnInfo.setReturnCode(StaticData.BLUETOOTH_ENABLE_FAILED);
@@ -231,7 +240,7 @@ public class BluetoothCom extends AppCompatActivity {
             public void onClick(View v) {
                 // Start het versturen van de bestanden op
                 String msg = "<send><files>";
-                statusBar.setText("Bestanden worden verstuurd...");
+                statusBar.setText(STATUS_BAR_BESTANDEN_VERSTUURD);
                 sendMessage(msg);
             }
         });
@@ -241,9 +250,21 @@ public class BluetoothCom extends AppCompatActivity {
             public void onClick(View v) {
                 // Stop bluetooth activiteiten en ga terug nr MainActivity
                 mBtService.stop();
-                mBluetoothAdapter.disable();
+                // Permission checken om BluetoothAdapter te disablen
+                String[] permissions = {
+                        Manifest.permission.BLUETOOTH,
+                        Manifest.permission.BLUETOOTH_ADVERTISE
+                };
+                if (ContextCompat.checkSelfPermission(BluetoothCom.this, Manifest.permission.BLUETOOTH_ADVERTISE)
+                        == PackageManager.PERMISSION_DENIED){
+                    // Permissions not yet ok, request permissions
+                    ActivityCompat.requestPermissions(getParent(), permissions, 0);
+                }else  if(mBluetoothAdapter.disable()) {
+                    // Bluetooth disabled
+                } else {
+                    Toast.makeText(BluetoothCom.this, "Bluetooth disabling failed !", Toast.LENGTH_SHORT).show();
+                }
                 Intent returnintent = new Intent(BluetoothCom.this, MainActivity.class);
-                returnintent.putExtra(StaticData.EXTRA_INTENT_KEY_FILE_BASE, baseSwitch);
                 startActivity(returnintent);
             }
         });
@@ -258,7 +279,7 @@ public class BluetoothCom extends AppCompatActivity {
                 // TODO: viewmodel hier verwijderen als blueToothViewmodel geactiveerd wordt
                 viewModel.forceBtData(baseDir);
 
-                statusBar.setText("Bestanden bewaard in " + baseSwitch);
+                statusBar.setText(STATUS_BAR_BESTANDEN_BEWAREN);
                 mConversationArrayAdapter.add("Bluetooth data accepted & saved in " + baseSwitch);
             }
         });
@@ -307,11 +328,21 @@ public class BluetoothCom extends AppCompatActivity {
 
     /*** Makes this device discoverable for 300 seconds (5 minutes).*/
     private void ensureDiscoverable() {
-        if (mBluetoothAdapter.getScanMode() !=
+        String[] permissions = {
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_SCAN
+        };
+        if (ContextCompat.checkSelfPermission(BluetoothCom.this, Manifest.permission.BLUETOOTH_SCAN)
+                == PackageManager.PERMISSION_DENIED){
+            // Permissions not yet ok, request permissions
+            ActivityCompat.requestPermissions(getParent(), permissions, 0);
+        }else  if(mBluetoothAdapter.getScanMode() !=
                 BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
             startActivity(discoverableIntent);
+        } else {
+            Toast.makeText(BluetoothCom.this, "Bluetooth getScanMode failed !", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -356,17 +387,17 @@ public class BluetoothCom extends AppCompatActivity {
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
                             //setStatus(R.string.title_connected_to);
-                            statusBar.setText("connected to");
+                            statusBar.setText(STATUS_BAR_CONNECTED_TO);
                             //mConversationArrayAdapter.clear();
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             //setStatus(R.string.title_connecting);
-                            statusBar.setText("connecting...");
+                            statusBar.setText(STATUS_BAR_CONNECTING);
                             break;
                         case BluetoothService.STATE_LISTEN:
                         case BluetoothService.STATE_NONE:
                             //setStatus(R.string.title_not_connected);
-                            statusBar.setText("not connected");
+                            statusBar.setText(STATUS_BAR_NOT_CONNECTED);
                             break;
                     }
                     break;
@@ -537,7 +568,7 @@ public class BluetoothCom extends AppCompatActivity {
                 sendReceived = false;
                 // Versturen van send end ontvangen
                 sendMessage("<rec><end>");
-                statusBar.setText("Bestanden ontvangen");
+                statusBar.setText(STATUS_BAR_BESTANDEN_ONTVANGEN);
                 // Als er iets ontvangen is in bluetooth data dan kan dat geaccepteerd worden
                 acceptButton.setVisibility(View.VISIBLE);
             }
