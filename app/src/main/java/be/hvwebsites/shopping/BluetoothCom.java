@@ -258,7 +258,7 @@ public class BluetoothCom extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission(BluetoothCom.this, Manifest.permission.BLUETOOTH_ADVERTISE)
                         == PackageManager.PERMISSION_DENIED){
                     // Permissions not yet ok, request permissions
-                    ActivityCompat.requestPermissions(getParent(), permissions, 0);
+                    ActivityCompat.requestPermissions(BluetoothCom.this, permissions, 0);
                 }else  if(mBluetoothAdapter.disable()) {
                     // Bluetooth disabled
                 } else {
@@ -335,7 +335,7 @@ public class BluetoothCom extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(BluetoothCom.this, Manifest.permission.BLUETOOTH_SCAN)
                 == PackageManager.PERMISSION_DENIED){
             // Permissions not yet ok, request permissions
-            ActivityCompat.requestPermissions(getParent(), permissions, 0);
+            ActivityCompat.requestPermissions(BluetoothCom.this, permissions, 0);
         }else  if(mBluetoothAdapter.getScanMode() !=
                 BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
