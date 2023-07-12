@@ -67,7 +67,6 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
         viewModel = new ViewModelProvider(requireActivity()).get(ShopEntitiesViewModel.class);
 
         // Preferred Shop Spinner
-        // findviewbyid werkt hier wel !
         // fragmentview moet eerst bestaan voor dat je zaken kan adreseren
         Spinner prefShopSpinner = (Spinner) view.findViewById(R.id.spinnerPrefShop);
         ArrayAdapter<String> prefShopAdapter = new ArrayAdapter(this.getContext(),
@@ -101,17 +100,10 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             nameView.setText(productToUpdate.getEntityName());
             // Is er al een preferred shop voor het product in kwestie ?
             int prefShopIndex = viewModel.getIndexById(viewModel.getShopList(), productToUpdate.getPreferredShopId());
-//            String prefShopName = "nog geen voorkeur winkel geregistreerd !";
             if (prefShopIndex != StaticData.ITEM_NOT_FOUND) {
-                // er is een preferred shop
-//                Shop prefShop = new Shop();
-//                prefShop = viewModel.getShopByID(productToUpdate.getPreferredShopId());
-//                prefShopName = viewModel.getShopList()
-//                        .get(viewModel.getShopIndexById(productToUpdate.getPreferredShopId()))
-//                        .getEntityName();
+                // er is een preferred shop, in de spinner steken
                 prefShopSpinner.setAdapter(prefShopAdapter);
                 prefShopSpinner.setSelection(prefShopIndex);
-//                prefShopSpinner.setPrompt(prefShopName);
             }else {
                 prefShopSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
                         prefShopAdapter, R.layout.contact_spinner_row_nothing_selected, getContext()
