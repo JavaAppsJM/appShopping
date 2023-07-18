@@ -49,4 +49,17 @@ public class Shop extends ShoppingEntity {
         return getEntityName();
     }
 
+    public String getAttributesForBtMsg(){
+        String bTMsg = "";
+        bTMsg = bTMsg.concat(getEntityId().getIdString());
+        bTMsg = bTMsg.concat("><");
+        bTMsg = bTMsg.concat(getEntityName());
+        bTMsg = bTMsg.concat(">");
+        return bTMsg;
+    }
+
+    public void setBtContent(String bt2, String bt3){
+        setEntityId(new IDNumber(bt2.replace(">", "")));
+        setEntityName(bt3.replace(">",""));
+    }
 }

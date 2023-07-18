@@ -485,8 +485,11 @@ public class BluetoothCom extends AppCompatActivity {
                 sendMsgProcessStatus = SEND_STATUS_SENDING;
                 // Er volgt een shop uit de shoplist
                 Shop shopreceived = new Shop();
+                shopreceived.setBtContent(btLineContent[i+2], btLineContent[i+3]);
+/*
                 shopreceived.setEntityId(new IDNumber(btLineContent[i+2].replace(">", "")));
                 shopreceived.setEntityName(btLineContent[i+3].replace(">",""));
+*/
                 // Toevoegen aan de bluetooth shoplist
                 // TODO: blueToothViewModel activeren
                 //blueToothViewModel.getShopListBt().add(shopreceived);
@@ -511,8 +514,6 @@ public class BluetoothCom extends AppCompatActivity {
                 sendMsgProcessStatus = SEND_STATUS_SENDING;
                 // Er volgt een product uit de productlist
                 Product productReceived = new Product();
-
-                // nog testen vooraleer te activeren en Gitte dit heeft
                 productReceived.setBtContent(btLineContent[i+2], btLineContent[i+3], btLineContent[i+4],
                         btLineContent[i+5], btLineContent[i+6], btLineContent[i+7], btLineContent[i+8]);
 
@@ -584,10 +585,8 @@ public class BluetoothCom extends AppCompatActivity {
                 receiveMsgProcessStatus = REC_STATUS_SENDING;
                 // de eerste uit shoplist mag gestuurd worden
                 String msg = "<send><shoplist><0><";
-                msg = msg.concat(viewModel.getShopList().get(0).getEntityId().getIdString());
-                msg = msg.concat("><");
-                msg = msg.concat(viewModel.getShopList().get(0).getEntityName());
-                msg = msg.concat(">");
+                msg = msg.concat(viewModel.getShopList().get(0)
+                        .getAttributesForBtMsg());
                 sendMessage(msg);
             }
             if (recReceived && btLineContent[i].matches("shoplist.*")){
@@ -601,10 +600,8 @@ public class BluetoothCom extends AppCompatActivity {
                     msg = msg.concat("shoplist><");
                     msg = msg.concat(vlgndIndex);
                     msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getShopList().get(volgendeIndex).getEntityId().getIdString());
-                    msg = msg.concat("><");
-                    msg = msg.concat(viewModel.getShopList().get(volgendeIndex).getEntityName());
-                    msg = msg.concat(">");
+                    msg = msg.concat(viewModel.getShopList().get(volgendeIndex)
+                            .getAttributesForBtMsg());
                 }else {
                     //Einde vd shoplist Patroon3 verstuur: <send><endshoplist>
                     msg = msg.concat("endshoplist>");
@@ -617,7 +614,8 @@ public class BluetoothCom extends AppCompatActivity {
                 // Patroon4 verstuur: <send><prodlist><0><productID><productnaam><preferredshopID><toBuy><wanted><cooled>
                 String msg = "<send><prodlist><0><";
                 // Message wordt samengesteld door een method vn Product: getProductAttributesForBtMsg
-                msg = msg.concat(viewModel.getProductList().get(0).getProductAttributesForBtMsg());
+                msg = msg.concat(viewModel.getProductList().get(0)
+                        .getProductAttributesForBtMsg());
                 sendMessage(msg);
             }
             if (recReceived && btLineContent[i].matches("prodlist.*")){
