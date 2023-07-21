@@ -17,18 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/labelShoppingList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/artikels"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelShopFilter" />
-
     <Spinner
         android:id="@+id/spinnerShopFilter"
         android:layout_width="180dp"
@@ -43,6 +31,52 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <TextView
+        android:id="@+id/labelShoppingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/artikels"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelShopFilter" />
+
+    <Switch
+        android:id="@+id/switchChecked"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Enkel aangeklikte artikels"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelShoppingList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labelShoppingList" />
+
+    <TextView
+        android:id="@+id/labelShListOpenHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/openingsuren"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelShoppingList" />
+
+    <TextView
+        android:id="@+id/valueShListOpenHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/openingsuren"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/labelShListOpenHours"
+        app:layout_constraintTop_toBottomOf="@+id/labelShoppingList" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewShoppingListProducts"
         android:layout_width="0dp"
@@ -55,20 +89,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="@id/labelShoppingList"
-        app:layout_constraintTop_toBottomOf="@+id/labelShoppingList"
+        app:layout_constraintStart_toStartOf="@id/labelShListOpenHours"
+        app:layout_constraintTop_toBottomOf="@+id/labelShListOpenHours"
         tools:ignore="MissingConstraints"
         tools:layout_conversion_absoluteWidth="315dp"
         tools:listitem="@layout/list_checkbox_item" />
-
-    <Switch
-        android:id="@+id/switchChecked"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="Enkel aangeklikte artikels"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/labelShoppingList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/labelShoppingList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

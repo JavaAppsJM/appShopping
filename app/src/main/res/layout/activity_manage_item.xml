@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.hvwebsites.shopping.ManageItemActivity">
+    tools:context=".ManageItemActivity">
 
     <TextView
         android:id="@+id/instructionNewItem"
@@ -17,18 +17,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    android:name="ProductFragment"-->
-
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentShopEntity"
-        android:layout_width="313dp"
-        android:layout_height="388dp"
+        android:layout_width="315dp"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instructionNewItem">

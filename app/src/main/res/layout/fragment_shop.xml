@@ -31,15 +31,359 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/labelNameShop"
         app:layout_constraintStart_toEndOf="@id/labelNameShop" />
 
-    <Button
-        android:id="@+id/addButtonShop"
+    <TextView
+        android:id="@+id/labelOpenHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/openingsuren"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelNameShop" />
+
+    <TextView
+        android:id="@+id/headingFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Van"
+        app:layout_constraintStart_toEndOf="@+id/editMoFromH"
+        app:layout_constraintTop_toBottomOf="@+id/labelOpenHours" />
+
+    <TextView
+        android:id="@+id/headingTill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tot"
+        app:layout_constraintBaseline_toBaselineOf="@+id/headingFrom"
+        app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
+
+    <TextView
+        android:id="@+id/labelMonday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Ma:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editMoFromH"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/labelMonday"
+        app:layout_constraintTop_toBottomOf="@+id/headingFrom" />
+
+    <TextView
+        android:id="@+id/colonH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text=" : "
+        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
+        app:layout_constraintStart_toEndOf="@+id/editMoFromH" />
+
+    <EditText
+        android:id="@+id/editMoFromM"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/colonH"
+        app:layout_constraintStart_toEndOf="@+id/colonH" />
+
+    <EditText
+        android:id="@+id/editMoTillH"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromM"
+        app:layout_constraintStart_toEndOf="@+id/editMoFromM" />
+
+    <TextView
+        android:id="@+id/colonM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text=" : "
+        app:layout_constraintBaseline_toBaselineOf="@+id/editMoTillH"
+        app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
+
+    <EditText
+        android:id="@+id/editMoTillM"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/colonM"
+        app:layout_constraintStart_toEndOf="@+id/colonM" />
+
+    <TextView
+        android:id="@+id/labelTuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Di:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editDiFromH"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/labelTuesday"
+        app:layout_constraintStart_toStartOf="@+id/editMoFromH"
+        app:layout_constraintTop_toBottomOf="@+id/editMoFromH" />
+
+    <TextView
+        android:id="@+id/colonDiH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text=" : "
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
+        app:layout_constraintStart_toEndOf="@+id/editDiFromH" />
+
+    <EditText
+        android:id="@+id/editDiFromM"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/colonDiH"
+        app:layout_constraintStart_toEndOf="@+id/colonDiH" />
+
+    <EditText
+        android:id="@+id/editDiTillH"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromM"
+        app:layout_constraintStart_toEndOf="@+id/editDiFromM" />
+
+    <TextView
+        android:id="@+id/colonDiM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text=" : "
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDiTillH"
+        app:layout_constraintStart_toEndOf="@+id/editDiTillH" />
+
+    <EditText
+        android:id="@+id/editDiTillM"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/colonDiM"
+        app:layout_constraintStart_toEndOf="@+id/colonDiM" />
+
+    <EditText
+        android:id="@+id/editWoFrom"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/labelWensday"
+        app:layout_constraintStart_toStartOf="@+id/editDiFromH"
+        app:layout_constraintTop_toBottomOf="@+id/editDiFromH" />
+
+    <EditText
+        android:id="@+id/editWoTill"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editWoFrom"
+        app:layout_constraintStart_toEndOf="@+id/editWoFrom" />
+
+    <TextView
+        android:id="@+id/labelWensday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Wo:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editWoFrom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editDoFrom"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/labelThursday"
+        app:layout_constraintStart_toStartOf="@+id/editWoFrom"
+        app:layout_constraintTop_toBottomOf="@+id/editWoFrom" />
+
+    <EditText
+        android:id="@+id/editDoTill"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDoFrom"
+        app:layout_constraintStart_toEndOf="@+id/editDoFrom" />
+
+    <TextView
+        android:id="@+id/labelThursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Do:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editDoFrom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editFrFrom"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/labelFriday"
+        app:layout_constraintStart_toStartOf="@+id/editDoFrom"
+        app:layout_constraintTop_toBottomOf="@+id/editDoFrom" />
+
+    <EditText
+        android:id="@+id/editFrTill"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editFrFrom"
+        app:layout_constraintStart_toEndOf="@+id/editFrFrom" />
+
+    <TextView
+        android:id="@+id/labelFriday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Vr:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editFrFrom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editSaFrom"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/labelSaturday"
+        app:layout_constraintStart_toStartOf="@+id/editFrFrom"
+        app:layout_constraintTop_toBottomOf="@+id/editFrFrom" />
+
+    <EditText
+        android:id="@+id/editSaTill"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSaFrom"
+        app:layout_constraintStart_toEndOf="@+id/editSaFrom" />
+
+    <TextView
+        android:id="@+id/labelSaturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Za:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSaFrom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editSuFrom"
+        android:layout_width="80dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/labelSunday"
+        app:layout_constraintStart_toStartOf="@+id/editSaFrom"
+        app:layout_constraintTop_toBottomOf="@+id/editSaFrom" />
+
+    <EditText
+        android:id="@+id/editSuTill"
+        android:layout_width="90dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSuFrom"
+        app:layout_constraintStart_toEndOf="@+id/editSuFrom" />
+
+    <TextView
+        android:id="@+id/labelSunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Zo:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSuFrom"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addButtonShop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/labelToevoegen"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNameNewShop" />
+        app:layout_constraintTop_toBottomOf="@+id/editSuFrom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
