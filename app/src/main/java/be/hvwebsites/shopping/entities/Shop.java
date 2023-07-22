@@ -18,6 +18,7 @@ public class Shop extends ShoppingEntity {
 
     public Shop(String basedir, boolean b) {
         super(basedir, SHOP_LATEST_ID);
+        initializeOpenHours();
     }
 
     public Shop(String fileLine){
@@ -93,12 +94,18 @@ public class Shop extends ShoppingEntity {
         this.sunday = sunday;
     }
 
-    public void setShopEntity(Shop shop) {
-        super.setShopEntity(shop);
+    private void setOpenHours(Shop shop){
+        this.monday.setOpenTime(shop.getMonday());
+        this.tuesday.setOpenTime(shop.getTuesday());
+        this.wensday.setOpenTime(shop.getWensday());
+        this.thursday.setOpenTime(shop.getThursday());
+        this.friday.setOpenTime(shop.getFriday());
+        this.satday.setOpenTime(shop.getSatday());
+        this.sunday.setOpenTime(shop.getSunday());
     }
 
     public void convertFromFileLine(String fileLine) {
-        // Maakt een shop obv een fileline - format: <key><1022021><shop><azerty>
+        // Maakt een shop obv een fileline - format: <key><1022021><shop><azerty><ma><00:00 - 00:00>...
         // fileLine splitsen in argumenten
         String[] fileLineContent = fileLine.split("<");
         for (int i = 0; i < fileLineContent.length; i++) {
@@ -108,19 +115,47 @@ public class Shop extends ShoppingEntity {
             if (fileLineContent[i].matches("shop.*")){
                 setEntityName(fileLineContent[i+1].replace(">",""));
             }
-            // TODO: Aanpassen voor openingsuren
+            if (fileLineContent[i].matches("ma.*")){
+                setMonday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("di.*")){
+                setTuesday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("wo.*")){
+                setWensday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("do.*")){
+                setThursday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("vr.*")){
+                setFriday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("za.*")){
+                setSatday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
+            if (fileLineContent[i].matches("zo.*")){
+                setSunday(new OpenTime(fileLineContent[i+1].replace(">","")));
+            }
         }
     }
 
     public String convertToFileLine() {
         String fileLine = "<key><" + getEntityId().getIdString()
-                + "><shop><" + getEntityName() + ">";
-        // TODO: Aanpassen voor openingsuren
+                + "><shop><" + getEntityName()
+                + "><ma><" + getMonday().getOpenHoursString()
+                + "><di><" + getTuesday().getOpenHoursString()
+                + "><wo><" + getWensday().getOpenHoursString()
+                + "><do><" + getThursday().getOpenHoursString()
+                + "><vr><" + getFriday().getOpenHoursString()
+                + "><za><" + getSatday().getOpenHoursString()
+                + "><zo><" + getSunday().getOpenHoursString()
+                + ">";
         return fileLine;
     }
 
     public void setShop(Shop inShop){
-        setShopEntity(inShop);
+        super.setShopEntity(inShop);
+        setOpenHours(inShop);
     }
 
     public String getDisplayLine(){

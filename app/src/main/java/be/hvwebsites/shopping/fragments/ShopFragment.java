@@ -51,6 +51,8 @@ public class ShopFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // Definitie openingsuren
         EditText moOpenFromH = view.findViewById(R.id.editMoFromH);
         EditText moOpenFromM = view.findViewById(R.id.editMoFromM);
@@ -60,9 +62,28 @@ public class ShopFragment extends Fragment {
         EditText diOpenFromM = view.findViewById(R.id.editDiFromM);
         EditText diOpentillH = view.findViewById(R.id.editDiTillH);
         EditText diOpentillM = view.findViewById(R.id.editDiTillM);
+        EditText woOpenFromH = view.findViewById(R.id.editWoFromH);
+        EditText woOpenFromM = view.findViewById(R.id.editWoFromM);
+        EditText woOpentillH = view.findViewById(R.id.editWoTillH);
+        EditText woOpentillM = view.findViewById(R.id.editWoTillM);
+        EditText doOpenFromH = view.findViewById(R.id.editDoFromH);
+        EditText doOpenFromM = view.findViewById(R.id.editDoFromM);
+        EditText doOpentillH = view.findViewById(R.id.editDoTillH);
+        EditText doOpentillM = view.findViewById(R.id.editDoTillM);
+        EditText vrOpenFromH = view.findViewById(R.id.editFrFromH);
+        EditText vrOpenFromM = view.findViewById(R.id.editFrFromM);
+        EditText vrOpentillH = view.findViewById(R.id.editFrTillH);
+        EditText vrOpentillM = view.findViewById(R.id.editFrTillM);
+        EditText saOpenFromH = view.findViewById(R.id.editSaFromH);
+        EditText saOpenFromM = view.findViewById(R.id.editSaFromM);
+        EditText saOpentillH = view.findViewById(R.id.editSaTillH);
+        EditText saOpentillM = view.findViewById(R.id.editSaTillM);
+        EditText suOpenFromH = view.findViewById(R.id.editSuFromH);
+        EditText suOpenFromM = view.findViewById(R.id.editSuFromM);
+        EditText suOpentillH = view.findViewById(R.id.editSuTillH);
+        EditText suOpentillM = view.findViewById(R.id.editSuTillM);
 
-        super.onViewCreated(view, savedInstanceState);
-        // button
+        // Definitie button
         Button saveButton = view.findViewById(R.id.addButtonShop);
         saveButton.setText(SpecificData.BUTTON_TOEVOEGEN);
 
@@ -74,10 +95,12 @@ public class ShopFragment extends Fragment {
         if (action.equals(StaticData.ACTION_UPDATE)){
             indexToUpdate = requireArguments().getInt(StaticData.EXTRA_INTENT_KEY_INDEX);
             // Bepaal geselecteerde shop bepalen obv meegegeven index
-            Shop shopToUpdate = (Shop) viewModel.getShopList().get(indexToUpdate);
+            Shop shopToUpdate = viewModel.getShopList().get(indexToUpdate);
+
             // Vul Scherm in met gegevens
             EditText nameView = view.findViewById(R.id.editNameNewShop);
             nameView.setText(shopToUpdate.getEntityName());
+
             // Invullen openingsuren
             moOpenFromH.setText(shopToUpdate.getMonday().getOpenFromHForm());
             moOpenFromM.setText(shopToUpdate.getMonday().getOpenFromMinForm());
@@ -87,7 +110,28 @@ public class ShopFragment extends Fragment {
             diOpenFromM.setText(shopToUpdate.getTuesday().getOpenFromMinForm());
             diOpentillH.setText(shopToUpdate.getTuesday().getOpenTillHForm());
             diOpentillM.setText(shopToUpdate.getTuesday().getOpenTillMinForm());
+            woOpenFromH.setText(shopToUpdate.getWensday().getOpenFromHForm());
+            woOpenFromM.setText(shopToUpdate.getWensday().getOpenFromMinForm());
+            woOpentillH.setText(shopToUpdate.getWensday().getOpenTillHForm());
+            woOpentillM.setText(shopToUpdate.getWensday().getOpenTillMinForm());
+            doOpenFromH.setText(shopToUpdate.getThursday().getOpenFromHForm());
+            doOpenFromM.setText(shopToUpdate.getThursday().getOpenFromMinForm());
+            doOpentillH.setText(shopToUpdate.getThursday().getOpenTillHForm());
+            doOpentillM.setText(shopToUpdate.getThursday().getOpenTillMinForm());
+            vrOpenFromH.setText(shopToUpdate.getFriday().getOpenFromHForm());
+            vrOpenFromM.setText(shopToUpdate.getFriday().getOpenFromMinForm());
+            vrOpentillH.setText(shopToUpdate.getFriday().getOpenTillHForm());
+            vrOpentillM.setText(shopToUpdate.getFriday().getOpenTillMinForm());
+            saOpenFromH.setText(shopToUpdate.getSatday().getOpenFromHForm());
+            saOpenFromM.setText(shopToUpdate.getSatday().getOpenFromMinForm());
+            saOpentillH.setText(shopToUpdate.getSatday().getOpenTillHForm());
+            saOpentillM.setText(shopToUpdate.getSatday().getOpenTillMinForm());
+            suOpenFromH.setText(shopToUpdate.getSunday().getOpenFromHForm());
+            suOpenFromM.setText(shopToUpdate.getSunday().getOpenFromMinForm());
+            suOpentillH.setText(shopToUpdate.getSunday().getOpenTillHForm());
+            suOpentillM.setText(shopToUpdate.getSunday().getOpenTillMinForm());
 
+            // Invullen text button
             saveButton.setText(SpecificData.BUTTON_AANPASSEN);
         }
 
@@ -110,6 +154,7 @@ public class ShopFragment extends Fragment {
                             .setOpenTillHour(Integer.parseInt(String.valueOf(moOpentillH.getText())));
                     viewModel.getShopList().get(indexToUpdate).getMonday()
                             .setOpenTillMinutes(Integer.parseInt(String.valueOf(moOpentillM.getText())));
+
                     viewModel.getShopList().get(indexToUpdate).getTuesday()
                             .setOpenFromHour(Integer.parseInt(String.valueOf(diOpenFromH.getText())));
                     viewModel.getShopList().get(indexToUpdate).getTuesday()
@@ -118,6 +163,51 @@ public class ShopFragment extends Fragment {
                             .setOpenTillHour(Integer.parseInt(String.valueOf(diOpentillH.getText())));
                     viewModel.getShopList().get(indexToUpdate).getTuesday()
                             .setOpenTillMinutes(Integer.parseInt(String.valueOf(diOpentillM.getText())));
+
+                    viewModel.getShopList().get(indexToUpdate).getWensday()
+                            .setOpenFromHour(Integer.parseInt(String.valueOf(woOpenFromH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getWensday()
+                            .setOpenFromMinutes(Integer.parseInt(String.valueOf(woOpenFromM.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getWensday()
+                            .setOpenTillHour(Integer.parseInt(String.valueOf(woOpentillH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getWensday()
+                            .setOpenTillMinutes(Integer.parseInt(String.valueOf(woOpentillM.getText())));
+
+                    viewModel.getShopList().get(indexToUpdate).getThursday()
+                            .setOpenFromHour(Integer.parseInt(String.valueOf(doOpenFromH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getThursday()
+                            .setOpenFromMinutes(Integer.parseInt(String.valueOf(doOpenFromM.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getThursday()
+                            .setOpenTillHour(Integer.parseInt(String.valueOf(doOpentillH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getThursday()
+                            .setOpenTillMinutes(Integer.parseInt(String.valueOf(doOpentillM.getText())));
+
+                    viewModel.getShopList().get(indexToUpdate).getFriday()
+                            .setOpenFromHour(Integer.parseInt(String.valueOf(vrOpenFromH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getFriday()
+                            .setOpenFromMinutes(Integer.parseInt(String.valueOf(vrOpenFromM.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getFriday()
+                            .setOpenTillHour(Integer.parseInt(String.valueOf(vrOpentillH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getFriday()
+                            .setOpenTillMinutes(Integer.parseInt(String.valueOf(vrOpentillM.getText())));
+
+                    viewModel.getShopList().get(indexToUpdate).getSatday()
+                            .setOpenFromHour(Integer.parseInt(String.valueOf(saOpenFromH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSatday()
+                            .setOpenFromMinutes(Integer.parseInt(String.valueOf(saOpenFromM.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSatday()
+                            .setOpenTillHour(Integer.parseInt(String.valueOf(saOpentillH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSatday()
+                            .setOpenTillMinutes(Integer.parseInt(String.valueOf(saOpentillM.getText())));
+
+                    viewModel.getShopList().get(indexToUpdate).getSunday()
+                            .setOpenFromHour(Integer.parseInt(String.valueOf(suOpenFromH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSunday()
+                            .setOpenFromMinutes(Integer.parseInt(String.valueOf(suOpenFromM.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSunday()
+                            .setOpenTillHour(Integer.parseInt(String.valueOf(suOpentillH.getText())));
+                    viewModel.getShopList().get(indexToUpdate).getSunday()
+                            .setOpenTillMinutes(Integer.parseInt(String.valueOf(suOpentillM.getText())));
                 }else {
                     Shop newShop = new Shop(viewModel.getBasedir(), false);
                     newShop.setEntityName(String.valueOf(nameView.getText()));

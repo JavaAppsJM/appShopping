@@ -13,6 +13,17 @@ public class OpenTime {
         this.openTillMinutes = openTillMinutes;
     }
 
+    public OpenTime(String inLine){
+        // 00:00 - 00:00
+        String[] inLineContent = inLine.split(" - ");
+        String[] fromTime = inLineContent[0].split(":");
+        this.openFromHour = Integer.parseInt(fromTime[0]);
+        this.openFromMinutes = Integer.parseInt(fromTime[1]);
+        String[] tillTime = inLineContent[1].split(":");
+        this.openTillHour = Integer.parseInt(tillTime[0]);
+        this.openTillMinutes = Integer.parseInt(tillTime[1]);
+    }
+
     public OpenTime() {
         this.openFromHour = 0;
         this.openFromMinutes = 0;
@@ -85,5 +96,12 @@ public class OpenTime {
 
     public String getOpenHoursString(){
         return getOpenTime() + " - " + getClosedTime();
+    }
+
+    public void setOpenTime(OpenTime inOpenTime){
+        this.openFromHour = inOpenTime.getOpenFromHour();
+        this.openFromMinutes = inOpenTime.getOpenFromMinutes();
+        this.openTillHour = inOpenTime.getOpenTillHour();
+        this.openTillMinutes = inOpenTime.getOpenTillMinutes();
     }
 }
