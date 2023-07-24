@@ -148,15 +148,22 @@ public class A4ShopCompetitionList extends AppCompatActivity {
         if (deviceModel.equals("GT-I9100")){
             shopNameMaxL = 18;
         }
+        String shopOpenStyle = SpecificData.STYLE_DEFAULT;
         for (int i = 0; i < preCompetitionList.size(); i++) {
             // Bepaal shopCompetitor
             StringIntCombin shopCompetitor = preCompetitionList.get(i);
             // Bepalen hoeveel procent artikels vn totaal aantal artikels in deze winkel kunnen gekocht worden
             shopCompetitor.setProcent((shopCompetitor.getTeller2() * 100)/ totaalArtikelenToBuy);
+            // Bepaal of shop open is
+            if(viewModel.getShopByID(new IDNumber(shopCompetitor.getTextID())).isOpen()){
+                shopOpenStyle = SpecificData.STYLE_SHOP_OPEN;
+            }else {
+                shopOpenStyle = SpecificData.STYLE_SHOP_CLOSED;
+            }
             // Bepaal listItemHelper
             ListItemHelper shopItem = new ListItemHelper(
                     shopCompetitor.getFormattedString(shopNameMaxL)
-                    , " "
+                    , shopOpenStyle
                     , new IDNumber(shopCompetitor.getTextID()));
             // voeg shop in competitionlist
             competitionList.add(shopItem);

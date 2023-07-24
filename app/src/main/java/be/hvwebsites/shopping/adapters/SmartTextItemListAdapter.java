@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -129,6 +130,21 @@ public class SmartTextItemListAdapter extends RecyclerView.Adapter<SmartTextItem
         if (reusableList != null){
             String currentLine = reusableList.get(position).getItemtext();
             holder.textItemView.setText(currentLine);
+            // Stijl bepalen
+            switch (reusableList.get(position).getItemStyle()){
+                case SpecificData.STYLE_SHOP_CLOSED:
+                    holder.textItemView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.red));
+                    break;
+                case SpecificData.STYLE_SHOP_OPEN:
+                    holder.textItemView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.green));
+                    break;
+                default:
+                    holder.textItemView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.black));
+                    break;
+            }
         }else {
             holder.textItemView.setText("No data !");
         }

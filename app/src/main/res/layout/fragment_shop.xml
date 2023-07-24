@@ -618,6 +618,17 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/colonSuM"
         app:layout_constraintStart_toEndOf="@+id/colonSuM" />
 
+    <TextView
+        android:id="@+id/textShopOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Winkel is gesloten !"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editSuFromH" />
+
     <Button
         android:id="@+id/addButtonShop"
         android:layout_width="wrap_content"
@@ -627,6 +638,6 @@
         android:layout_marginTop="32dp"
         android:text="@string/labelToevoegen"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSuFromH" />
+        app:layout_constraintTop_toBottomOf="@+id/textShopOpen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

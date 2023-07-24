@@ -62,6 +62,8 @@ public class SpecificData {
     public static final String STYLE_COOLED = "cooled";
     public static final String STYLE_COOLED_BOLD = "cooledbold";
     public static final String STYLE_DEFAULT = "default";
+    public static final String STYLE_SHOP_CLOSED = "shop closed";
+    public static final String STYLE_SHOP_OPEN = "shop open";
 
     // SuperCombinations Names
     public static final String SC_SHOP = "shop";

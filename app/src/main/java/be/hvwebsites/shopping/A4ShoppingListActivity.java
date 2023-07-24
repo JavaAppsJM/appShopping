@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -92,8 +93,8 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
         // Enkel aangeklikte artikels ?
         switchV = findViewById(R.id.switchChecked);
 
-        // Zet switch default af
-        switchV.setChecked(false);
+        // Zet switch default aan
+        switchV.setChecked(true);
 
         // Detecteer verandering
         switchV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -131,6 +132,9 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             // Er is een geldige shopfilterID in cookie
             // bepaal shopfilter
             shopFilter = viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString)));
+            // Zet op scherm of winkel open is
+            TextView shopOpenV = findViewById(R.id.labelShListOpenHours);
+            shopOpenV.setText(shopFilter.isOpenString());
             shopFilterString = shopFilter.getEntityName();
 
             // Vul checkboxlist mt produkten gefilterd obv shopfilter

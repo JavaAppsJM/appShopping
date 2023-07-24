@@ -104,4 +104,19 @@ public class OpenTime {
         this.openTillHour = inOpenTime.getOpenTillHour();
         this.openTillMinutes = inOpenTime.getOpenTillMinutes();
     }
+
+    public boolean isOpenTime(int inHour, int inMinutes){
+        if ((getOpenFromHour() < inHour)
+                && (getOpenTillHour() > inHour)){
+            return true;
+        }else if ((getOpenFromHour() == inHour)
+                && (getOpenFromMinutes() <= inMinutes)){
+            return true;
+        }else if ((getOpenTillHour() == inHour)
+                && (getOpenTillMinutes() >= inMinutes)){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
