@@ -185,22 +185,22 @@ public class Shop extends ShoppingEntity {
         int minutes = calendarDate.get(Calendar.MINUTE);
 
         // Bepaal dag van vandaag
-        switch (calendarDate.get(Calendar.DAY_OF_WEEK_IN_MONTH)){
-            case 0:
+        switch (calendarDate.get(Calendar.DAY_OF_WEEK)){
+            case 1:
+                return getSunday().isOpenTime(hour, minutes);
+            case 2:
                 // Monday
                 return getMonday().isOpenTime(hour, minutes);
-            case 1:
-                return getTuesday().isOpenTime(hour, minutes);
-            case 2:
-                return getWensday().isOpenTime(hour, minutes);
             case 3:
-                return getThursday().isOpenTime(hour, minutes);
+                return getTuesday().isOpenTime(hour, minutes);
             case 4:
-                return getFriday().isOpenTime(hour, minutes);
+                return getWensday().isOpenTime(hour, minutes);
             case 5:
-                return getSatday().isOpenTime(hour, minutes);
+                return getThursday().isOpenTime(hour, minutes);
             case 6:
-                return getSunday().isOpenTime(hour, minutes);
+                return getFriday().isOpenTime(hour, minutes);
+            case 7:
+                return getSatday().isOpenTime(hour, minutes);
             default:
                 return false;
         }

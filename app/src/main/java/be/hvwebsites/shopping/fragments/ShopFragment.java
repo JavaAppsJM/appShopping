@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -82,6 +83,7 @@ public class ShopFragment extends Fragment {
         EditText suOpenFromM = view.findViewById(R.id.editSuFromM);
         EditText suOpentillH = view.findViewById(R.id.editSuTillH);
         EditText suOpentillM = view.findViewById(R.id.editSuTillM);
+        TextView isShopOpenV = view.findViewById(R.id.textShopOpen);
 
         // Definitie button
         Button saveButton = view.findViewById(R.id.addButtonShop);
@@ -130,6 +132,9 @@ public class ShopFragment extends Fragment {
             suOpenFromM.setText(shopToUpdate.getSunday().getOpenFromMinForm());
             suOpentillH.setText(shopToUpdate.getSunday().getOpenTillHForm());
             suOpentillM.setText(shopToUpdate.getSunday().getOpenTillMinForm());
+
+            // Is de winkel open
+            isShopOpenV.setText(shopToUpdate.isOpenString());
 
             // Invullen text button
             saveButton.setText(SpecificData.BUTTON_AANPASSEN);
