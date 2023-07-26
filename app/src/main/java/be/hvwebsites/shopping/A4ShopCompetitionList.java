@@ -22,10 +22,8 @@ import be.hvwebsites.libraryandroid4.statics.StaticData;
 import be.hvwebsites.shopping.adapters.SmartTextItemListAdapter;
 import be.hvwebsites.shopping.constants.SpecificData;
 import be.hvwebsites.shopping.entities.Product;
-import be.hvwebsites.shopping.entities.ProductInShop;
 import be.hvwebsites.shopping.entities.Shop;
-import be.hvwebsites.shopping.entities.SuperCombination;
-import be.hvwebsites.shopping.helpers.StringIntCombin;
+import be.hvwebsites.shopping.helpers.ShopCompetitionItem;
 import be.hvwebsites.shopping.services.FileBaseService;
 import be.hvwebsites.shopping.viewmodels.ShopEntitiesViewModel;
 
@@ -34,7 +32,7 @@ public class A4ShopCompetitionList extends AppCompatActivity {
     private final String deviceModel = Build.MODEL;
     private ShopEntitiesViewModel viewModel;
     private CookieRepository cookieRepository;
-    private List<StringIntCombin> preCompetitionList = new ArrayList<>();
+    private List<ShopCompetitionItem> preCompetitionList = new ArrayList<>();
     private int totaalArtikelenToBuy = 0;
     private List<ListItemHelper> competitionList = new ArrayList<>();
 
@@ -131,7 +129,7 @@ public class A4ShopCompetitionList extends AppCompatActivity {
             }
         }
         // precompetionlist sorteren vlgns aantal artikelen descending
-        StringIntCombin sortHelper = new StringIntCombin();
+        ShopCompetitionItem sortHelper = new ShopCompetitionItem();
         for (int i = preCompetitionList.size() ; i > 0 ; i--) {
             for (int j = 1; j < i ; j++) {
                 if (preCompetitionList.get(j).getTeller2() > preCompetitionList.get(j-1).getTeller2()){
@@ -148,14 +146,16 @@ public class A4ShopCompetitionList extends AppCompatActivity {
         if (deviceModel.equals("GT-I9100")){
             shopNameMaxL = 18;
         }
-        String shopOpenStyle = SpecificData.STYLE_DEFAULT;
+        // Zet style op default
+        String shopOpenStyle;
         for (int i = 0; i < preCompetitionList.size(); i++) {
             // Bepaal shopCompetitor
-            StringIntCombin shopCompetitor = preCompetitionList.get(i);
+            ShopCompetitionItem shopCompetitor = preCompetitionList.get(i);
             // Bepalen hoeveel procent artikels vn totaal aantal artikels in deze winkel kunnen gekocht worden
             shopCompetitor.setProcent((shopCompetitor.getTeller2() * 100)/ totaalArtikelenToBuy);
             // Bepaal of shop open is
-            if(viewModel.getShopByID(new IDNumber(shopCompetitor.getTextID())).isOpen()){
+            //if(viewModel.getShopByID(new IDNumber(shopCompetitor.getTextID())).isOpen()){
+            if(shopCompetitor.isOpenOrClosed()){
                 shopOpenStyle = SpecificData.STYLE_SHOP_OPEN;
             }else {
                 shopOpenStyle = SpecificData.STYLE_SHOP_CLOSED;
@@ -190,9 +190,10 @@ public class A4ShopCompetitionList extends AppCompatActivity {
             // Eerst kijken of winkel bestaat, enkel indien winkel bestaat toevoegen !
             Shop addShop = viewModel.getShopByID(new IDNumber(inShopId));
             if (addShop != null){
-                StringIntCombin tempCompEntry = new StringIntCombin();
+                ShopCompetitionItem tempCompEntry = new ShopCompetitionItem();
                 tempCompEntry.setTextID(inShopId);
                 tempCompEntry.setText(addShop.getEntityName());
+                tempCompEntry.setOpenOrClosed(addShop.isOpen());
                 // Tellers invullen
                 tempCompEntry.setTeller2(tempCompEntry.getTeller2()+1);
                 if (whichTeller == 1){

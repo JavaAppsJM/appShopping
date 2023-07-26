@@ -1,16 +1,26 @@
 package be.hvwebsites.shopping.helpers;
 
-public class StringIntCombin {
+public class ShopCompetitionItem {
     private int textID;
     private String text;
     private int teller1;
     private int teller2;
     private float procent;
+    private boolean openOrClosed;
 
-    public StringIntCombin() {
+    public ShopCompetitionItem() {
         teller1 = 0;
         teller2 = 0;
         procent = 0;
+        openOrClosed = false;
+    }
+
+    public boolean isOpenOrClosed() {
+        return openOrClosed;
+    }
+
+    public void setOpenOrClosed(boolean openOrClosed) {
+        this.openOrClosed = openOrClosed;
     }
 
     public int getTextID() {
@@ -76,11 +86,12 @@ public class StringIntCombin {
                 .concat(" %");
     }
 
-    public void setCombin(StringIntCombin inCombin){
+    public void setCombin(ShopCompetitionItem inCombin){
         setTextID(inCombin.getTextID());
         setText(inCombin.getText());
         setTeller1(inCombin.getTeller1());
         setTeller2(inCombin.getTeller2());
         setProcent(inCombin.getProcent());
+        setOpenOrClosed(inCombin.isOpenOrClosed());
     }
 }

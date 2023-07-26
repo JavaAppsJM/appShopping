@@ -134,11 +134,74 @@ public class ShopFragment extends Fragment {
             suOpentillM.setText(shopToUpdate.getSunday().getOpenTillMinForm());
 
             // Is de winkel open
-            isShopOpenV.setText(shopToUpdate.isOpenString());
+            isShopOpenV.setText(shopToUpdate.getTextOpenShop());
 
             // Invullen text button
             saveButton.setText(SpecificData.BUTTON_AANPASSEN);
         }
+
+        // Als maandag ingevuld wordt, wordt rest vd week overgenomen
+        moOpenFromH.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                // Welke view has changed
+                if (view.getId() == moOpenFromH.getId() && !b){
+                    // Invullen andere dagen
+                    diOpenFromH.setText(moOpenFromH.getText());
+                    woOpenFromH.setText(moOpenFromH.getText());
+                    doOpenFromH.setText(moOpenFromH.getText());
+                    vrOpenFromH.setText(moOpenFromH.getText());
+                    saOpenFromH.setText(moOpenFromH.getText());
+                    suOpenFromH.setText(moOpenFromH.getText());
+                }
+            }
+        });
+        moOpenFromM.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                // Welke view has changed
+                if (view.getId() == moOpenFromM.getId() && !b){
+                    // Invullen andere dagen
+                    diOpenFromM.setText(moOpenFromM.getText());
+                    woOpenFromM.setText(moOpenFromM.getText());
+                    doOpenFromM.setText(moOpenFromM.getText());
+                    vrOpenFromM.setText(moOpenFromM.getText());
+                    saOpenFromM.setText(moOpenFromM.getText());
+                    suOpenFromM.setText(moOpenFromM.getText());
+                }
+            }
+        });
+        moOpentillH.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                // Welke view has changed
+                if (view.getId() == moOpentillH.getId() && !b){
+                    // Invullen andere dagen
+                    diOpentillH.setText(moOpentillH.getText());
+                    woOpentillH.setText(moOpentillH.getText());
+                    doOpentillH.setText(moOpentillH.getText());
+                    vrOpentillH.setText(moOpentillH.getText());
+                    saOpentillH.setText(moOpentillH.getText());
+                    suOpentillH.setText(moOpentillH.getText());
+                }
+            }
+        });
+        moOpentillM.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                // Welke view has changed
+                if (view.getId() == moOpentillM.getId() && !b){
+                    // Invullen andere dagen
+                    diOpentillM.setText(moOpentillM.getText());
+                    woOpentillM.setText(moOpentillM.getText());
+                    doOpentillM.setText(moOpentillM.getText());
+                    vrOpentillM.setText(moOpentillM.getText());
+                    saOpentillM.setText(moOpentillM.getText());
+                    suOpentillM.setText(moOpentillM.getText());
+                }
+            }
+        });
+
 
         // Als button ingedrukt wordt...
         saveButton.setOnClickListener(new View.OnClickListener() {

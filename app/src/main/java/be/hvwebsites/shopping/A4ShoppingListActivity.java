@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -134,7 +135,15 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             shopFilter = viewModel.getShopByID(new IDNumber(Integer.parseInt(shopFilterString)));
             // Zet op scherm of winkel open is
             TextView shopOpenV = findViewById(R.id.labelShListOpenHours);
-            shopOpenV.setText(shopFilter.isOpenString());
+            shopOpenV.setText(shopFilter.getTextOpenShop());
+            // Bepaal kleur vn tekst
+            if (shopFilter.isOpen()){
+                shopOpenV.setTextColor(ContextCompat.getColor(this,
+                        R.color.green));
+            }else {
+                shopOpenV.setTextColor(ContextCompat.getColor(this,
+                        R.color.red));
+            }
             shopFilterString = shopFilter.getEntityName();
 
             // Vul checkboxlist mt produkten gefilterd obv shopfilter
@@ -256,11 +265,30 @@ public class A4ShoppingListActivity extends AppCompatActivity implements Adapter
             if (selecShop.getItemID().getId() == SpecificData.NO_FILTER_INT){
                 // Alle artikels
                 shopFilter = null;
+
+                // Geen winkel geselecteerd, dan moeten openingsuren invisible gezet worden
+                TextView shopOpenV = findViewById(R.id.labelShListOpenHours);
+                shopOpenV.setText(" ");
+                shopOpenV.setVisibility(View.INVISIBLE);
+
                 // Bewaren dat er geen shopfilter is als cookie
                 cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(SpecificData.NO_FILTER_INT)));
             }else {
                 // Bepaal Shop om te filteren ==> nieuwe shopfilter
                 shopFilter = viewModel.getShopByID(selecShop.getItemID());
+
+                // Bepalen of winkel open is
+                TextView shopOpenV = findViewById(R.id.labelShListOpenHours);
+                shopOpenV.setText(shopFilter.getTextOpenShop());
+                // Bepaal kleur vn tekst
+                if (shopFilter.isOpen()){
+                    shopOpenV.setTextColor(ContextCompat.getColor(this,
+                            R.color.green));
+                }else {
+                    shopOpenV.setTextColor(ContextCompat.getColor(this,
+                            R.color.red));
+                }
+
                 // Shopfilter bewaren als Cookie ; de shopfilterId moet bewaard worden
                 cookieRepository.addCookie(new Cookie(SpecificData.SHOP_FILTER, String.valueOf(shopFilter.getEntityId().getId())));
             }

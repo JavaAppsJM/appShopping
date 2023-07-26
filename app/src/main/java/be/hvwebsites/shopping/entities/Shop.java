@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import be.hvwebsites.libraryandroid4.helpers.IDNumber;
 import be.hvwebsites.shopping.helpers.OpenTime;
+import be.hvwebsites.shopping.helpers.TimeHelper;
 
 public class Shop extends ShoppingEntity {
     private OpenTime monday;
@@ -142,7 +143,7 @@ public class Shop extends ShoppingEntity {
     }
 
     public String convertToFileLine() {
-        String fileLine = "<key><" + getEntityId().getIdString()
+        return "<key><" + getEntityId().getIdString()
                 + "><shop><" + getEntityName()
                 + "><ma><" + getMonday().getOpenHoursString()
                 + "><di><" + getTuesday().getOpenHoursString()
@@ -152,12 +153,12 @@ public class Shop extends ShoppingEntity {
                 + "><za><" + getSatday().getOpenHoursString()
                 + "><zo><" + getSunday().getOpenHoursString()
                 + ">";
-        return fileLine;
     }
 
     public void setShop(Shop inShop){
         super.setShopEntity(inShop);
         setOpenHours(inShop);
+        initializeOpenHours();
     }
 
     public String getDisplayLine(){
@@ -179,39 +180,56 @@ public class Shop extends ShoppingEntity {
     }
 
     public boolean isOpen(){
-        Calendar calendarDate = Calendar.getInstance();
-        // Bepaal hoe laat het is
-        int hour = calendarDate.get(Calendar.HOUR);
-        int minutes = calendarDate.get(Calendar.MINUTE);
+        // Bepaal time fields via TimeHelper
+        TimeHelper timeHelper = new TimeHelper();
 
         // Bepaal dag van vandaag
-        switch (calendarDate.get(Calendar.DAY_OF_WEEK)){
+        OpenTime dayToday = getToday(timeHelper.getDayInWeek());
+
+        return dayToday.isOpenTime(timeHelper.getHours(), timeHelper.getMinutes());
+    }
+
+    public String getTextOpenShop(){
+        String SHOP_OPEN = "De winkel is open.";
+        String SHOP_CLOSED = "De winkel is gesloten ! Openingsuren: ";
+        String SHOP_CLOSED_ALLDAY = "De winkel is vandaag gesloten !";
+
+        // Bepaal time fields via TimeHelper
+        TimeHelper timeHelper = new TimeHelper();
+
+        // Bepaal dag van vandaag
+        OpenTime dayToday = getToday(timeHelper.getDayInWeek());
+
+        // Bepaal text
+        if (dayToday.isCloseToday()){
+            return SHOP_CLOSED_ALLDAY;
+        }else if (dayToday.isOpenTime(timeHelper.getHours(), timeHelper.getMinutes())){
+            return SHOP_OPEN;
+        }else {
+            return SHOP_CLOSED + dayToday.getOpenHoursString();
+        }
+    }
+
+    private OpenTime getToday(int dayOfWeek){
+        switch (dayOfWeek){
             case 1:
-                return getSunday().isOpenTime(hour, minutes);
+                // Sunday
+                return getSunday();
             case 2:
                 // Monday
-                return getMonday().isOpenTime(hour, minutes);
+                return getMonday();
             case 3:
-                return getTuesday().isOpenTime(hour, minutes);
+                return getTuesday();
             case 4:
-                return getWensday().isOpenTime(hour, minutes);
+                return getWensday();
             case 5:
-                return getThursday().isOpenTime(hour, minutes);
+                return getThursday();
             case 6:
-                return getFriday().isOpenTime(hour, minutes);
+                return getFriday();
             case 7:
-                return getSatday().isOpenTime(hour, minutes);
+                return getSatday();
             default:
-                return false;
+                return new OpenTime();
         }
     }
-
-    public String isOpenString(){
-        if (isOpen()){
-            return "De winkel is open.";
-        }else {
-            return "De winkel is gesloten !";
-        }
-    }
-
 }

@@ -87,11 +87,11 @@ public class OpenTime {
     }
 
     public String getOpenTime(){
-        return this.openFromHour + ":" + this.openFromMinutes;
+        return this.openFromHour + ":" + getOpenFromMinForm();
     }
 
     public String getClosedTime(){
-        return this.openTillHour + ":" + this.openTillMinutes;
+        return this.openTillHour + ":" + getOpenTillMinForm();
     }
 
     public String getOpenHoursString(){
@@ -118,5 +118,9 @@ public class OpenTime {
         }else {
             return false;
         }
+    }
+
+    public boolean isCloseToday(){
+        return getOpenFromHour() == 0;
     }
 }
