@@ -152,7 +152,7 @@ public class ShopFragment extends Fragment {
                     doOpenFromH.setText(moOpenFromH.getText());
                     vrOpenFromH.setText(moOpenFromH.getText());
                     saOpenFromH.setText(moOpenFromH.getText());
-                    suOpenFromH.setText(moOpenFromH.getText());
+                    //suOpenFromH.setText(moOpenFromH.getText());
                 }
             }
         });
@@ -167,7 +167,7 @@ public class ShopFragment extends Fragment {
                     doOpenFromM.setText(moOpenFromM.getText());
                     vrOpenFromM.setText(moOpenFromM.getText());
                     saOpenFromM.setText(moOpenFromM.getText());
-                    suOpenFromM.setText(moOpenFromM.getText());
+                    //suOpenFromM.setText(moOpenFromM.getText());
                 }
             }
         });
@@ -182,7 +182,7 @@ public class ShopFragment extends Fragment {
                     doOpentillH.setText(moOpentillH.getText());
                     vrOpentillH.setText(moOpentillH.getText());
                     saOpentillH.setText(moOpentillH.getText());
-                    suOpentillH.setText(moOpentillH.getText());
+                    //suOpentillH.setText(moOpentillH.getText());
                 }
             }
         });
@@ -197,7 +197,7 @@ public class ShopFragment extends Fragment {
                     doOpentillM.setText(moOpentillM.getText());
                     vrOpentillM.setText(moOpentillM.getText());
                     saOpentillM.setText(moOpentillM.getText());
-                    suOpentillM.setText(moOpentillM.getText());
+                    //suOpentillM.setText(moOpentillM.getText());
                 }
             }
         });
