@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/labelName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,603 +41,619 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/openingsuren"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelNameShop" />
 
-    <TextView
-        android:id="@+id/headingFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Van"
-        app:layout_constraintStart_toEndOf="@+id/editMoFromH"
-        app:layout_constraintTop_toBottomOf="@+id/labelOpenHours" />
-
-    <TextView
-        android:id="@+id/headingTill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tot"
-        app:layout_constraintBaseline_toBaselineOf="@+id/headingFrom"
-        app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
-
-    <!--    Openingsuren maandag -->
-
-    <TextView
-        android:id="@+id/labelMonday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Ma:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editMoFromH"
-        android:layout_width="20dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelMonday"
-        app:layout_constraintTop_toBottomOf="@+id/headingFrom" />
-
-    <TextView
-        android:id="@+id/colonH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
-        app:layout_constraintStart_toEndOf="@+id/editMoFromH" />
-
-    <EditText
-        android:id="@+id/editMoFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonH"
-        app:layout_constraintStart_toEndOf="@+id/colonH" />
-
-    <EditText
-        android:id="@+id/editMoTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromM"
-        app:layout_constraintStart_toEndOf="@+id/editMoFromM" />
-
-    <TextView
-        android:id="@+id/colonM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editMoTillH"
-        app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
-
-    <EditText
-        android:id="@+id/editMoTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonM"
-        app:layout_constraintStart_toEndOf="@+id/colonM" />
-
-    <!--    Openingsuren dinsdag -->
-
-    <TextView
-        android:id="@+id/labelTuesday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Di:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editDiFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelTuesday"
-        app:layout_constraintStart_toStartOf="@+id/editMoFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editMoFromH" />
-
-    <TextView
-        android:id="@+id/colonDiH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
-        app:layout_constraintStart_toEndOf="@+id/editDiFromH" />
-
-    <EditText
-        android:id="@+id/editDiFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonDiH"
-        app:layout_constraintStart_toEndOf="@+id/colonDiH" />
-
-    <EditText
-        android:id="@+id/editDiTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromM"
-        app:layout_constraintStart_toEndOf="@+id/editDiFromM" />
-
-    <TextView
-        android:id="@+id/colonDiM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDiTillH"
-        app:layout_constraintStart_toEndOf="@+id/editDiTillH" />
-
-    <EditText
-        android:id="@+id/editDiTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonDiM"
-        app:layout_constraintStart_toEndOf="@+id/colonDiM" />
-
-    <!--    Openingsuren woensdag -->
-
-    <TextView
-        android:id="@+id/labelWensday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Wo:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editWoFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelWensday"
-        app:layout_constraintStart_toStartOf="@+id/editDiFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editDiFromH" />
-
-    <TextView
-        android:id="@+id/colonWoH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromH"
-        app:layout_constraintStart_toEndOf="@+id/editWoFromH" />
-
-    <EditText
-        android:id="@+id/editWoFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonWoH"
-        app:layout_constraintStart_toEndOf="@+id/colonWoH" />
-
-    <EditText
-        android:id="@+id/editWoTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromM"
-        app:layout_constraintStart_toEndOf="@+id/editWoFromM" />
-
-    <TextView
-        android:id="@+id/colonWoM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editWoTillH"
-        app:layout_constraintStart_toEndOf="@+id/editWoTillH" />
-
-    <EditText
-        android:id="@+id/editWoTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonWoM"
-        app:layout_constraintStart_toEndOf="@+id/colonWoM" />
-
-    <!--    Openingsuren donderdag -->
-
-    <TextView
-        android:id="@+id/labelThursday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Do:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editDoFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelThursday"
-        app:layout_constraintStart_toStartOf="@+id/editWoFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editWoFromH" />
-
-    <TextView
-        android:id="@+id/colonDoH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromH"
-        app:layout_constraintStart_toEndOf="@+id/editDoFromH" />
-
-    <EditText
-        android:id="@+id/editDoFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonDoH"
-        app:layout_constraintStart_toEndOf="@+id/colonDoH" />
-
-    <EditText
-        android:id="@+id/editDoTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromM"
-        app:layout_constraintStart_toEndOf="@+id/editDoFromM" />
-
-    <TextView
-        android:id="@+id/colonDoM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editDoTillH"
-        app:layout_constraintStart_toEndOf="@+id/editDoTillH" />
-
-    <EditText
-        android:id="@+id/editDoTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonDoM"
-        app:layout_constraintStart_toEndOf="@+id/colonDoM" />
-
-    <!--    Openingsuren vrijdag -->
-
-    <TextView
-        android:id="@+id/labelFriday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Vr:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editFrFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelFriday"
-        app:layout_constraintStart_toStartOf="@+id/editDoFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editDoFromH" />
-
-    <TextView
-        android:id="@+id/colonFrH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromH"
-        app:layout_constraintStart_toEndOf="@+id/editFrFromH" />
-
-    <EditText
-        android:id="@+id/editFrFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonFrH"
-        app:layout_constraintStart_toEndOf="@+id/colonFrH" />
-
-    <EditText
-        android:id="@+id/editFrTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromM"
-        app:layout_constraintStart_toEndOf="@+id/editFrFromM" />
-
-    <TextView
-        android:id="@+id/colonFrM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editFrTillH"
-        app:layout_constraintStart_toEndOf="@+id/editFrTillH" />
-
-    <EditText
-        android:id="@+id/editFrTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonFrM"
-        app:layout_constraintStart_toEndOf="@+id/colonFrM" />
-
-    <!--    Openingsuren zaterdag -->
-
-    <TextView
-        android:id="@+id/labelSatday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Za:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editSaFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelSatday"
-        app:layout_constraintStart_toStartOf="@+id/editFrFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editFrFromH" />
-
-    <TextView
-        android:id="@+id/colonSaH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromH"
-        app:layout_constraintStart_toEndOf="@+id/editSaFromH" />
-
-    <EditText
-        android:id="@+id/editSaFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonSaH"
-        app:layout_constraintStart_toEndOf="@+id/colonSaH" />
-
-    <EditText
-        android:id="@+id/editSaTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromM"
-        app:layout_constraintStart_toEndOf="@+id/editSaFromM" />
-
-    <TextView
-        android:id="@+id/colonSaM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSaTillH"
-        app:layout_constraintStart_toEndOf="@+id/editSaTillH" />
-
-    <EditText
-        android:id="@+id/editSaTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonSaM"
-        app:layout_constraintStart_toEndOf="@+id/colonSaM" />
-
-    <!--    Openingsuren zondag -->
-
-    <TextView
-        android:id="@+id/labelSunday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Zo:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromH"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editSuFromH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/labelSunday"
-        app:layout_constraintStart_toStartOf="@+id/editSaFromH"
-        app:layout_constraintTop_toBottomOf="@+id/editSaFromH" />
-
-    <TextView
-        android:id="@+id/colonSuH"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromH"
-        app:layout_constraintStart_toEndOf="@+id/editSuFromH" />
-
-    <EditText
-        android:id="@+id/editSuFromM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonSuH"
-        app:layout_constraintStart_toEndOf="@+id/colonSuH" />
-
-    <EditText
-        android:id="@+id/editSuTillH"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromM"
-        app:layout_constraintStart_toEndOf="@+id/editSuFromM" />
-
-    <TextView
-        android:id="@+id/colonSuM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text=" : "
-        app:layout_constraintBaseline_toBaselineOf="@+id/editSuTillH"
-        app:layout_constraintStart_toEndOf="@+id/editSuTillH" />
-
-    <EditText
-        android:id="@+id/editSuTillM"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/colonSuM"
-        app:layout_constraintStart_toEndOf="@+id/colonSuM" />
-
-    <TextView
-        android:id="@+id/textShopOpen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Winkel is gesloten !"
+        android:fillViewport="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSuFromH" />
+        app:layout_constraintTop_toBottomOf="@+id/labelOpenHours">
 
-    <Button
-        android:id="@+id/addButtonShop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/labelToevoegen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textShopOpen" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headingFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Van"
+                app:layout_constraintStart_toEndOf="@+id/editMoFromH"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/headingTill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tot"
+                app:layout_constraintBaseline_toBaselineOf="@+id/headingFrom"
+                app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
+
+            <!--    Openingsuren maandag -->
+
+            <TextView
+                android:id="@+id/labelMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Ma:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editMoFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelMonday"
+                app:layout_constraintTop_toBottomOf="@+id/headingFrom" />
+
+            <TextView
+                android:id="@+id/colonH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromH"
+                app:layout_constraintStart_toEndOf="@+id/editMoFromH" />
+
+            <EditText
+                android:id="@+id/editMoFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonH"
+                app:layout_constraintStart_toEndOf="@+id/colonH" />
+
+            <EditText
+                android:id="@+id/editMoTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editMoFromM"
+                app:layout_constraintStart_toEndOf="@+id/editMoFromM" />
+
+            <TextView
+                android:id="@+id/colonM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editMoTillH"
+                app:layout_constraintStart_toEndOf="@+id/editMoTillH" />
+
+            <EditText
+                android:id="@+id/editMoTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonM"
+                app:layout_constraintStart_toEndOf="@+id/colonM" />
+
+            <!--    Openingsuren dinsdag -->
+
+            <TextView
+                android:id="@+id/labelTuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Di:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editDiFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelTuesday"
+                app:layout_constraintStart_toStartOf="@+id/editMoFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editMoFromH" />
+
+            <TextView
+                android:id="@+id/colonDiH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromH"
+                app:layout_constraintStart_toEndOf="@+id/editDiFromH" />
+
+            <EditText
+                android:id="@+id/editDiFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonDiH"
+                app:layout_constraintStart_toEndOf="@+id/colonDiH" />
+
+            <EditText
+                android:id="@+id/editDiTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDiFromM"
+                app:layout_constraintStart_toEndOf="@+id/editDiFromM" />
+
+            <TextView
+                android:id="@+id/colonDiM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDiTillH"
+                app:layout_constraintStart_toEndOf="@+id/editDiTillH" />
+
+            <EditText
+                android:id="@+id/editDiTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonDiM"
+                app:layout_constraintStart_toEndOf="@+id/colonDiM" />
+
+            <!--    Openingsuren woensdag -->
+
+            <TextView
+                android:id="@+id/labelWensday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Wo:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editWoFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelWensday"
+                app:layout_constraintStart_toStartOf="@+id/editDiFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editDiFromH" />
+
+            <TextView
+                android:id="@+id/colonWoH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromH"
+                app:layout_constraintStart_toEndOf="@+id/editWoFromH" />
+
+            <EditText
+                android:id="@+id/editWoFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonWoH"
+                app:layout_constraintStart_toEndOf="@+id/colonWoH" />
+
+            <EditText
+                android:id="@+id/editWoTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editWoFromM"
+                app:layout_constraintStart_toEndOf="@+id/editWoFromM" />
+
+            <TextView
+                android:id="@+id/colonWoM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editWoTillH"
+                app:layout_constraintStart_toEndOf="@+id/editWoTillH" />
+
+            <EditText
+                android:id="@+id/editWoTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonWoM"
+                app:layout_constraintStart_toEndOf="@+id/colonWoM" />
+
+            <!--    Openingsuren donderdag -->
+
+            <TextView
+                android:id="@+id/labelThursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Do:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editDoFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelThursday"
+                app:layout_constraintStart_toStartOf="@+id/editWoFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editWoFromH" />
+
+            <TextView
+                android:id="@+id/colonDoH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromH"
+                app:layout_constraintStart_toEndOf="@+id/editDoFromH" />
+
+            <EditText
+                android:id="@+id/editDoFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonDoH"
+                app:layout_constraintStart_toEndOf="@+id/colonDoH" />
+
+            <EditText
+                android:id="@+id/editDoTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDoFromM"
+                app:layout_constraintStart_toEndOf="@+id/editDoFromM" />
+
+            <TextView
+                android:id="@+id/colonDoM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editDoTillH"
+                app:layout_constraintStart_toEndOf="@+id/editDoTillH" />
+
+            <EditText
+                android:id="@+id/editDoTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonDoM"
+                app:layout_constraintStart_toEndOf="@+id/colonDoM" />
+
+            <!--    Openingsuren vrijdag -->
+
+            <TextView
+                android:id="@+id/labelFriday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Vr:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editFrFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelFriday"
+                app:layout_constraintStart_toStartOf="@+id/editDoFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editDoFromH" />
+
+            <TextView
+                android:id="@+id/colonFrH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromH"
+                app:layout_constraintStart_toEndOf="@+id/editFrFromH" />
+
+            <EditText
+                android:id="@+id/editFrFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonFrH"
+                app:layout_constraintStart_toEndOf="@+id/colonFrH" />
+
+            <EditText
+                android:id="@+id/editFrTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editFrFromM"
+                app:layout_constraintStart_toEndOf="@+id/editFrFromM" />
+
+            <TextView
+                android:id="@+id/colonFrM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editFrTillH"
+                app:layout_constraintStart_toEndOf="@+id/editFrTillH" />
+
+            <EditText
+                android:id="@+id/editFrTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonFrM"
+                app:layout_constraintStart_toEndOf="@+id/colonFrM" />
+
+            <!--    Openingsuren zaterdag -->
+
+            <TextView
+                android:id="@+id/labelSatday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Za:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editSaFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelSatday"
+                app:layout_constraintStart_toStartOf="@+id/editFrFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editFrFromH" />
+
+            <TextView
+                android:id="@+id/colonSaH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromH"
+                app:layout_constraintStart_toEndOf="@+id/editSaFromH" />
+
+            <EditText
+                android:id="@+id/editSaFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonSaH"
+                app:layout_constraintStart_toEndOf="@+id/colonSaH" />
+
+            <EditText
+                android:id="@+id/editSaTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSaFromM"
+                app:layout_constraintStart_toEndOf="@+id/editSaFromM" />
+
+            <TextView
+                android:id="@+id/colonSaM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSaTillH"
+                app:layout_constraintStart_toEndOf="@+id/editSaTillH" />
+
+            <EditText
+                android:id="@+id/editSaTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonSaM"
+                app:layout_constraintStart_toEndOf="@+id/colonSaM" />
+
+            <!--    Openingsuren zondag -->
+
+            <TextView
+                android:id="@+id/labelSunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="Zo:"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromH"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editSuFromH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/labelSunday"
+                app:layout_constraintStart_toStartOf="@+id/editSaFromH"
+                app:layout_constraintTop_toBottomOf="@+id/editSaFromH" />
+
+            <TextView
+                android:id="@+id/colonSuH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromH"
+                app:layout_constraintStart_toEndOf="@+id/editSuFromH" />
+
+            <EditText
+                android:id="@+id/editSuFromM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonSuH"
+                app:layout_constraintStart_toEndOf="@+id/colonSuH" />
+
+            <EditText
+                android:id="@+id/editSuTillH"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSuFromM"
+                app:layout_constraintStart_toEndOf="@+id/editSuFromM" />
+
+            <TextView
+                android:id="@+id/colonSuM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text=" : "
+                app:layout_constraintBaseline_toBaselineOf="@+id/editSuTillH"
+                app:layout_constraintStart_toEndOf="@+id/editSuTillH" />
+
+            <EditText
+                android:id="@+id/editSuTillM"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/colonSuM"
+                app:layout_constraintStart_toEndOf="@+id/colonSuM" />
+
+            <TextView
+                android:id="@+id/textShopOpen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Winkel is gesloten !"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editSuFromH" />
+
+            <Button
+                android:id="@+id/addButtonShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/labelToevoegen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textShopOpen" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
