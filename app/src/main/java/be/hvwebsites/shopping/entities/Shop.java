@@ -177,6 +177,8 @@ public class Shop extends ShoppingEntity {
     public void setBtContent(String bt2, String bt3){
         setEntityId(new IDNumber(bt2.replace(">", "")));
         setEntityName(bt3.replace(">",""));
+        // TODO: Openingsuren worden geinitialiseerd in afwachting dat ze via Bt worden overgestuurd
+        initializeOpenHours();
     }
 
     public boolean isOpen(){
