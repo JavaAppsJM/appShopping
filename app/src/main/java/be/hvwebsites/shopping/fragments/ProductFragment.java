@@ -148,12 +148,14 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 // Definitie inputvelden
                 EditText nameView = view.findViewById(R.id.editNameNewProduct);
                 CheckBox toBuyView = view.findViewById(R.id.toBuyCheckBox);
+                CheckBox wantedView = view.findViewById(R.id.wantedCheckbox);
                 CheckBox cooledView = view.findViewById(R.id.cooledCheckBox);
                 Spinner prefShopView = (Spinner) view.findViewById(R.id.spinnerPrefShop);
                 if (action.equals(StaticData.ACTION_NEW)){
                     Product newProduct = new Product(viewModel.getBasedir(), false);
                     newProduct.setEntityName(String.valueOf(nameView.getText()));
                     newProduct.setToBuy(toBuyView.isChecked());
+                    newProduct.setWanted(wantedView.isChecked());
                     newProduct.setCooled(cooledView.isChecked());
                     // geselecteerde shop uit spinner halen
                     newProduct.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
@@ -162,9 +164,16 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                 }else {
                     productToSave.setEntityName(String.valueOf(nameView.getText()));
                     productToSave.setToBuy(toBuyView.isChecked());
+                    productToSave.setWanted(wantedView.isChecked());
+                    // Wat was de vorige waarde vn wanted
+                    boolean prevWanted = viewModel.getProductList().get(indexToUpdate).isWanted();
                     productToSave.setCooled(cooledView.isChecked());
                     productToSave.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
                     viewModel.getProductList().set(indexToUpdate, productToSave);
+                    // Enkel als wanted gewijzigd is moet er hersortering gebeuren
+                    if (prevWanted != productToSave.isWanted()) {
+                        viewModel.sortProductListWanted();
+                    }
                 }
                 viewModel.sortProductList();
                 viewModel.storeProducts();

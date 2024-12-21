@@ -698,6 +698,21 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
+    public void sortProductListWanted(){
+        // Sorteert een productlist obv attribuut wanted. De unwanted (niet actieve) achteraan !
+        Product tempProduct = new Product();
+        for (int i = productList.size() ; i > 0; i--) {
+            for (int j = 1; j < i ; j++) {
+                if (productList.get(j).isWanted()
+                        && !productList.get(j-1).isWanted()){
+                    tempProduct.setProduct(productList.get(j));
+                    productList.get(j).setProduct(productList.get(j-1));
+                    productList.get(j-1).setProduct(tempProduct);
+                }
+            }
+        }
+    }
+
     public void sortMealList(){
         // Sorteert een meallist op entityname alfabetisch
         Meal tempEntity = new Meal();
