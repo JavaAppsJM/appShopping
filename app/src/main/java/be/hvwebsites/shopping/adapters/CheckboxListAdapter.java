@@ -112,6 +112,11 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
             holder.checkBoxView.setChecked(checkboxList.get(position).isChecked());
 
             if (activityMaster.equals(SpecificData.ACTIVITY_A4LIST)){
+                // Bepaal de style vh checkboxitem indien unwanted (niet actief)
+                if (checkboxList.get(position).getStyle() == SpecificData.STYLE_UNWANTED){
+                    holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
+                            R.color.grey));
+                }
                 holder.checkBoxView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {

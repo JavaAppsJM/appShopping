@@ -683,7 +683,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    public void sortProductList(){
+    public void sortProductListOld(){
         // Sorteert een productlist op entityname alfabetisch
         Product tempProduct = new Product();
         for (int i = productList.size() ; i > 0; i--) {
@@ -698,13 +698,17 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
         }
     }
 
-    public void sortProductListWanted(){
+    public void sortProductList(){
         // Sorteert een productlist obv attribuut wanted. De unwanted (niet actieve) achteraan !
+        // Of sorteert alfabetisch op naam
         Product tempProduct = new Product();
         for (int i = productList.size() ; i > 0; i--) {
             for (int j = 1; j < i ; j++) {
-                if (productList.get(j).isWanted()
-                        && !productList.get(j-1).isWanted()){
+                boolean b1 = productList.get(j).isWanted();
+                boolean bmin1 = productList.get(j-1).isWanted();
+                if ((b1 && !bmin1)
+                        || ((productList.get(j).getEntityName().compareToIgnoreCase(productList.get(j - 1).getEntityName()) < 0)
+                        && (b1 == bmin1))) {
                     tempProduct.setProduct(productList.get(j));
                     productList.get(j).setProduct(productList.get(j-1));
                     productList.get(j-1).setProduct(tempProduct);
@@ -747,6 +751,7 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
                 }else {
                     productDisplayLine = prodList.get(i).getEntityName();
                 }
+                // Check eigenschap cooled, style = cooled
                 if ((inDisplayType == SpecificData.DISPLAY_SMALL_BOLD) &&
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED_BOLD;
@@ -755,6 +760,10 @@ public class ShopEntitiesViewModel extends AndroidViewModel {
                 if ((inDisplayType == SpecificData.DISPLAY_SMALL) &&
                         (prodList.get(i).isCooled())){
                     cbTextStyle = SpecificData.STYLE_COOLED;
+                }
+                // Check eigenschap unwanted, style = unwanted
+                if (!(prodList.get(i).isWanted())){
+                    cbTextStyle = SpecificData.STYLE_UNWANTED;
                 }
                 checkboxList.add(new CheckboxHelper(
                         productDisplayLine,

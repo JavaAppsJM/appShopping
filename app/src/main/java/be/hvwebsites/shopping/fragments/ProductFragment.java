@@ -155,7 +155,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                     Product newProduct = new Product(viewModel.getBasedir(), false);
                     newProduct.setEntityName(String.valueOf(nameView.getText()));
                     newProduct.setToBuy(toBuyView.isChecked());
-                    newProduct.setWanted(wantedView.isChecked());
+                    newProduct.setWanted(true);
                     newProduct.setCooled(cooledView.isChecked());
                     // geselecteerde shop uit spinner halen
                     newProduct.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
@@ -165,15 +165,9 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
                     productToSave.setEntityName(String.valueOf(nameView.getText()));
                     productToSave.setToBuy(toBuyView.isChecked());
                     productToSave.setWanted(wantedView.isChecked());
-                    // Wat was de vorige waarde vn wanted
-                    boolean prevWanted = viewModel.getProductList().get(indexToUpdate).isWanted();
                     productToSave.setCooled(cooledView.isChecked());
                     productToSave.setPreferredShopId(viewModel.determineShopBySpinnerSelection());
                     viewModel.getProductList().set(indexToUpdate, productToSave);
-                    // Enkel als wanted gewijzigd is moet er hersortering gebeuren
-                    if (prevWanted != productToSave.isWanted()) {
-                        viewModel.sortProductListWanted();
-                    }
                 }
                 viewModel.sortProductList();
                 viewModel.storeProducts();
