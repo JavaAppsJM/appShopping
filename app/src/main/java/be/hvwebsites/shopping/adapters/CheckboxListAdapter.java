@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 import be.hvwebsites.libraryandroid4.helpers.CheckboxHelper;
 import be.hvwebsites.libraryandroid4.statics.StaticData;
@@ -113,7 +114,7 @@ public class CheckboxListAdapter extends RecyclerView.Adapter<CheckboxListAdapte
 
             if (activityMaster.equals(SpecificData.ACTIVITY_A4LIST)){
                 // Bepaal de style vh checkboxitem indien unwanted (niet actief)
-                if (checkboxList.get(position).getStyle() == SpecificData.STYLE_UNWANTED){
+                if (checkboxList.get(position).getStyle().equals(SpecificData.STYLE_UNWANTED)){
                     holder.checkBoxView.setTextColor(ContextCompat.getColor(mContext,
                             R.color.grey));
                 }
